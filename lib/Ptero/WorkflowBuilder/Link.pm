@@ -7,12 +7,12 @@ with 'Ptero::WorkflowBuilder::Detail::Element';
 
 has source => (
     is => 'rw',
-    isa => 'Object',
+    isa => 'Ptero::WorkflowBuilder::Detail::Operation',
     predicate => 'has_source',
 );
 has destination => (
     is => 'rw',
-    isa => 'Object',
+    isa => 'Ptero::WorkflowBuilder::Detail::Operation',
     predicate => 'has_destination',
 );
 
