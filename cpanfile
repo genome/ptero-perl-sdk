@@ -9,7 +9,6 @@ requires "Moose";
 requires "MooseX::Getopt";
 requires "Params::Validate";
 requires "Set::Scalar";
-requires "Test::Deep";
 
 on 'test' => sub {
   requires "Test::Exception";
