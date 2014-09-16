@@ -6,6 +6,7 @@ use warnings FATAL => 'all';
 use Set::Scalar qw();
 
 with 'Ptero::WorkflowBuilder::Detail::Element';
+with 'Ptero::WorkflowBuilder::Detail::DAGStep';
 
 has name => (
     is => 'rw',
