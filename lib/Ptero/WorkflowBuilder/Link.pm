@@ -25,12 +25,9 @@ has destination_property => (
     isa => 'Str',
 );
 
-# ------------------------------------------------------------------------------
-# Inherited Methods
-# ------------------------------------------------------------------------------
-
 sub to_hashref {
     my $self = shift;
+
     return {
         source => $self->source_operation_name,
         destination => $self->destination_operation_name,
@@ -38,10 +35,6 @@ sub to_hashref {
         destination_property => $self->destination_property,
     }
 }
-
-# ------------------------------------------------------------------------------
-# Public Methods
-# ------------------------------------------------------------------------------
 
 sub destination_operation_name {
     my $self = shift;
@@ -65,14 +58,11 @@ sub external_output {
 
 sub sort_key {
     my $self = shift;
-    return sprintf("%s|%s|%s|%s",
+    return sprintf('%s|%s|%s|%s',
         $self->source_operation_name, $self->destination_operation_name,
         $self->source_property, $self->destination_property);
 }
 
-# ------------------------------------------------------------------------------
-# Private Methods
-# ------------------------------------------------------------------------------
 
 sub _operation_name {
     my ($self, $operation, $default) = @_;
@@ -87,3 +77,4 @@ sub _operation_name {
 
 
 __PACKAGE__->meta->make_immutable;
+

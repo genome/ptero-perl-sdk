@@ -29,10 +29,6 @@ has methods => (
 #     isa => 'Maybe[Str]',
 # );
 
-# ------------------------------------------------------------------------------
-# Inherited methods
-# ------------------------------------------------------------------------------
-
 sub to_hashref {
     my $self = shift;
 
@@ -43,10 +39,6 @@ sub to_hashref {
         methods => [map { $_->to_hashref } @{$self->methods}],
     };
 }
-
-# ------------------------------------------------------------------------------
-# Private methods
-# ------------------------------------------------------------------------------
 
 my $_INVALID_NAMES = new Set::Scalar('input connector', 'output connector');
 sub validate {
