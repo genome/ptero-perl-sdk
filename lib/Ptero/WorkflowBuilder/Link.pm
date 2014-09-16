@@ -78,6 +78,19 @@ sub to_string {
         $self->source_to_string, $self->destination_to_string)
 }
 
+sub validate {
+    my $self = shift;
+
+    if ($self->source_operation_name eq $self->destination_operation_name) {
+        die sprintf(
+            'Source and destination operations cannot be the same (%s)',
+            $self->source_operation_name
+        );
+    }
+
+    return;
+}
+
 sub _operation_name {
     my ($self, $operation, $default) = @_;
 
