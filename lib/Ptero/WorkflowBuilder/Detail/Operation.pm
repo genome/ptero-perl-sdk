@@ -16,7 +16,7 @@ has name => (
 has methods => (
     is => 'rw',
     isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::OperationMethod]',
-    required => 1,
+    default => sub { [] },
 );
 
 # has log_dir => (
