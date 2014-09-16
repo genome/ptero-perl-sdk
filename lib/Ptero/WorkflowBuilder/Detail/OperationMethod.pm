@@ -1,6 +1,6 @@
 package Ptero::WorkflowBuilder::Detail::OperationMethod;
 
-use Moose::Role;
+use Moose;
 use warnings FATAL => 'all';
 
 has name => (
@@ -37,5 +37,6 @@ sub to_hashref {
     };
 }
 
-1;
+
+__PACKAGE__->meta->make_immutable;
 
