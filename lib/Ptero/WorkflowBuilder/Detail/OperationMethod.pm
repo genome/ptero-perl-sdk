@@ -3,6 +3,8 @@ package Ptero::WorkflowBuilder::Detail::OperationMethod;
 use Moose;
 use warnings FATAL => 'all';
 
+with 'Ptero::WorkflowBuilder::Detail::Element';
+
 has name => (
     is => 'rw',
     isa => 'Str',
@@ -21,11 +23,9 @@ has parameters => (
     required => 1,
 );
 
-sub from_hashref {
-    my ($class, $hashref) = @_;
-
-    return $class->new(%$hashref);
-}
+# ------------------------------------------------------------------------------
+# Inherited methods
+# ------------------------------------------------------------------------------
 
 sub to_hashref {
     my $self = shift;
