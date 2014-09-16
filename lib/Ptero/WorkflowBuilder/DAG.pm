@@ -10,24 +10,18 @@ use List::MoreUtils qw();
 
 use Ptero::WorkflowBuilder::Link;
 
-with 'Ptero::WorkflowBuilder::Detail::Operation';
-with 'Ptero::WorkflowBuilder::Detail::Element';
+with 'Ptero::WorkflowBuilder::Detail::DAGStep';
 
 has operations => (
     is => 'rw',
-    isa => 'ArrayRef[Object]',
+    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Operation|Ptero::WorkflowBuilder::DAG]',
     default => sub { [] },
 );
 
 has links => (
     is => 'rw',
-    isa => 'ArrayRef[Object]',
+    isa => 'ArrayRef[Ptero::WorkflowBuilder::Link]',
     default => sub { [] },
-);
-
-has log_dir => (
-    is => 'rw',
-    isa => 'Maybe[Str]',
 );
 
 
@@ -97,50 +91,17 @@ sub operation_named {
     return;
 }
 
-sub is_input_property {
-    my ($self, $property_name) = @_;
+sub _property_names_from_links {
+    my ($self, $query_name, $property_holder) = @_;
 
-    return List::MoreUtils::any {$property_name eq $_} $self->input_properties;
-}
+    my $property_names = new Set::Scalar;
 
-sub is_output_property {
-    my ($self, $property_name) = @_;
-
-    return List::MoreUtils::any {$property_name eq $_} $self->output_properties;
-}
-
-sub from_xml_element {
-    my ($class, $element) = @_;
-
-    my $self = $class->new(
-        name => $element->getAttribute('name'),
-        log_dir => $element->getAttribute('logDir'),
-        parallel_by => $element->getAttribute('parallelBy'),
-    );
-
-    $self->_add_operations_from_xml_element($element);
-    $self->_add_links_from_xml_element($element);
-
-    return $self;
-}
-
-
-sub get_xml_element {
-    my $self = shift;
-
-    my $element = Ptero::WorkflowBuilder::Detail::Operation::get_xml_element(
-        $self);
-
-    if (defined($self->log_dir)) {
-        $element->setAttribute('logDir', $self->log_dir);
+    for my $link (@{$self->links}) {
+        if ($link->$query_name) {
+            $property_names->insert($link->$property_holder);
+        }
     }
-
-    map {$element->addChild($_->get_xml_element)}
-        sort {$a->name cmp $b->name} @{$self->operations};
-    map {$element->addChild($_->get_xml_element)}
-        sort {$a->sort_key cmp $b->sort_key} @{$self->links};
-
-    return $element;
+    return @{$property_names};
 }
 
 sub input_properties {
@@ -155,76 +116,34 @@ sub output_properties {
         'destination_property');
 }
 
-sub operation_type_attributes {
-    return ();
+sub is_input_property {
+    my ($self, $property_name) = @_;
+
+    return List::MoreUtils::any {$property_name eq $_} $self->input_properties;
 }
 
-sub validate {
-    my $self = shift;
+sub is_output_property {
+    my ($self, $property_name) = @_;
 
-    $self->_validate_operation_names_are_unique;
-    $self->_validate_linked_operation_ownership;
-    $self->_validate_mandatory_inputs;
-    $self->_validate_non_conflicting_inputs;
-
-    for my $op (@{$self->operations}) {
-        $op->validate;
-    }
-
-    for my $link (@{$self->links}) {
-        $link->validate;
-    }
-
-    return;
+    return List::MoreUtils::any {$property_name eq $_} $self->output_properties;
 }
 
-sub _add_operations_from_xml_element {
-    my ($self, $element) = @_;
+sub from_hashref {
+    my ($class, $hashref) = @_;
 
-    my $nodelist = $element->find('operation');
-    for my $node ($nodelist->get_nodelist) {
-        my $op = Ptero::WorkflowBuilder::Detail::Operation->from_xml_element(
-            $node);
-        $self->add_operation($op);
-    }
-}
+    my @links = map Ptero::WorkflowBuilder::Link->from_hashref($_),
+        @{$hashref->{links}};
 
-sub _add_links_from_xml_element {
-    my ($self, $element) = @_;
+    my @operations = map Ptero::WorkflowBuilder::Detail::Operation->from_hashref($_),
+        @{$hashref->{operations}};
 
-    my $nodelist = $element->find('link');
-    for my $node ($nodelist->get_nodelist) {
-        my $source_op = $self->operation_named(
-                $node->getAttribute('fromOperation'));
-        my $destination_op = $self->operation_named(
-                $node->getAttribute('toOperation'));
+    my $self = $class->new(
+        name => $hashref->{name},
+        links => \@links,
+        operations => \@operations,
+    );
 
-        my %link_params = (
-            source_property => $node->getAttribute('fromProperty'),
-            destination_property => $node->getAttribute('toProperty'),
-        );
-        if (defined($source_op)) {
-            $link_params{source} = $source_op;
-        }
-        if (defined($destination_op)) {
-            $link_params{destination} = $destination_op;
-        }
-        my $link = Ptero::WorkflowBuilder::Link->new(%link_params);
-        $self->add_link($link);
-    }
-}
-
-sub _property_names_from_links {
-    my ($self, $query_name, $property_holder) = @_;
-
-    my $property_names = new Set::Scalar;
-
-    for my $link (@{$self->links}) {
-        if ($link->$query_name) {
-            $property_names->insert($link->$property_holder);
-        }
-    }
-    return @{$property_names};
+    return $self;
 }
 
 sub _validate_operation_names_are_unique {
@@ -246,48 +165,40 @@ sub _validate_operation_names_are_unique {
 sub _validate_linked_operation_ownership {
     my $self = shift;
 
-    my %operations_hash;
-    for my $op (@{$self->operations}) {$operations_hash{$op} = 1;}
-
-    for my $link (@{$self->links}) {
-        $self->_validate_operation_ownership($link->source, \%operations_hash);
-        $self->_validate_operation_ownership($link->destination,
-            \%operations_hash);
+    my $operation_names = new Set::Scalar;
+    for my $op (@{$self->operations}) {
+        $operation_names->insert($op->name);
     }
+
+    my @linked_operations = map { ($link->source, $link->destination) }
+        @{$self->links};
+
+    my @unowned;
+
+    for my $operation (@linked_operations) {
+        unless ($operation_names->contains($operation->name)) {
+            push @unowned, $operation->name;
+        }
+    }
+
+    if (@unowned) {
+        die sprintf (
+            "Unowned operation (%s) linked in DAG (%s)",
+            (join ", ", @unowned), $self->name
+        );
+    }
+
     return;
 }
 
-sub _validate_operation_ownership {
-    my ($self, $op, $operations_hash) = @_;
+sub _encode_input {
+    my ($self, $op_name, $property_name) = @_;
+    my $js = JSON->new->allow_nonref;
 
-    if (defined($op)) {
-        unless ($operations_hash->{$op}) {
-            die sprintf(
-                    "Unowned operation (%s) linked in DAG (%s)",
-                    $op->name, $self->name,
-            );
-        }
-    }
-}
-
-sub _validate_mandatory_inputs {
-    my $self = shift;
-
-    my $mandatory_inputs = $self->_get_mandatory_inputs;
-    for my $link (@{$self->links}) {
-        my $ei = $self->_encode_input($link->destination_operation_name,
-            $link->destination_property);
-        if ($mandatory_inputs->contains($ei)) {
-            $mandatory_inputs->delete($ei);
-        }
-    }
-
-    unless ($mandatory_inputs->is_empty) {
-        die sprintf(
-            "%d mandatory input(s) missing in DAG: %s",
-            $mandatory_inputs->size, $mandatory_inputs
-        );
-    }
+    return $js->canonical->encode({
+        operation_name => $op_name,
+        property_name => $property_name,
+    });
 }
 
 sub _get_mandatory_inputs {
@@ -304,31 +215,98 @@ sub _get_mandatory_inputs {
     return $result;
 }
 
-sub _encode_input {
-    my ($self, $op_name, $property_name) = @_;
-    my $js = JSON->new->allow_nonref;
+sub _validate_mandatory_inputs {
+    my $self = shift;
 
-    return $js->canonical->encode({
-        operation_name => $op_name,
-        property_name => $property_name,
-    });
+    my $mandatory_inputs = $self->_get_mandatory_inputs;
+    for my $link (@{$self->links}) {
+        my $destination = $link->destination_to_string;
+        if ($mandatory_inputs->contains($destination)) {
+            $mandatory_inputs->delete($destination);
+        }
+    }
+
+    unless ($mandatory_inputs->is_empty) {
+        die sprintf(
+            "No links targetting mandatory input(s): %s",
+            $mandatory_inputs
+        );
+    }
 }
 
 sub _validate_non_conflicting_inputs {
     my $self = shift;
 
-    my $encoded_inputs = new Set::Scalar;
+    my %destinations;
+
     for my $link (@{$self->links}) {
-        my $ei = $self->_encode_input($link->destination_operation_name,
-            $link->destination_property);
-        if ($encoded_inputs->contains($ei)) {
-            die sprintf(
-"Conflicting input to '%s' on (%s) found.  One link is from '%s' on (%s)",
-                $link->destination_property, $link->destination_operation_name,
-                $link->source_property, $link->source_operation_name
+        my $destination = $link->destination_to_string;
+        push @{$destinations{$destination}}, $link;
+    }
+
+    my @errors;
+    for my $destination (keys %destinations) {
+        my @links = @{$destinations{$destination}};
+
+        if (@links > 1) {
+            push @errors, sprintf(
+                'Destination %s is targeted by multiple links from: %s',
+                $destination, (join ', ', map { $_->source_as_string } @links)
             );
         }
-        $encoded_inputs->insert($ei);
+    }
+
+    if (@errors) {
+        die sprintf(
+            "Conflicting inputs:\n%s", (join "\n", @errors);
+        );
+    }
+}
+
+sub validate {
+    my $self = shift;
+
+    $self->_validate_operation_names_are_unique;
+    $self->_validate_linked_operation_ownership;
+    $self->_validate_mandatory_inputs;
+    $self->_validate_non_conflicting_inputs;
+
+    # Cascade validations
+    $_->validate for (@{$self->operations}, @{$self->links});
+
+    return;
+}
+
+sub _add_operations_from_hashref {
+    my ($self, $hashref) = @_;
+
+    for my $operation (@{$hashref->{workflow}{operations}}) {
+        my $op = Ptero::WorkflowBuilder::Detail::Operation->from_hashref($operation);
+        $self->add_operation($op);
+    }
+}
+
+sub _add_links_from_hashref {
+    my ($self, $hashref) = @_;
+
+    for my $link (@{$hashref->{workflow}{links}}) {
+        my $source_op = $self->operation_named(
+                $link->{source});
+        my $destination_op = $self->operation_named(
+                $link->{destination});
+
+        my %link_params = (
+            source_property => $link->{source_property},
+            destination_property => $link->{destination_property},
+        );
+        if (defined($source_op)) {
+            $link_params{source} = $source_op;
+        }
+        if (defined($destination_op)) {
+            $link_params{destination} = $destination_op;
+        }
+        my $link = Ptero::WorkflowBuilder::Link->new(%link_params);
+        $self->add_link($link);
     }
 }
 
