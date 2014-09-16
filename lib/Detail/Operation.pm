@@ -3,13 +3,13 @@ package Procera::WorkflowBuilder::Detail::Operation;
 use Moose::Role;
 use warnings FATAL => 'all';
 
-use Procera::WorkflowBuilder::Detail::TypeMap;
+use Carp qw(confess);
+use Data::Dump qw();
+use File::Slurp qw();
 use IO::File qw();
 use IO::Scalar qw();
+use JSON qw();
 use Set::Scalar qw();
-use XML::LibXML qw();
-use Carp qw(confess);
-use Data::Dumper qw();
 
 use autodie qw(:io);
 
@@ -19,22 +19,27 @@ has name => (
     required => 1,
 );
 
-has log_dir => (
+has methods => (
     is => 'rw',
-    isa => 'Str',
+    isa => 'ArrayRef[Procera::WorkflowBuilder::Detail::OperationMethod]',
+    required => 1,
 );
 
-has parallel_by => (
-    is => 'rw',
-    isa => 'Maybe[Str]',
-);
+# has log_dir => (
+#     is => 'rw',
+#     isa => 'Str',
+# );
 
+# has parallel_by => (
+#     is => 'rw',
+#     isa => 'Maybe[Str]',
+# );
 
 # ------------------------------------------------------------------------------
 # Abstract methods
 # ------------------------------------------------------------------------------
 
-requires 'from_xml_element';
+requires 'from_hashref';
 
 requires 'input_properties';
 requires 'output_properties';
@@ -42,70 +47,15 @@ requires 'operation_type_attributes';
 
 requires 'is_input_property';
 requires 'is_output_property';
-requires 'is_many_property';
-
-
-sub from_xml_element {
-    my ($class, $element) = @_;
-
-    # Prevent accidental recursion when subclasses don't override this method
-    unless ($class eq 'Procera::WorkflowBuilder::Detail::Operation') {
-        confess sprintf(
-                "from_xml_element not implemented in subclass %s", $class);
-    }
-
-    my $subclass = $class->_get_subclass_from_element($element);
-    return $subclass->from_xml_element($element);
-}
 
 
 # ------------------------------------------------------------------------------
 # Public methods
 # ------------------------------------------------------------------------------
 
-sub execute {
-    require Workflow::Simple;
-
-    my $self = shift;
-    my $result = Workflow::Simple::run_workflow_lsf($self->get_xml, @_);
-    unless (defined($result)) {
-        if (@Workflow::Simple::ERROR) {
-            die sprintf(
-                "Workflow failed with these errors: %s",
-                Data::Dumper::Dumper(map {$_->error || 'Unknown error'} @Workflow::Simple::ERROR)
-            );
-        } else {
-            die "Workflow failed: reason unknown";
-        }
-    }
-    return $result;
-}
-
-sub from_xml {
-    my ($class, $xml) = @_;
-    my $fh = new IO::Scalar \$xml;
-
-    return $class->from_xml_file($fh);
-}
-
-sub from_xml_file {
-    my ($class, $fh) = @_;
-    my $doc = XML::LibXML->load_xml(IO => $fh);
-    return $class->from_xml_element($doc->documentElement);
-}
-
-sub from_xml_filename {
-    my ($class, $filename) = @_;
-
-    my $fh = IO::File->new($filename, 'r');
-    return $class->from_xml_file($fh);
-}
-
-sub operation_type {
-    my $self = shift;
-
-    return Procera::WorkflowBuilder::Detail::TypeMap::type_from_class(
-        ref $self);
+sub from_hashref {
+    my ($class, $hashref) = @_;
+    # XXX
 }
 
 
@@ -113,23 +63,10 @@ sub operation_type {
 # Inherited methods
 # ------------------------------------------------------------------------------
 
-sub notify_input_link {}
-
-sub notify_output_link {}
-
-sub get_xml {
+sub to_hashref {
     my $self = shift;
 
     $self->validate;
-
-    my $doc = XML::LibXML::Document->new();
-    $doc->setDocumentElement($self->get_xml_element);
-
-    return $doc->toString(1);
-}
-
-sub get_xml_element {
-    my $self = shift;
 
     my $element = XML::LibXML::Element->new('operation');
     $element->setAttribute('name', $self->name);
@@ -188,14 +125,6 @@ sub _add_property_xml_element {
     $element->addChild($inner_element);
 
     return;
-}
-
-sub _get_subclass_from_element {
-    my ($class, $element) = @_;
-    my $nodes = $element->find('operationtype');
-    my $operation_type_element = $nodes->pop;
-    return Procera::WorkflowBuilder::Detail::TypeMap::class_from_type(
-        $operation_type_element->getAttribute('typeClass'));
 }
 
 1;
