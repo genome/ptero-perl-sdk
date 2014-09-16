@@ -32,8 +32,6 @@ has methods => (
 sub to_hashref {
     my $self = shift;
 
-    $self->validate;
-
     return {
         name    => $self->name,
         methods => [map { $_->to_hashref } @{$self->methods}],
