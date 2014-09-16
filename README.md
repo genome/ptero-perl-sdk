@@ -1,6 +1,7 @@
 ptero-perl-sdk
 ==============
 [![Build Status](https://travis-ci.org/genome/ptero-perl-sdk.svg?branch=master)](https://travis-ci.org/genome/ptero-perl-sdk)
+[![Coverage Status](https://img.shields.io/coveralls/genome/ptero-perl-sdk.svg)](https://coveralls.io/r/genome/ptero-perl-sdk)
 
 Perl interface to the PTero services
 
