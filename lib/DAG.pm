@@ -114,12 +114,6 @@ sub is_output_property {
     return List::MoreUtils::any {$property_name eq $_} $self->output_properties;
 }
 
-sub is_many_property {
-    my ($self, $property_name) = @_;
-    # XXX There may not be an easy way to determine this.
-    return;
-}
-
 
 # ------------------------------------------------------------------------------
 # Inherited Methods
