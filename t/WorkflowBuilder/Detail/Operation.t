@@ -34,7 +34,7 @@ use_ok('Ptero::WorkflowBuilder::Detail::Operation');
 
     my $operation = Ptero::WorkflowBuilder::Detail::Operation->from_hashref($operation_hashref);
 
-    throws_ok {$operation->to_hashref}
+    throws_ok {$operation->validate}
         qr/Operation must have at least one method/, 'caught no methods okay';
 };
 
