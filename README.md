@@ -20,4 +20,4 @@ Once your have Carton:
 
 To run tests:
 
-    $ carton exec prove -vrl t/
+    $ ./run-tests
