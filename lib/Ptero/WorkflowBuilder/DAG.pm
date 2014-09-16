@@ -1,18 +1,17 @@
-package Procera::WorkflowBuilder::DAG;
+package Ptero::WorkflowBuilder::DAG;
 
 use Moose;
 use warnings FATAL => 'all';
 
-use Procera;
 use Params::Validate qw();
 use Set::Scalar qw();
 use JSON;
 use List::MoreUtils qw();
 
-use Procera::WorkflowBuilder::Link;
+use Ptero::WorkflowBuilder::Link;
 
-with 'Procera::WorkflowBuilder::Detail::Operation';
-with 'Procera::WorkflowBuilder::Detail::Element';
+with 'Ptero::WorkflowBuilder::Detail::Operation';
+with 'Ptero::WorkflowBuilder::Detail::Element';
 
 has operations => (
     is => 'rw',
@@ -54,7 +53,7 @@ sub add_link {
 
 sub create_link {
     my $self = shift;
-    $self->add_link(Procera::WorkflowBuilder::Link->new(@_));
+    $self->add_link(Ptero::WorkflowBuilder::Link->new(@_));
     return;
 }
 
@@ -66,7 +65,7 @@ sub connect_input {
             destination_property => { type => Params::Validate::SCALAR },
     });
 
-    $self->add_link(Procera::WorkflowBuilder::Link->new(
+    $self->add_link(Ptero::WorkflowBuilder::Link->new(
         source_property => $args{input_property},
         destination => $args{destination},
         destination_property => $args{destination_property},
@@ -82,7 +81,7 @@ sub connect_output {
             output_property => { type => Params::Validate::SCALAR },
     });
 
-    $self->add_link(Procera::WorkflowBuilder::Link->new(
+    $self->add_link(Ptero::WorkflowBuilder::Link->new(
         source => $args{source},
         source_property => $args{source_property},
         destination_property => $args{output_property},
@@ -138,7 +137,7 @@ sub from_xml_element {
 sub get_xml_element {
     my $self = shift;
 
-    my $element = Procera::WorkflowBuilder::Detail::Operation::get_xml_element(
+    my $element = Ptero::WorkflowBuilder::Detail::Operation::get_xml_element(
         $self);
 
     if (defined($self->log_dir)) {
@@ -198,7 +197,7 @@ sub _add_operations_from_xml_element {
 
     my $nodelist = $element->find('operation');
     for my $node ($nodelist->get_nodelist) {
-        my $op = Procera::WorkflowBuilder::Detail::Operation->from_xml_element(
+        my $op = Ptero::WorkflowBuilder::Detail::Operation->from_xml_element(
             $node);
         $self->add_operation($op);
     }
@@ -224,7 +223,7 @@ sub _add_links_from_xml_element {
         if (defined($destination_op)) {
             $link_params{destination} = $destination_op;
         }
-        my $link = Procera::WorkflowBuilder::Link->new(%link_params);
+        my $link = Ptero::WorkflowBuilder::Link->new(%link_params);
         $self->add_link($link);
     }
 }

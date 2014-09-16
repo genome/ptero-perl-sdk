@@ -1,4 +1,4 @@
-package Procera::WorkflowBuilder::Detail::Operation;
+package Ptero::WorkflowBuilder::Detail::Operation;
 
 use Moose::Role;
 use warnings FATAL => 'all';
@@ -21,7 +21,7 @@ has name => (
 
 has methods => (
     is => 'rw',
-    isa => 'ArrayRef[Procera::WorkflowBuilder::Detail::OperationMethod]',
+    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::OperationMethod]',
     required => 1,
 );
 

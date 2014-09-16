@@ -1,4 +1,4 @@
-package Procera::WorkflowBuilder::Detail::OperationMethod;
+package Ptero::WorkflowBuilder::Detail::OperationMethod;
 
 use Moose::Role;
 use warnings FATAL => 'all';
