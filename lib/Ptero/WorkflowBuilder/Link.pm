@@ -64,16 +64,19 @@ sub sort_key {
 }
 
 sub source_to_string {
+    my $self = shift;
     return sprintf('%s.%s',
         $self->source_operation_name, $self->source_property);
 }
 
 sub destination_to_string {
+    my $self = shift;
     return sprintf('%s.%s',
         $self->destination_operation_name, $self->destination_property);
 }
 
 sub to_string {
+    my $self = shift;
     return sprintf('%s => %s',
         $self->source_to_string, $self->destination_to_string)
 }
