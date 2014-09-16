@@ -11,9 +11,11 @@ use_ok('Ptero::WorkflowBuilder::Link');
 {
     my $source_op = Ptero::WorkflowBuilder::Detail::Operation->new(
         name => 'source op',
+        methods => [],
     );
     my $destination_op = Ptero::WorkflowBuilder::Detail::Operation->new(
         name => 'destination op',
+        methods => [],
     );
 
     my $link = Ptero::WorkflowBuilder::Link->new(
@@ -33,6 +35,7 @@ use_ok('Ptero::WorkflowBuilder::Link');
 {
     my $destination_op = Ptero::WorkflowBuilder::Detail::Operation->new(
         name => 'destination op',
+        methods => [],
     );
 
     my $link = Ptero::WorkflowBuilder::Link->new(
@@ -52,6 +55,7 @@ use_ok('Ptero::WorkflowBuilder::Link');
 {
     my $source_op = Ptero::WorkflowBuilder::Detail::Operation->new(
         name => 'source op',
+        methods => [],
     );
 
     my $link = Ptero::WorkflowBuilder::Link->new(
