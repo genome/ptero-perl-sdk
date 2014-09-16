@@ -63,6 +63,20 @@ sub sort_key {
         $self->source_property, $self->destination_property);
 }
 
+sub source_to_string {
+    return sprintf('%s.%s',
+        $self->source_operation_name, $self->source_property);
+}
+
+sub destination_to_string {
+    return sprintf('%s.%s',
+        $self->destination_operation_name, $self->destination_property);
+}
+
+sub to_string {
+    return sprintf('%s => %s',
+        $self->source_to_string, $self->destination_to_string)
+}
 
 sub _operation_name {
     my ($self, $operation, $default) = @_;
