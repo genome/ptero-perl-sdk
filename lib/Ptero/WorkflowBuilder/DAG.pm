@@ -3,10 +3,10 @@ package Ptero::WorkflowBuilder::DAG;
 use Moose;
 use warnings FATAL => 'all';
 
-use Params::Validate qw();
-use Set::Scalar qw();
 use JSON;
 use List::MoreUtils qw();
+use Params::Validate qw();
+use Set::Scalar qw();
 
 use Ptero::WorkflowBuilder::Link;
 
@@ -14,7 +14,7 @@ with 'Ptero::WorkflowBuilder::Detail::DAGStep';
 
 has operations => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Operation|Ptero::WorkflowBuilder::DAG]',
+    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::DAGStep]',
     default => sub { [] },
 );
 
@@ -170,8 +170,7 @@ sub _validate_linked_operation_ownership {
         $operation_names->insert($op->name);
     }
 
-    my @linked_operations = map { ($link->source, $link->destination) }
-        @{$self->links};
+    my @linked_operations = map { $_->source, $_->destination } @{$self->links};
 
     my @unowned;
 
@@ -257,9 +256,7 @@ sub _validate_non_conflicting_inputs {
     }
 
     if (@errors) {
-        die sprintf(
-            "Conflicting inputs:\n%s", (join "\n", @errors);
-        );
+        die join "\n", ('Conflicting inputs:', @errors);
     }
 }
 
