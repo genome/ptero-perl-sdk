@@ -9,11 +9,11 @@ use Ptero::WorkflowBuilder::Detail::OperationMethod;
 use_ok('Ptero::WorkflowBuilder::Detail::Operation');
 
 {
-    my $opmethod = Ptero::WorkflowBuilder::Detail::OperationMethod->from_hashref({
+    my $opmethod = {
         name => 'foo',
         submit_url => 'http://example.com',
         parameters => {}
-    });
+    };
 
     my $operation_hashref = {
         name => 'squid',
@@ -25,6 +25,21 @@ use_ok('Ptero::WorkflowBuilder::Detail::Operation');
     is_deeply($operation->to_hashref, $operation_hashref, 'round trip hashref to operation');
 };
 
+{
+    my $operation_hashref = {
+        name => 'bad-methods-in-this-op',
+    };
+
+    throws_ok {Ptero::WorkflowBuilder::Detail::Operation->from_hashref($operation_hashref)}
+        qr/Operation hashref must contain a methods arrayref/,
+        'no methods in hashref';
+
+    $operation_hashref->{methods} = 'not-an-arrayref';
+
+    throws_ok {Ptero::WorkflowBuilder::Detail::Operation->from_hashref($operation_hashref)}
+        qr/Operation hashref must contain a methods arrayref/,
+        'methods is not an arrayref';
+};
 
 {
     my $operation_hashref = {

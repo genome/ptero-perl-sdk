@@ -3,6 +3,7 @@ package Ptero::WorkflowBuilder::Detail::Operation;
 use Moose;
 use warnings FATAL => 'all';
 
+use Data::Dump qw();
 use Set::Scalar qw();
 
 with 'Ptero::WorkflowBuilder::Detail::Element';
@@ -37,6 +38,25 @@ sub to_hashref {
         name    => $self->name,
         methods => [map { $_->to_hashref } @{$self->methods}],
     };
+}
+
+sub from_hashref {
+    my ($class, $hashref) = @_;
+
+    unless (exists $hashref->{methods} && ref($hashref->{methods}) eq 'ARRAY') {
+        die 'Operation hashref must contain a methods arrayref: '
+            . Data::Dump::pp($hashref);
+    }
+
+    my %hash = %$hashref; # copy the hashref
+
+    my @methods = map {
+        Ptero::WorkflowBuilder::Detail::OperationMethod->from_hashref($_)
+    } @{$hashref->{methods}};
+
+    delete $hash{methods};
+
+    return $class->new(%hash, methods => \@methods);
 }
 
 my $_INVALID_NAMES = new Set::Scalar('input connector', 'output connector');
