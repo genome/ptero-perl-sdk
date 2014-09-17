@@ -68,5 +68,21 @@ use_ok('Ptero::WorkflowBuilder::Link');
     is_deeply($link->to_hashref, $expected_hashref, 'missing destination operation uses output connector');
 };
 
+{
+    my $op_name = 'single-op';
+
+    my $op = Ptero::WorkflowBuilder::Detail::Operation->new(
+        name => $op_name,
+    );
+
+    my $link = Ptero::WorkflowBuilder::Link->new(
+        source => $op, source_property => 'output',
+        destination => $op, destination_property => 'input',
+    );
+
+    throws_ok {$link->validate}
+        qr/\QSource and destination operations cannot be the same ($op_name)\E/,
+        'caught source and destination op cannot be equal';
+};
 
 done_testing();
