@@ -176,48 +176,70 @@ sub _validate_operation_names_are_unique {
     my $self = shift;
 
     my $operation_names = new Set::Scalar;
+    my @duplicates;
     for my $op (@{$self->operations}) {
         if ($operation_names->contains($op->name)) {
-            die sprintf(
-                    "Workflow DAG '%s' contains multiple operations named '%s'",
-                    $self->name, $op->name);
+            push @duplicates, $op->name;
         }
         $operation_names->insert($op->name);
+    }
+
+    if (@duplicates) {
+        return sprintf(
+            'Duplicate operation names: %s',
+            $self->name,
+            (join ', ', @duplicates)
+        );
     }
 
     return;
 }
 
-sub _validate_linked_operation_ownership {
+sub link_targets {
     my $self = shift;
 
-    my $operation_names = new Set::Scalar;
-    for my $op (@{$self->operations}) {
-        $operation_names->insert($op->name);
-    }
-
-    my @linked_operations;
+    my $link_targets = new Set::Scalar;
     for my $link (@{$self->links}) {
-        push @linked_operations, $self->operation_named($link->source);
-        push @linked_operations, $self->operation_named($link->destination);
+        $link_targets->insert($link->source);
+        $link_targets->insert($link->destination);
     }
+    return $link_targets;
+}
 
-    my @unowned;
+sub operation_names {
+    my $self = shift;
 
-    for my $operation (@linked_operations) {
-        unless ($operation_names->contains($operation->name)) {
-            push @unowned, $operation->name;
-        }
+    my $operation_names = Set::Scalar->new('input connector', 'output connector');
+    for my $operation (@{$self->operations}) {
+        $operation_names->insert($operation->name);
     }
+    return $operation_names;
+}
 
-    if (@unowned) {
-        die sprintf (
-            "Unowned operation (%s) linked in DAG (%s)",
-            (join ", ", @unowned), $self->name
+sub _validate_link_operation_consistency {
+    my $self = shift;
+
+    my $operation_names = $self->operation_names;
+    my $link_targets = $self->link_targets;
+
+    my $invalid_link_targets = $link_targets - $operation_names;
+    my $orphaned_operation_names = $operation_names - $link_targets;
+
+    my @errors;
+    unless ($invalid_link_targets->empty) {
+        push @errors, sprintf(
+            'Links have invalid targets: %s',
+            (join ', ', $invalid_link_targets->members)
+        );
+    }
+    unless ($orphaned_operation_names->empty) {
+        push @errors, sprintf(
+            'Orphaned operation names: %s',
+            (join ', ', $orphaned_operation_names->members)
         );
     }
 
-    return;
+    return @errors;
 }
 
 sub _encode_input {
@@ -256,11 +278,13 @@ sub _validate_mandatory_inputs {
     }
 
     unless ($mandatory_inputs->is_empty) {
-        die sprintf(
-            "No links targetting mandatory input(s): %s",
+        return sprintf(
+            'No links targetting mandatory input(s): %s',
             $mandatory_inputs
         );
     }
+
+    return;
 }
 
 sub _validate_non_conflicting_inputs {
@@ -285,18 +309,25 @@ sub _validate_non_conflicting_inputs {
         }
     }
 
-    if (@errors) {
-        die join "\n", ('Conflicting inputs:', @errors);
-    }
+    return @errors;
 }
 
 sub validate {
     my $self = shift;
 
-    $self->_validate_operation_names_are_unique;
-    $self->_validate_linked_operation_ownership;
-    $self->_validate_mandatory_inputs;
-    $self->_validate_non_conflicting_inputs;
+    my @errors = map { $self->$_ } qw(
+        _validate_operation_names_are_unique
+        _validate_link_operation_consistency
+        _validate_mandatory_inputs
+        _validate_non_conflicting_inputs
+    );
+
+    if (@errors) {
+        die sprintf(
+            "DAG named %s failed validation:\n%s",
+            $self->name, (join "\n", @errors)
+        );
+    }
 
     # Cascade validations
     $_->validate for (@{$self->operations}, @{$self->links});
