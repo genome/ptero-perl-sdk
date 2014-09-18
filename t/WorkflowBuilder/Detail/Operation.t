@@ -6,7 +6,7 @@ use Test::More;
 use Ptero::WorkflowBuilder::Detail::OperationMethod;
 
 
-use_ok('Ptero::WorkflowBuilder::Detail::Operation');
+use_ok('Ptero::WorkflowBuilder::Operation');
 
 {
     my $opmethod = {
@@ -20,7 +20,7 @@ use_ok('Ptero::WorkflowBuilder::Detail::Operation');
         methods => [$opmethod],
     };
 
-    my $operation = Ptero::WorkflowBuilder::Detail::Operation->from_hashref($operation_hashref);
+    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref);
 
     is_deeply($operation->to_hashref, $operation_hashref, 'round trip hashref to operation');
 };
@@ -30,13 +30,13 @@ use_ok('Ptero::WorkflowBuilder::Detail::Operation');
         name => 'bad-methods-in-this-op',
     };
 
-    throws_ok {Ptero::WorkflowBuilder::Detail::Operation->from_hashref($operation_hashref)}
+    throws_ok {Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref)}
         qr/Operation hashref must contain a methods arrayref/,
         'no methods in hashref';
 
     $operation_hashref->{methods} = 'not-an-arrayref';
 
-    throws_ok {Ptero::WorkflowBuilder::Detail::Operation->from_hashref($operation_hashref)}
+    throws_ok {Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref)}
         qr/Operation hashref must contain a methods arrayref/,
         'methods is not an arrayref';
 };
@@ -47,7 +47,7 @@ use_ok('Ptero::WorkflowBuilder::Detail::Operation');
         methods => [],
     };
 
-    my $operation = Ptero::WorkflowBuilder::Detail::Operation->from_hashref($operation_hashref);
+    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref);
 
     throws_ok {$operation->validate}
         qr/Operation must have at least one method/, 'caught no methods okay';

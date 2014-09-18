@@ -1,4 +1,4 @@
-package Ptero::WorkflowBuilder::Detail::Operation;
+package Ptero::WorkflowBuilder::Operation;
 
 use Moose;
 use warnings FATAL => 'all';
@@ -8,8 +8,8 @@ use Set::Scalar qw();
 
 use Ptero::WorkflowBuilder::Detail::OperationMethod;
 
-with 'Ptero::WorkflowBuilder::Detail::Element';
-with 'Ptero::WorkflowBuilder::Detail::DAGStep';
+with 'Ptero::WorkflowBuilder::Detail::ConvertsToHashref';
+with 'Ptero::WorkflowBuilder::Detail::Node';
 
 has methods => (
     is => 'rw',
