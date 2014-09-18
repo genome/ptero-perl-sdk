@@ -116,4 +116,34 @@ sub create_test_dag {
         'invalid link target error');
 }
 
+{
+    my $sub_dag = create_test_dag('mandatory-inputs-sub-dag');
+
+    my $super_dag = create_test_dag('mandatory-inputs-super-dag');
+
+    is_deeply([$super_dag->_validate_mandatory_inputs], [],
+        'no mandatory inputs error');
+
+    $super_dag->add_operation($sub_dag);
+
+    is_deeply([$super_dag->_validate_mandatory_inputs],
+        ['No links targeting mandatory input(s): ("mandatory-inputs-sub-dag", "in_a"), ("mandatory-inputs-sub-dag", "in_b")'],
+        'mandatory inputs error');
+
+    $super_dag->connect_input(
+        destination => 'mandatory-inputs-sub-dag',
+        destination_property => 'in_a',
+        source_property => 'sub_in_a'
+    );
+
+    $super_dag->connect_input(
+        destination => 'mandatory-inputs-sub-dag',
+        destination_property => 'in_b',
+        source_property => 'sub_in_b'
+    );
+
+    is_deeply([$super_dag->_validate_mandatory_inputs], [],
+        'fixed mandatory inputs error');
+}
+
 done_testing();
