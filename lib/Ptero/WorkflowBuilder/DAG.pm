@@ -132,28 +132,29 @@ sub is_output_property {
 sub from_hashref {
     my ($class, $hashref) = @_;
 
-    my @links = map Ptero::WorkflowBuilder::Link->from_hashref($_),
-        @{$hashref->{links}};
-
-    my @operations;
-    for my $op_hashref (@{$hashref->{operations}}) {
-        if (exists $op_hashref->{operations}) {
-            push @operations,
-                Ptero::WorkflowBuilder::DAG->from_hashref($op_hashref);
-        } elsif (exists $op_hashref->{methods}) {
-            push @operations,
-                Ptero::WorkflowBuilder::Detail::Operation->from_hashref($op_hashref);
-        } else {
-            die sprintf("Could not determine the class to instantiate with hashref (%s)",
-                Data::Dump::pp($op_hashref));
-        }
-    }
-
     my $self = $class->new(
         name => $hashref->{name},
-        links => \@links,
-        operations => \@operations,
     );
+
+    for my $link (@{$hashref->{links}}) {
+        $self->add_link(Ptero::WorkflowBuilder::Link->from_hashref($link));
+    }
+
+    for my $op_hashref (@{$hashref->{operations}}) {
+        my $operation;
+        if (exists $op_hashref->{operations}) {
+            $operation = Ptero::WorkflowBuilder::DAG->from_hashref($op_hashref);
+        } elsif (exists $op_hashref->{methods}) {
+            $operation = Ptero::WorkflowBuilder::Detail::Operation->from_hashref($op_hashref);
+        } else {
+            die sprintf(
+                'Could not determine the class to instantiate with hashref (%s)',
+                Data::Dump::pp($op_hashref)
+            );
+        }
+
+        $self->add_operation($operation);
+    }
 
     return $self;
 }
