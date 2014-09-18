@@ -11,11 +11,11 @@ use Set::Scalar qw();
 use Ptero::WorkflowBuilder::Detail::Link;
 use Ptero::WorkflowBuilder::Operation;
 
-with 'Ptero::WorkflowBuilder::Detail::DAGStep';
+with 'Ptero::WorkflowBuilder::Detail::Node';
 
 has operations => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::DAGStep]',
+    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Node]',
     default => sub { [] },
 );
 
