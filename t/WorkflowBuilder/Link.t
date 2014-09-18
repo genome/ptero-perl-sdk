@@ -6,10 +6,10 @@ use Test::More;
 
 
 use_ok('Ptero::WorkflowBuilder::Operation');
-use_ok('Ptero::WorkflowBuilder::Link');
+use_ok('Ptero::WorkflowBuilder::Detail::Link');
 
 {
-    my $link = Ptero::WorkflowBuilder::Link->new(
+    my $link = Ptero::WorkflowBuilder::Detail::Link->new(
         source => 'source op', source_property => 'output',
         destination => 'destination op', destination_property => 'input'
     );
@@ -30,12 +30,12 @@ use_ok('Ptero::WorkflowBuilder::Link');
         source_property => 'output',
         destination_property => 'input',
     };
-    my $link = Ptero::WorkflowBuilder::Link->from_hashref($expected_hashref);
+    my $link = Ptero::WorkflowBuilder::Detail::Link->from_hashref($expected_hashref);
     is_deeply($link->to_hashref, $expected_hashref, 'link roundtrip from/to_hashref');
 };
 
 {
-    my $link = Ptero::WorkflowBuilder::Link->new(
+    my $link = Ptero::WorkflowBuilder::Detail::Link->new(
         source_property => 'output',
         destination => 'destination op', destination_property => 'input'
     );
@@ -50,7 +50,7 @@ use_ok('Ptero::WorkflowBuilder::Link');
 };
 
 {
-    my $link = Ptero::WorkflowBuilder::Link->new(
+    my $link = Ptero::WorkflowBuilder::Detail::Link->new(
         source => 'source op', source_property => 'output',
         destination_property => 'input'
     );
@@ -65,7 +65,7 @@ use_ok('Ptero::WorkflowBuilder::Link');
 };
 
 {
-    my $link = Ptero::WorkflowBuilder::Link->new(
+    my $link = Ptero::WorkflowBuilder::Detail::Link->new(
         source => 'single-op', source_property => 'output',
         destination => 'single-op', destination_property => 'input',
     );

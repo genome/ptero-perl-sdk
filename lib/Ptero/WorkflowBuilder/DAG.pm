@@ -8,7 +8,7 @@ use List::MoreUtils qw();
 use Params::Validate qw();
 use Set::Scalar qw();
 
-use Ptero::WorkflowBuilder::Link;
+use Ptero::WorkflowBuilder::Detail::Link;
 use Ptero::WorkflowBuilder::Operation;
 
 with 'Ptero::WorkflowBuilder::Detail::DAGStep';
@@ -21,7 +21,7 @@ has operations => (
 
 has links => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::WorkflowBuilder::Link]',
+    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Link]',
     default => sub { [] },
 );
 
@@ -40,7 +40,7 @@ sub add_link {
 
 sub create_link {
     my $self = shift;
-    my $link = Ptero::WorkflowBuilder::Link->new(@_);
+    my $link = Ptero::WorkflowBuilder::Detail::Link->new(@_);
     $self->add_link($link);
     return $link;
 }
@@ -126,7 +126,7 @@ sub from_hashref {
     );
 
     for my $link_hashref (@{$hashref->{links}}) {
-        $self->add_link(Ptero::WorkflowBuilder::Link->from_hashref($link_hashref));
+        $self->add_link(Ptero::WorkflowBuilder::Detail::Link->from_hashref($link_hashref));
     }
 
     for my $op_hashref (@{$hashref->{operations}}) {
@@ -348,7 +348,7 @@ sub _add_links_from_hashref {
         if (defined($destination_op)) {
             $link_params{destination} = $destination_op;
         }
-        my $link = Ptero::WorkflowBuilder::Link->new(%link_params);
+        my $link = Ptero::WorkflowBuilder::Detail::Link->new(%link_params);
         $self->add_link($link);
     }
 }

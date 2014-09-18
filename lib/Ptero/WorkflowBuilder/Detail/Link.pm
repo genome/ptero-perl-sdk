@@ -1,4 +1,4 @@
-package Ptero::WorkflowBuilder::Link;
+package Ptero::WorkflowBuilder::Detail::Link;
 
 use Moose;
 use warnings FATAL => 'all';
