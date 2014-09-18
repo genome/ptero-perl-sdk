@@ -9,16 +9,9 @@ use_ok('Ptero::WorkflowBuilder::Detail::Operation');
 use_ok('Ptero::WorkflowBuilder::Link');
 
 {
-    my $source_op = Ptero::WorkflowBuilder::Detail::Operation->new(
-        name => 'source op',
-    );
-    my $destination_op = Ptero::WorkflowBuilder::Detail::Operation->new(
-        name => 'destination op',
-    );
-
     my $link = Ptero::WorkflowBuilder::Link->new(
-        source => $source_op, source_property => 'output',
-        destination => $destination_op, destination_property => 'input'
+        source => 'source op', source_property => 'output',
+        destination => 'destination op', destination_property => 'input'
     );
 
     my $expected_hashref = {
@@ -31,13 +24,20 @@ use_ok('Ptero::WorkflowBuilder::Link');
 };
 
 {
-    my $destination_op = Ptero::WorkflowBuilder::Detail::Operation->new(
-        name => 'destination op',
-    );
+    my $expected_hashref = {
+        source => 'source op',
+        destination => 'destination op',
+        source_property => 'output',
+        destination_property => 'input',
+    };
+    my $link = Ptero::WorkflowBuilder::Link->from_hashref($expected_hashref);
+    is_deeply($link->to_hashref, $expected_hashref, 'link roundtrip from/to_hashref');
+};
 
+{
     my $link = Ptero::WorkflowBuilder::Link->new(
         source_property => 'output',
-        destination => $destination_op, destination_property => 'input'
+        destination => 'destination op', destination_property => 'input'
     );
 
     my $expected_hashref = {
@@ -50,12 +50,8 @@ use_ok('Ptero::WorkflowBuilder::Link');
 };
 
 {
-    my $source_op = Ptero::WorkflowBuilder::Detail::Operation->new(
-        name => 'source op',
-    );
-
     my $link = Ptero::WorkflowBuilder::Link->new(
-        source => $source_op, source_property => 'output',
+        source => 'source op', source_property => 'output',
         destination_property => 'input'
     );
 
@@ -69,19 +65,13 @@ use_ok('Ptero::WorkflowBuilder::Link');
 };
 
 {
-    my $op_name = 'single-op';
-
-    my $op = Ptero::WorkflowBuilder::Detail::Operation->new(
-        name => $op_name,
-    );
-
     my $link = Ptero::WorkflowBuilder::Link->new(
-        source => $op, source_property => 'output',
-        destination => $op, destination_property => 'input',
+        source => 'single-op', source_property => 'output',
+        destination => 'single-op', destination_property => 'input',
     );
 
     throws_ok {$link->validate}
-        qr/\QSource and destination operations cannot be the same ($op_name)\E/,
+        qr/Source and destination operations cannot be the same \(single-op\)/,
         'caught source and destination op cannot be equal';
 };
 

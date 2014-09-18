@@ -7,12 +7,14 @@ with 'Ptero::WorkflowBuilder::Detail::Element';
 
 has source => (
     is => 'rw',
-    isa => 'Ptero::WorkflowBuilder::Detail::DAGStep',
+    isa => 'Str',
+    default => 'input connector',
     predicate => 'has_source',
 );
 has destination => (
     is => 'rw',
-    isa => 'Ptero::WorkflowBuilder::Detail::DAGStep',
+    isa => 'Str',
+    default => 'output connector',
     predicate => 'has_destination',
 );
 
@@ -29,21 +31,11 @@ sub to_hashref {
     my $self = shift;
 
     return {
-        source => $self->source_operation_name,
-        destination => $self->destination_operation_name,
+        source => $self->source,
+        destination => $self->destination,
         source_property => $self->source_property,
         destination_property => $self->destination_property,
     }
-}
-
-sub destination_operation_name {
-    my $self = shift;
-    return $self->_operation_name('destination', 'output connector');
-}
-
-sub source_operation_name {
-    my $self = shift;
-    return $self->_operation_name('source', 'input connector');
 }
 
 sub external_input {
@@ -59,20 +51,20 @@ sub external_output {
 sub sort_key {
     my $self = shift;
     return sprintf('%s|%s|%s|%s',
-        $self->source_operation_name, $self->destination_operation_name,
+        $self->source, $self->destination,
         $self->source_property, $self->destination_property);
 }
 
 sub source_to_string {
     my $self = shift;
     return sprintf('%s.%s',
-        $self->source_operation_name, $self->source_property);
+        $self->source, $self->source_property);
 }
 
 sub destination_to_string {
     my $self = shift;
     return sprintf('%s.%s',
-        $self->destination_operation_name, $self->destination_property);
+        $self->destination, $self->destination_property);
 }
 
 sub to_string {
@@ -84,27 +76,15 @@ sub to_string {
 sub validate {
     my $self = shift;
 
-    if ($self->source_operation_name eq $self->destination_operation_name) {
+    if ($self->source eq $self->destination) {
         die sprintf(
             'Source and destination operations cannot be the same (%s)',
-            $self->source_operation_name
+            $self->source
         );
     }
 
     return;
 }
 
-sub _operation_name {
-    my ($self, $operation, $default) = @_;
-
-    my $predicate = sprintf('has_%s', $operation);
-    if ($self->$predicate) {
-        return $self->$operation->name;
-    } else {
-        return $default;
-    }
-}
-
 
 __PACKAGE__->meta->make_immutable;
-
