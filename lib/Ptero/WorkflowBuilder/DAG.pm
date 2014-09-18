@@ -58,7 +58,7 @@ sub connect_input {
 
     $self->add_link(Ptero::WorkflowBuilder::Link->new(
         source_property => $args{input_property},
-        destination => $args{destination},
+        destination => $args{destination}->name,
         destination_property => $args{destination_property},
     ));
     return;
@@ -73,7 +73,7 @@ sub connect_output {
     });
 
     $self->add_link(Ptero::WorkflowBuilder::Link->new(
-        source => $args{source},
+        source => $args{source}->name,
         source_property => $args{source_property},
         destination_property => $args{output_property},
     ));
@@ -195,7 +195,11 @@ sub _validate_linked_operation_ownership {
         $operation_names->insert($op->name);
     }
 
-    my @linked_operations = map { $_->source, $_->destination } @{$self->links};
+    my @linked_operations;
+    for my $link (@{$self->links}) {
+        push @linked_operations, $self->operation_named($link->source);
+        push @linked_operations, $self->operation_named($link->destination);
+    }
 
     my @unowned;
 
