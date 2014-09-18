@@ -19,7 +19,7 @@ has submit_url => (
 
 has parameters => (
     is => 'rw',
-    isa => 'HashRef[Defined]',
+    isa => 'HashRef',
     required => 1,
 );
 
