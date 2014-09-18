@@ -236,16 +236,6 @@ sub _validate_link_operation_consistency {
     return @errors;
 }
 
-sub _encode_input {
-    my ($self, $op_name, $property_name) = @_;
-    my $js = JSON->new->allow_nonref;
-
-    return $js->canonical->encode({
-        operation_name => $op_name,
-        property_name => $property_name,
-    });
-}
-
 sub _get_mandatory_inputs {
     my $self = shift;
 
@@ -253,7 +243,7 @@ sub _get_mandatory_inputs {
 
     for my $op (@{$self->operations}) {
         for my $prop_name ($op->input_properties) {
-            $result->insert($self->_encode_input($op->name, $prop_name));
+            $result->insert(Data::Dump::pp($op->name, $prop_name));
         }
     }
 
@@ -274,8 +264,8 @@ sub _validate_mandatory_inputs {
 
     unless ($mandatory_inputs->is_empty) {
         push @errors, sprintf(
-            'No links targetting mandatory input(s): %s',
-            $mandatory_inputs
+            'No links targeting mandatory input(s): %s',
+            (join ',', $mandatory_inputs->members)
         );
     }
 
