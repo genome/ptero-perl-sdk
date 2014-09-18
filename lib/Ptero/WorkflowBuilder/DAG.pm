@@ -220,13 +220,13 @@ sub _validate_link_operation_consistency {
     my $invalid_link_targets = $link_targets - $operation_names;
     my $orphaned_operation_names = $operation_names - $link_targets;
 
-    unless ($invalid_link_targets->empty) {
+    unless ($invalid_link_targets->is_empty) {
         push @errors, sprintf(
             'Links have invalid targets: %s',
             (join ', ', $invalid_link_targets->members)
         );
     }
-    unless ($orphaned_operation_names->empty) {
+    unless ($orphaned_operation_names->is_empty) {
         push @errors, sprintf(
             'Orphaned operation names: %s',
             (join ', ', $orphaned_operation_names->members)
