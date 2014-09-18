@@ -48,32 +48,24 @@ sub create_link {
 sub connect_input {
     my $self = shift;
     my %args = Params::Validate::validate(@_, {
-            input_property => { type => Params::Validate::SCALAR },
-            destination => { type => Params::Validate::OBJECT },
+            source_property => { type => Params::Validate::SCALAR },
+            destination => { type => Params::Validate::SCALAR },
             destination_property => { type => Params::Validate::SCALAR },
     });
 
-    $self->add_link(Ptero::WorkflowBuilder::Link->new(
-        source_property => $args{input_property},
-        destination => $args{destination}->name,
-        destination_property => $args{destination_property},
-    ));
+    $self->create_link(%args);
     return;
 }
 
 sub connect_output {
     my $self = shift;
     my %args = Params::Validate::validate(@_, {
-            source => { type => Params::Validate::OBJECT },
+            source => { type => Params::Validate::SCALAR },
             source_property => { type => Params::Validate::SCALAR },
-            output_property => { type => Params::Validate::SCALAR },
+            destination_property => { type => Params::Validate::SCALAR },
     });
 
-    $self->add_link(Ptero::WorkflowBuilder::Link->new(
-        source => $args{source}->name,
-        source_property => $args{source_property},
-        destination_property => $args{output_property},
-    ));
+    $self->create_link(%args);
     return;
 }
 
