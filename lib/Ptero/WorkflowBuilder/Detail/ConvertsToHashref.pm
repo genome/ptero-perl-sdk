@@ -1,4 +1,4 @@
-package Ptero::WorkflowBuilder::Detail::Element;
+package Ptero::WorkflowBuilder::Detail::ConvertsToHashref;
 use Moose::Role;
 use warnings FATAL => 'all';
 

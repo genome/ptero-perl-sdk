@@ -8,7 +8,7 @@ use Set::Scalar qw();
 
 use Ptero::WorkflowBuilder::Detail::OperationMethod;
 
-with 'Ptero::WorkflowBuilder::Detail::Element';
+with 'Ptero::WorkflowBuilder::Detail::ConvertsToHashref';
 with 'Ptero::WorkflowBuilder::Detail::DAGStep';
 
 has methods => (

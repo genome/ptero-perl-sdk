@@ -3,7 +3,7 @@ package Ptero::WorkflowBuilder::Link;
 use Moose;
 use warnings FATAL => 'all';
 
-with 'Ptero::WorkflowBuilder::Detail::Element';
+with 'Ptero::WorkflowBuilder::Detail::ConvertsToHashref';
 
 has source => (
     is => 'rw',
