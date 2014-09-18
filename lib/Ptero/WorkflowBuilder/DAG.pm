@@ -9,6 +9,7 @@ use Params::Validate qw();
 use Set::Scalar qw();
 
 use Ptero::WorkflowBuilder::Link;
+use Ptero::WorkflowBuilder::Detail::Operation;
 
 with 'Ptero::WorkflowBuilder::Detail::DAGStep';
 
@@ -134,8 +135,19 @@ sub from_hashref {
     my @links = map Ptero::WorkflowBuilder::Link->from_hashref($_),
         @{$hashref->{links}};
 
-    my @operations = map Ptero::WorkflowBuilder::Detail::Operation->from_hashref($_),
-        @{$hashref->{operations}};
+    my @operations;
+    for my $op_hashref (@{$hashref->{operations}}) {
+        if (exists $op_hashref->{operations}) {
+            push @operations,
+                Ptero::WorkflowBuilder::DAG->from_hashref($op_hashref);
+        } elsif (exists $op_hashref->{methods}) {
+            push @operations,
+                Ptero::WorkflowBuilder::Detail::Operation->from_hashref($op_hashref);
+        } else {
+            die sprintf("Could not determine the class to instantiate with hashref (%s)",
+                Data::Dump::pp($op_hashref));
+        }
+    }
 
     my $self = $class->new(
         name => $hashref->{name},
@@ -144,6 +156,19 @@ sub from_hashref {
     );
 
     return $self;
+}
+
+sub to_hashref {
+    my $self = shift;
+
+    my @links = map {$_->to_hashref} @{$self->links};
+    my @operations = map {$_->to_hashref} @{$self->operations};
+
+    return {
+        name => $self->name,
+        links => \@links,
+        operations => \@operations,
+    }
 }
 
 sub _validate_operation_names_are_unique {
