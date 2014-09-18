@@ -181,7 +181,6 @@ sub _validate_operation_names_are_unique {
     if (@duplicates) {
         return sprintf(
             'Duplicate operation names: %s',
-            $self->name,
             (join ', ', @duplicates)
         );
     }
