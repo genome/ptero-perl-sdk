@@ -168,6 +168,7 @@ sub to_hashref {
 
 sub _validate_operation_names_are_unique {
     my $self = shift;
+    my @errors;
 
     my $operation_names = new Set::Scalar;
     my @duplicates;
@@ -179,13 +180,13 @@ sub _validate_operation_names_are_unique {
     }
 
     if (@duplicates) {
-        return sprintf(
+        push @errors, sprintf(
             'Duplicate operation names: %s',
             (join ', ', @duplicates)
         );
     }
 
-    return;
+    return @errors;
 }
 
 sub link_targets {
@@ -211,6 +212,7 @@ sub operation_names {
 
 sub _validate_link_operation_consistency {
     my $self = shift;
+    my @errors;
 
     my $operation_names = $self->operation_names;
     my $link_targets = $self->link_targets;
@@ -218,7 +220,6 @@ sub _validate_link_operation_consistency {
     my $invalid_link_targets = $link_targets - $operation_names;
     my $orphaned_operation_names = $operation_names - $link_targets;
 
-    my @errors;
     unless ($invalid_link_targets->empty) {
         push @errors, sprintf(
             'Links have invalid targets: %s',
@@ -261,6 +262,7 @@ sub _get_mandatory_inputs {
 
 sub _validate_mandatory_inputs {
     my $self = shift;
+    my @errors;
 
     my $mandatory_inputs = $self->_get_mandatory_inputs;
     for my $link (@{$self->links}) {
@@ -271,17 +273,18 @@ sub _validate_mandatory_inputs {
     }
 
     unless ($mandatory_inputs->is_empty) {
-        return sprintf(
+        push @errors, sprintf(
             'No links targetting mandatory input(s): %s',
             $mandatory_inputs
         );
     }
 
-    return;
+    return @errors;
 }
 
 sub _validate_non_conflicting_inputs {
     my $self = shift;
+    my @errors;
 
     my %destinations;
 
@@ -290,7 +293,6 @@ sub _validate_non_conflicting_inputs {
         push @{$destinations{$destination}}, $link;
     }
 
-    my @errors;
     for my $destination (keys %destinations) {
         my @links = @{$destinations{$destination}};
 
