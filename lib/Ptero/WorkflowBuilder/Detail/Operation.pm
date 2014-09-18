@@ -11,12 +11,6 @@ use Ptero::WorkflowBuilder::Detail::OperationMethod;
 with 'Ptero::WorkflowBuilder::Detail::Element';
 with 'Ptero::WorkflowBuilder::Detail::DAGStep';
 
-has name => (
-    is => 'rw',
-    isa => 'Str',
-    required => 1,
-);
-
 has methods => (
     is => 'rw',
     isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::OperationMethod]',
