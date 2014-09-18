@@ -270,7 +270,7 @@ sub _validate_mandatory_inputs {
     return @errors;
 }
 
-sub _validate_non_conflicting_inputs {
+sub _validate_link_targets_are_unique {
     my $self = shift;
     my @errors;
 
@@ -302,7 +302,7 @@ sub validate {
         _validate_operation_names_are_unique
         _validate_link_operation_consistency
         _validate_mandatory_inputs
-        _validate_non_conflicting_inputs
+        _validate_link_targets_are_unique
     );
 
     if (@errors) {
