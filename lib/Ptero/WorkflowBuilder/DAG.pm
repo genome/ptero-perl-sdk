@@ -174,7 +174,7 @@ sub _validate_operation_names_are_unique {
     if (@duplicates) {
         push @errors, sprintf(
             'Duplicate operation names: %s',
-            (join ', ', sort @duplicates)
+            Data::Dump::pp(sort @duplicates)
         );
     }
 
@@ -215,13 +215,13 @@ sub _validate_link_operation_consistency {
     unless ($invalid_link_targets->is_empty) {
         push @errors, sprintf(
             'Links have invalid targets: %s',
-            (join ', ', sort $invalid_link_targets->members)
+            Data::Dump::pp(sort $invalid_link_targets->members)
         );
     }
     unless ($orphaned_operation_names->is_empty) {
         push @errors, sprintf(
             'Orphaned operation names: %s',
-            (join ', ', sort $orphaned_operation_names->members)
+            Data::Dump::pp(sort $orphaned_operation_names->members)
         );
     }
 
@@ -263,7 +263,8 @@ sub _validate_mandatory_inputs {
     unless ($mandatory_inputs->is_empty) {
         push @errors, sprintf(
             'No links targeting mandatory input(s): %s',
-            (join ',', sort $mandatory_inputs->members)
+            # $mandatory_inputs->members are already pp'd, so we can just join
+            (join ', ', sort $mandatory_inputs->members)
         );
     }
 
@@ -287,7 +288,8 @@ sub _validate_link_targets_are_unique {
         if (@links > 1) {
             push @errors, sprintf(
                 'Destination %s is targeted by multiple links from: %s',
-                $destination, (join ', ', sort map { $_->source_as_string } @links)
+                Data::Dump::pp($destination),
+                Data::Dump::pp(sort map { $_->source_to_string } @links)
             );
         }
     }

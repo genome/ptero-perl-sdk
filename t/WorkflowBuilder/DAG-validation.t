@@ -83,7 +83,7 @@ sub create_test_dag {
     $dag->add_operation($dag->operation_named('A'));
 
     is_deeply([$dag->_validate_operation_names_are_unique],
-        ['Duplicate operation names: A'],
+        ['Duplicate operation names: "A"'],
         'duplicate operations error');
 }
 
@@ -97,7 +97,7 @@ sub create_test_dag {
             name => 'C'));
 
     is_deeply([$dag->_validate_link_operation_consistency],
-        ['Orphaned operation names: C'],
+        ['Orphaned operation names: "C"'],
         'orphaned operations error');
 }
 
@@ -112,7 +112,7 @@ sub create_test_dag {
         destination => 'C', destination_property => 'bar');
 
     is_deeply([$dag->_validate_link_operation_consistency],
-        ['Links have invalid targets: C'],
+        ['Links have invalid targets: "C"'],
         'invalid link target error');
 }
 
