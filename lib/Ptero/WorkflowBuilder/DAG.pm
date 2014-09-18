@@ -9,7 +9,7 @@ use Params::Validate qw();
 use Set::Scalar qw();
 
 use Ptero::WorkflowBuilder::Link;
-use Ptero::WorkflowBuilder::Detail::Operation;
+use Ptero::WorkflowBuilder::Operation;
 
 with 'Ptero::WorkflowBuilder::Detail::DAGStep';
 
@@ -133,7 +133,7 @@ sub from_hashref {
         if (exists $op_hashref->{operations}) {
             $self->add_operation(Ptero::WorkflowBuilder::DAG->from_hashref($op_hashref));
         } elsif (exists $op_hashref->{methods}) {
-            $self->add_operation(Ptero::WorkflowBuilder::Detail::Operation->from_hashref($op_hashref));
+            $self->add_operation(Ptero::WorkflowBuilder::Operation->from_hashref($op_hashref));
         } else {
             die sprintf(
                 'Could not determine the class to instantiate with hashref (%s)',
@@ -324,7 +324,7 @@ sub _add_operations_from_hashref {
     my ($self, $hashref) = @_;
 
     for my $operation (@{$hashref->{workflow}{operations}}) {
-        my $op = Ptero::WorkflowBuilder::Detail::Operation->from_hashref($operation);
+        my $op = Ptero::WorkflowBuilder::Operation->from_hashref($operation);
         $self->add_operation($op);
     }
 }

@@ -1,4 +1,4 @@
-package Ptero::WorkflowBuilder::Detail::Operation;
+package Ptero::WorkflowBuilder::Operation;
 
 use Moose;
 use warnings FATAL => 'all';
