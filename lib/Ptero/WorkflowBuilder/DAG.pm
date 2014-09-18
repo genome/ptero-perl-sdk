@@ -174,7 +174,7 @@ sub _validate_operation_names_are_unique {
     if (@duplicates) {
         push @errors, sprintf(
             'Duplicate operation names: %s',
-            (join ', ', @duplicates)
+            (join ', ', sort @duplicates)
         );
     }
 
@@ -215,13 +215,13 @@ sub _validate_link_operation_consistency {
     unless ($invalid_link_targets->is_empty) {
         push @errors, sprintf(
             'Links have invalid targets: %s',
-            (join ', ', $invalid_link_targets->members)
+            (join ', ', sort $invalid_link_targets->members)
         );
     }
     unless ($orphaned_operation_names->is_empty) {
         push @errors, sprintf(
             'Orphaned operation names: %s',
-            (join ', ', $orphaned_operation_names->members)
+            (join ', ', sort $orphaned_operation_names->members)
         );
     }
 
@@ -263,7 +263,7 @@ sub _validate_mandatory_inputs {
     unless ($mandatory_inputs->is_empty) {
         push @errors, sprintf(
             'No links targeting mandatory input(s): %s',
-            (join ',', $mandatory_inputs->members)
+            (join ',', sort $mandatory_inputs->members)
         );
     }
 
@@ -287,7 +287,7 @@ sub _validate_non_conflicting_inputs {
         if (@links > 1) {
             push @errors, sprintf(
                 'Destination %s is targeted by multiple links from: %s',
-                $destination, (join ', ', map { $_->source_as_string } @links)
+                $destination, (join ', ', sort map { $_->source_as_string } @links)
             );
         }
     }
@@ -308,7 +308,7 @@ sub validate {
     if (@errors) {
         die sprintf(
             "DAG named %s failed validation:\n%s",
-            $self->name, (join "\n", @errors)
+            $self->name, (join "\n", sort @errors)
         );
     }
 
