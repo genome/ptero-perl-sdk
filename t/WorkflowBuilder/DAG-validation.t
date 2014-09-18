@@ -146,4 +146,17 @@ sub create_test_dag {
         'fixed mandatory inputs error');
 }
 
+{
+    my $dag = create_test_dag('multiple-links-target-dag');
+
+    is_deeply([$dag->_validate_link_targets_are_unique], [],
+        'no multiple links target error');
+
+    $dag->add_link($dag->links->[0]);
+
+    is_deeply([$dag->_validate_link_targets_are_unique],
+        ['Destination "A.param" is targeted by multiple links from: ("input connector.in_a", "input connector.in_a")'],
+        'invalid link target error');
+}
+
 done_testing();
