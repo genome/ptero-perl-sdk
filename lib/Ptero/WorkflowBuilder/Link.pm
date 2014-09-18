@@ -40,12 +40,12 @@ sub to_hashref {
 
 sub external_input {
     my $self = shift;
-    return !$self->has_source;
+    return $self->source eq 'input connector';
 }
 
 sub external_output {
     my $self = shift;
-    return !$self->has_destination;
+    return $self->source eq 'output connector';
 }
 
 sub sort_key {
