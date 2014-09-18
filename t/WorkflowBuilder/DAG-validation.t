@@ -87,4 +87,33 @@ sub create_test_dag {
         'duplicate operations error');
 }
 
+{
+    my $dag = create_test_dag('orphaned-operation-dag');
+
+    is_deeply([$dag->_validate_link_operation_consistency], [],
+        'no orphaned operations error');
+
+    $dag->add_operation(Ptero::WorkflowBuilder::Detail::Operation->new(
+            name => 'C'));
+
+    is_deeply([$dag->_validate_link_operation_consistency],
+        ['Orphaned operation names: C'],
+        'orphaned operations error');
+}
+
+{
+    my $dag = create_test_dag('orphaned-operation-dag');
+
+    is_deeply([$dag->_validate_link_operation_consistency], [],
+        'no invalid link target error');
+
+    $dag->create_link(
+        source => 'A', source_property => 'foo',
+        destination => 'C', destination_property => 'bar');
+
+    is_deeply([$dag->_validate_link_operation_consistency],
+        ['Links have invalid targets: C'],
+        'invalid link target error');
+}
+
 done_testing();
