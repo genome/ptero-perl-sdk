@@ -228,6 +228,11 @@ sub _validate_link_operation_consistency {
     return @errors;
 }
 
+sub _encode_target {
+    my ($self, $op_name, $prop_name) = @_;
+    return Data::Dump::pp($op_name, $prop_name);
+}
+
 sub _get_mandatory_inputs {
     my $self = shift;
 
@@ -235,7 +240,7 @@ sub _get_mandatory_inputs {
 
     for my $op (@{$self->operations}) {
         for my $prop_name ($op->input_properties) {
-            $result->insert(Data::Dump::pp($op->name, $prop_name));
+            $result->insert($self->_encode_target($op->name, $prop_name));
         }
     }
 
@@ -248,7 +253,8 @@ sub _validate_mandatory_inputs {
 
     my $mandatory_inputs = $self->_get_mandatory_inputs;
     for my $link (@{$self->links}) {
-        my $destination = $link->destination_to_string;
+        my $destination = $self->_encode_target(
+            $link->destination, $link->destination_property);
         if ($mandatory_inputs->contains($destination)) {
             $mandatory_inputs->delete($destination);
         }
