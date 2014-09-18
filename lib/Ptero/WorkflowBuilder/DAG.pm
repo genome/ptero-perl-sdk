@@ -28,24 +28,21 @@ has links => (
 
 sub add_operation {
     my ($self, $op) = @_;
-
     push @{$self->operations}, $op;
-
     return $op;
 }
 
 sub add_link {
     my ($self, $link) = @_;
-
     push @{$self->links}, $link;
-
     return $link;
 }
 
 sub create_link {
     my $self = shift;
-    $self->add_link(Ptero::WorkflowBuilder::Link->new(@_));
-    return;
+    my $link = Ptero::WorkflowBuilder::Link->new(@_);
+    $self->add_link($link);
+    return $link;
 }
 
 sub connect_input {
@@ -136,24 +133,21 @@ sub from_hashref {
         name => $hashref->{name},
     );
 
-    for my $link (@{$hashref->{links}}) {
-        $self->add_link(Ptero::WorkflowBuilder::Link->from_hashref($link));
+    for my $link_hashref (@{$hashref->{links}}) {
+        $self->add_link(Ptero::WorkflowBuilder::Link->from_hashref($link_hashref));
     }
 
     for my $op_hashref (@{$hashref->{operations}}) {
-        my $operation;
         if (exists $op_hashref->{operations}) {
-            $operation = Ptero::WorkflowBuilder::DAG->from_hashref($op_hashref);
+            $self->add_operation(Ptero::WorkflowBuilder::DAG->from_hashref($op_hashref));
         } elsif (exists $op_hashref->{methods}) {
-            $operation = Ptero::WorkflowBuilder::Detail::Operation->from_hashref($op_hashref);
+            $self->add_operation(Ptero::WorkflowBuilder::Detail::Operation->from_hashref($op_hashref));
         } else {
             die sprintf(
                 'Could not determine the class to instantiate with hashref (%s)',
                 Data::Dump::pp($op_hashref)
             );
         }
-
-        $self->add_operation($operation);
     }
 
     return $self;
