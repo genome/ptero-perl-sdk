@@ -329,39 +329,5 @@ sub validate {
     return;
 }
 
-sub _add_operations_from_hashref {
-    my ($self, $hashref) = @_;
-
-    for my $operation (@{$hashref->{workflow}{operations}}) {
-        my $op = Ptero::WorkflowBuilder::Operation->from_hashref($operation);
-        $self->add_operation($op);
-    }
-}
-
-sub _add_links_from_hashref {
-    my ($self, $hashref) = @_;
-
-    for my $link (@{$hashref->{workflow}{links}}) {
-        my $source_op = $self->operation_named(
-                $link->{source});
-        my $destination_op = $self->operation_named(
-                $link->{destination});
-
-        my %link_params = (
-            source_property => $link->{source_property},
-            destination_property => $link->{destination_property},
-        );
-        if (defined($source_op)) {
-            $link_params{source} = $source_op;
-        }
-        if (defined($destination_op)) {
-            $link_params{destination} = $destination_op;
-        }
-        my $link = Ptero::WorkflowBuilder::Detail::Link->new(%link_params);
-        $self->add_link($link);
-    }
-}
-
 
 __PACKAGE__->meta->make_immutable;
-
