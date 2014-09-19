@@ -83,6 +83,16 @@ sub node_named {
     return;
 }
 
+sub node_names {
+    my $self = shift;
+
+    my $node_names = Set::Scalar->new('input connector', 'output connector');
+    for my $node (@{$self->nodes}) {
+        $node_names->insert($node->name);
+    }
+    return $node_names;
+}
+
 sub _property_names_from_links {
     my ($self, $query_name, $property_holder) = @_;
 
@@ -160,6 +170,10 @@ sub to_hashref {
     }
 }
 
+##############################
+# Validations
+##############################
+
 sub _validate_node_names_are_unique {
     my $self = shift;
     my @errors;
@@ -192,16 +206,6 @@ sub link_targets {
         $link_targets->insert($link->destination);
     }
     return $link_targets;
-}
-
-sub node_names {
-    my $self = shift;
-
-    my $node_names = Set::Scalar->new('input connector', 'output connector');
-    for my $node (@{$self->nodes}) {
-        $node_names->insert($node->name);
-    }
-    return $node_names;
 }
 
 sub _validate_link_node_consistency {
