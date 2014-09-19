@@ -8,13 +8,13 @@ use Ptero::WorkflowBuilder::Detail::OperationMethod;
 
 use_ok('Ptero::WorkflowBuilder::Operation');
 
-{
-    my $opmethod = {
-        name => 'foo',
-        submit_url => 'http://example.com',
-        parameters => {}
-    };
+my $opmethod = {
+    name => 'foo',
+    submit_url => 'http://example.com',
+    parameters => {}
+};
 
+{
     my $operation_hashref = {
         name => 'squid',
         methods => [$opmethod],
