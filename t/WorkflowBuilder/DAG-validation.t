@@ -159,4 +159,16 @@ sub create_test_dag {
         'invalid link target error');
 }
 
+{
+    my $dag = create_test_dag('duplicate-nodes-dag');
+
+    lives_ok {$dag->validate}
+        'test dag validates without dying';
+
+    $dag->add_node($dag->node_named('A'));
+
+    dies_ok {$dag->validate}
+        'test dag with duplicate nodes dies on validate';
+}
+
 done_testing();
