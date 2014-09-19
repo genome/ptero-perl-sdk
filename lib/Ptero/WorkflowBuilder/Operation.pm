@@ -28,6 +28,18 @@ has methods => (
 #     isa => 'Maybe[Str]',
 # );
 
+sub is_input_property {
+    my ($self, $property_name) = @_;
+
+    return 1;
+}
+
+sub is_output_property {
+    my ($self, $property_name) = @_;
+
+    return 1;
+}
+
 sub to_hashref {
     my $self = shift;
 

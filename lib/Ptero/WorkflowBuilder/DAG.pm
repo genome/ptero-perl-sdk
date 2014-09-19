@@ -118,18 +118,6 @@ sub output_properties {
         'destination_property');
 }
 
-sub is_input_property {
-    my ($self, $property_name) = @_;
-
-    return List::MoreUtils::any {$property_name eq $_} $self->input_properties;
-}
-
-sub is_output_property {
-    my ($self, $property_name) = @_;
-
-    return List::MoreUtils::any {$property_name eq $_} $self->output_properties;
-}
-
 sub from_hashref {
     my ($class, $hashref) = @_;
 
