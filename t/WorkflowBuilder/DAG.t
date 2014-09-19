@@ -95,4 +95,48 @@ my $links = [
     is_deeply($dag->to_hashref, $hashref, 'round trip hashref to dag');
 }
 
+{
+    my $child_hashref = {
+        name => 'child-workflow',
+        operations => $operations,
+        links => $links,
+    };
+
+    my $parent_hashref = {
+        name => 'parent-workflow',
+        operations => [$child_hashref],
+        links => [
+            {
+                source => 'input connector',
+                destination => 'child-workflow',
+                destination_property => 'in_a',
+                source_property => 'sub_in_a'
+            },
+            {
+                source => 'input connector',
+                destination => 'child-workflow',
+                destination_property => 'in_b',
+                source_property => 'sub_in_b'
+            },
+            {
+                source => 'child-workflow',
+                destination => 'output connector',
+                destination_property => 'sub_out_a',
+                source_property => 'out_a'
+            },
+            {
+                source => 'child-workflow',
+                destination => 'output connector',
+                destination_property => 'sub_out_b',
+                source_property => 'out_b'
+            }
+        ]
+    };
+
+    my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($parent_hashref);
+
+    is_deeply($dag->to_hashref, $parent_hashref,
+        'round trip nested hashref to dag');
+}
+
 done_testing();
