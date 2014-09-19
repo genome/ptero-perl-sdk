@@ -15,6 +15,8 @@ use Ptero::WorkflowBuilder::Operation;
 with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
 with 'Ptero::WorkflowBuilder::Detail::Node';
 
+my $codec = JSON->new()->canonical([1]);
+
 has nodes => (
     is => 'rw',
     isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Node]',
@@ -93,6 +95,12 @@ sub node_names {
     return $node_names;
 }
 
+sub sorted_links {
+    my $self = shift;
+
+    return [sort { $a->sort_key cmp $b->sort_key } @{$self->links}];
+}
+
 sub _property_names_from_links {
     my ($self, $query_name, $property_holder) = @_;
 
@@ -155,7 +163,36 @@ sub to_hashref {
         name => $self->name,
         links => \@links,
         nodes => \@nodes,
+    };
+}
+
+sub to_json_hashref {
+    my $self = shift;
+
+    my @links = map $_->to_hashref, @{$self->sorted_links};
+
+    my %node_hash;
+    for my $node (@{$self->nodes}) {
+        my $node_hashref = $node->to_hashref;
+        my $name = delete $node_hashref->{name};
+        $node_hash{$name} = $node_hashref;
     }
+
+    return {
+        name => $self->name,
+        links => \@links,
+        nodes => \%node_hash,
+    };
+}
+
+sub encode_as_json {
+    my $self = shift;
+
+    $self->validate;
+
+    my $hashref = $self->to_json_hashref;
+
+    return $codec->encode($hashref);
 }
 
 ##############################
