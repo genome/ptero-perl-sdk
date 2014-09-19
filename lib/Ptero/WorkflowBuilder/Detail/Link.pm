@@ -80,7 +80,7 @@ sub validation_errors {
     my @errors;
     if ($self->source eq $self->destination) {
         push @errors, sprintf(
-            'Source and destination operations on link are both named %s',
+            'Source and destination nodes on link are both named %s',
             Data::Dump::pp($self->source)
         );
     }

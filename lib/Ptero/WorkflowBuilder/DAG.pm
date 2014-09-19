@@ -15,7 +15,7 @@ use Ptero::WorkflowBuilder::Operation;
 with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
 with 'Ptero::WorkflowBuilder::Detail::Node';
 
-has operations => (
+has nodes => (
     is => 'rw',
     isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Node]',
     default => sub { [] },
@@ -28,10 +28,10 @@ has links => (
 );
 
 
-sub add_operation {
-    my ($self, $op) = @_;
-    push @{$self->operations}, $op;
-    return $op;
+sub add_node {
+    my ($self, $node) = @_;
+    push @{$self->nodes}, $node;
+    return $node;
 }
 
 sub add_link {
@@ -71,12 +71,12 @@ sub connect_output {
     return;
 }
 
-sub operation_named {
+sub node_named {
     my ($self, $name) = @_;
 
-    for my $op (@{$self->operations}) {
-        if ($op->name eq $name) {
-            return $op
+    for my $node (@{$self->nodes}) {
+        if ($node->name eq $name) {
+            return $node
         }
     }
 
@@ -131,15 +131,15 @@ sub from_hashref {
         $self->add_link(Ptero::WorkflowBuilder::Detail::Link->from_hashref($link_hashref));
     }
 
-    for my $op_hashref (@{$hashref->{operations}}) {
-        if (exists $op_hashref->{operations}) {
-            $self->add_operation(Ptero::WorkflowBuilder::DAG->from_hashref($op_hashref));
-        } elsif (exists $op_hashref->{methods}) {
-            $self->add_operation(Ptero::WorkflowBuilder::Operation->from_hashref($op_hashref));
+    for my $node_hashref (@{$hashref->{nodes}}) {
+        if (exists $node_hashref->{nodes}) {
+            $self->add_node(Ptero::WorkflowBuilder::DAG->from_hashref($node_hashref));
+        } elsif (exists $node_hashref->{methods}) {
+            $self->add_node(Ptero::WorkflowBuilder::Operation->from_hashref($node_hashref));
         } else {
             die sprintf(
                 'Could not determine the class to instantiate with hashref (%s)',
-                Data::Dump::pp($op_hashref)
+                Data::Dump::pp($node_hashref)
             );
         }
     }
@@ -151,31 +151,31 @@ sub to_hashref {
     my $self = shift;
 
     my @links = map {$_->to_hashref} @{$self->links};
-    my @operations = map {$_->to_hashref} @{$self->operations};
+    my @nodes = map {$_->to_hashref} @{$self->nodes};
 
     return {
         name => $self->name,
         links => \@links,
-        operations => \@operations,
+        nodes => \@nodes,
     }
 }
 
-sub _validate_operation_names_are_unique {
+sub _validate_node_names_are_unique {
     my $self = shift;
     my @errors;
 
-    my $operation_names = new Set::Scalar;
+    my $node_names = new Set::Scalar;
     my @duplicates;
-    for my $op (@{$self->operations}) {
-        if ($operation_names->contains($op->name)) {
-            push @duplicates, $op->name;
+    for my $node (@{$self->nodes}) {
+        if ($node_names->contains($node->name)) {
+            push @duplicates, $node->name;
         }
-        $operation_names->insert($op->name);
+        $node_names->insert($node->name);
     }
 
     if (@duplicates) {
         push @errors, sprintf(
-            'Duplicate operation names: %s',
+            'Duplicate node names: %s',
             Data::Dump::pp(sort @duplicates)
         );
     }
@@ -194,25 +194,25 @@ sub link_targets {
     return $link_targets;
 }
 
-sub operation_names {
+sub node_names {
     my $self = shift;
 
-    my $operation_names = Set::Scalar->new('input connector', 'output connector');
-    for my $operation (@{$self->operations}) {
-        $operation_names->insert($operation->name);
+    my $node_names = Set::Scalar->new('input connector', 'output connector');
+    for my $node (@{$self->nodes}) {
+        $node_names->insert($node->name);
     }
-    return $operation_names;
+    return $node_names;
 }
 
-sub _validate_link_operation_consistency {
+sub _validate_link_node_consistency {
     my $self = shift;
     my @errors;
 
-    my $operation_names = $self->operation_names;
+    my $node_names = $self->node_names;
     my $link_targets = $self->link_targets;
 
-    my $invalid_link_targets = $link_targets - $operation_names;
-    my $orphaned_operation_names = $operation_names - $link_targets;
+    my $invalid_link_targets = $link_targets - $node_names;
+    my $orphaned_node_names = $node_names - $link_targets;
 
     unless ($invalid_link_targets->is_empty) {
         push @errors, sprintf(
@@ -220,10 +220,10 @@ sub _validate_link_operation_consistency {
             Data::Dump::pp(sort $invalid_link_targets->members)
         );
     }
-    unless ($orphaned_operation_names->is_empty) {
+    unless ($orphaned_node_names->is_empty) {
         push @errors, sprintf(
-            'Orphaned operation names: %s',
-            Data::Dump::pp(sort $orphaned_operation_names->members)
+            'Orphaned node names: %s',
+            Data::Dump::pp(sort $orphaned_node_names->members)
         );
     }
 
@@ -231,8 +231,8 @@ sub _validate_link_operation_consistency {
 }
 
 sub _encode_target {
-    my ($self, $op_name, $prop_name) = @_;
-    return Data::Dump::pp($op_name, $prop_name);
+    my ($self, $node_name, $prop_name) = @_;
+    return Data::Dump::pp($node_name, $prop_name);
 }
 
 sub _get_mandatory_inputs {
@@ -240,9 +240,9 @@ sub _get_mandatory_inputs {
 
     my $result = new Set::Scalar;
 
-    for my $op (@{$self->operations}) {
-        for my $prop_name ($op->input_properties) {
-            $result->insert($self->_encode_target($op->name, $prop_name));
+    for my $node (@{$self->nodes}) {
+        for my $prop_name ($node->input_properties) {
+            $result->insert($self->_encode_target($node->name, $prop_name));
         }
     }
 
@@ -303,14 +303,14 @@ sub validation_errors {
     my $self = shift;
 
     my @errors = map { $self->$_ } qw(
-        _validate_operation_names_are_unique
-        _validate_link_operation_consistency
+        _validate_node_names_are_unique
+        _validate_link_node_consistency
         _validate_mandatory_inputs
         _validate_link_targets_are_unique
     );
 
     # Cascade validations
-    for (@{$self->operations}, @{$self->links}) {
+    for (@{$self->nodes}, @{$self->links}) {
         push @errors, $_->validation_errors;
     }
 
