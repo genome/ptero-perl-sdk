@@ -3,6 +3,7 @@ package Ptero::WorkflowBuilder::DAG;
 use Moose;
 use warnings FATAL => 'all';
 
+use Data::Dump qw();
 use JSON;
 use List::MoreUtils qw();
 use Params::Validate qw();
@@ -11,6 +12,7 @@ use Set::Scalar qw();
 use Ptero::WorkflowBuilder::Detail::Link;
 use Ptero::WorkflowBuilder::Operation;
 
+with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
 with 'Ptero::WorkflowBuilder::Detail::Node';
 
 has operations => (
@@ -297,7 +299,7 @@ sub _validate_link_targets_are_unique {
     return @errors;
 }
 
-sub validate {
+sub validation_errors {
     my $self = shift;
 
     my @errors = map { $self->$_ } qw(
@@ -307,16 +309,23 @@ sub validate {
         _validate_link_targets_are_unique
     );
 
+    # Cascade validations
+    for (@{$self->operations}, @{$self->links}) {
+        push @errors, $_->validation_errors;
+    }
+
+    return @errors;
+}
+
+sub validate {
+    my $self = shift;
+    my @errors = $self->validation_errors;
     if (@errors) {
         die sprintf(
             "DAG named %s failed validation:\n%s",
             $self->name, (join "\n", sort @errors)
         );
     }
-
-    # Cascade validations
-    $_->validate for (@{$self->operations}, @{$self->links});
-
     return;
 }
 

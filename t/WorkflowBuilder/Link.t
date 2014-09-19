@@ -61,7 +61,8 @@ use_ok('Ptero::WorkflowBuilder::Detail::Link');
         source_property => 'output',
         destination_property => 'input',
     };
-    is_deeply($link->to_hashref, $expected_hashref, 'missing destination operation uses output connector');
+    is_deeply($link->to_hashref, $expected_hashref,
+        'missing destination operation uses output connector');
 };
 
 {
@@ -70,9 +71,9 @@ use_ok('Ptero::WorkflowBuilder::Detail::Link');
         destination => 'single-op', destination_property => 'input',
     );
 
-    throws_ok {$link->validate}
-        qr/Source and destination operations cannot be the same \(single-op\)/,
-        'caught source and destination op cannot be equal';
+    is_deeply([$link->validation_errors],
+        ['Source and destination operations on link are both named "single-op"'],
+        'source and destination operations on link have same name');
 };
 
 done_testing();

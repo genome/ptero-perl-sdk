@@ -49,8 +49,9 @@ my $opmethod = {
 
     my $operation = Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref);
 
-    throws_ok {$operation->validate}
-        qr/Operation must have at least one method/, 'caught no methods okay';
+    is_deeply([$operation->validation_errors],
+        ['Operation named "halibut" must have at least one method'],
+        'operation must have at least one method');
 };
 
 done_testing();

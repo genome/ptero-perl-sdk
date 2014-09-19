@@ -1,9 +1,11 @@
 package Ptero::WorkflowBuilder::Detail::Link;
 
+use Data::Dump qw();
 use Moose;
 use warnings FATAL => 'all';
 
 with 'Ptero::WorkflowBuilder::Detail::ConvertsToHashref';
+with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
 
 has source => (
     is => 'rw',
@@ -73,17 +75,17 @@ sub to_string {
         $self->source_to_string, $self->destination_to_string)
 }
 
-sub validate {
+sub validation_errors {
     my $self = shift;
-
+    my @errors;
     if ($self->source eq $self->destination) {
-        die sprintf(
-            'Source and destination operations cannot be the same (%s)',
-            $self->source
+        push @errors, sprintf(
+            'Source and destination operations on link are both named %s',
+            Data::Dump::pp($self->source)
         );
     }
 
-    return;
+    return @errors;
 }
 
 
