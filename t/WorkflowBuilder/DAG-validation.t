@@ -93,7 +93,7 @@ sub create_test_dag {
     is_deeply([$dag->_validate_link_operation_consistency], [],
         'no orphaned operations error');
 
-    $dag->add_operation(Ptero::WorkflowBuilder::Detail::Operation->new(
+    $dag->add_operation(Ptero::WorkflowBuilder::Operation->new(
             name => 'C'));
 
     is_deeply([$dag->_validate_link_operation_consistency],

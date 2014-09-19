@@ -1,4 +1,4 @@
-package Ptero::WorkflowBuilder::Detail::DAGStep;
+package Ptero::WorkflowBuilder::Detail::Node;
 use Moose::Role;
 use warnings FATAL => 'all';
 

@@ -3,7 +3,7 @@ package Ptero::WorkflowBuilder::Detail::OperationMethod;
 use Moose;
 use warnings FATAL => 'all';
 
-with 'Ptero::WorkflowBuilder::Detail::Element';
+with 'Ptero::WorkflowBuilder::Detail::ConvertsToHashref';
 
 has name => (
     is => 'rw',

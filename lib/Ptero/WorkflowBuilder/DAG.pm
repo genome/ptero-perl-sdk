@@ -8,20 +8,20 @@ use List::MoreUtils qw();
 use Params::Validate qw();
 use Set::Scalar qw();
 
-use Ptero::WorkflowBuilder::Link;
-use Ptero::WorkflowBuilder::Detail::Operation;
+use Ptero::WorkflowBuilder::Detail::Link;
+use Ptero::WorkflowBuilder::Operation;
 
-with 'Ptero::WorkflowBuilder::Detail::DAGStep';
+with 'Ptero::WorkflowBuilder::Detail::Node';
 
 has operations => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::DAGStep]',
+    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Node]',
     default => sub { [] },
 );
 
 has links => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::WorkflowBuilder::Link]',
+    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Link]',
     default => sub { [] },
 );
 
@@ -40,7 +40,7 @@ sub add_link {
 
 sub create_link {
     my $self = shift;
-    my $link = Ptero::WorkflowBuilder::Link->new(@_);
+    my $link = Ptero::WorkflowBuilder::Detail::Link->new(@_);
     $self->add_link($link);
     return $link;
 }
@@ -126,14 +126,14 @@ sub from_hashref {
     );
 
     for my $link_hashref (@{$hashref->{links}}) {
-        $self->add_link(Ptero::WorkflowBuilder::Link->from_hashref($link_hashref));
+        $self->add_link(Ptero::WorkflowBuilder::Detail::Link->from_hashref($link_hashref));
     }
 
     for my $op_hashref (@{$hashref->{operations}}) {
         if (exists $op_hashref->{operations}) {
             $self->add_operation(Ptero::WorkflowBuilder::DAG->from_hashref($op_hashref));
         } elsif (exists $op_hashref->{methods}) {
-            $self->add_operation(Ptero::WorkflowBuilder::Detail::Operation->from_hashref($op_hashref));
+            $self->add_operation(Ptero::WorkflowBuilder::Operation->from_hashref($op_hashref));
         } else {
             die sprintf(
                 'Could not determine the class to instantiate with hashref (%s)',
@@ -324,7 +324,7 @@ sub _add_operations_from_hashref {
     my ($self, $hashref) = @_;
 
     for my $operation (@{$hashref->{workflow}{operations}}) {
-        my $op = Ptero::WorkflowBuilder::Detail::Operation->from_hashref($operation);
+        my $op = Ptero::WorkflowBuilder::Operation->from_hashref($operation);
         $self->add_operation($op);
     }
 }
@@ -348,7 +348,7 @@ sub _add_links_from_hashref {
         if (defined($destination_op)) {
             $link_params{destination} = $destination_op;
         }
-        my $link = Ptero::WorkflowBuilder::Link->new(%link_params);
+        my $link = Ptero::WorkflowBuilder::Detail::Link->new(%link_params);
         $self->add_link($link);
     }
 }
