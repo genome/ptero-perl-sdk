@@ -147,6 +147,25 @@ sub create_test_dag {
 }
 
 {
+    my $sub_dag = create_test_dag('outputs-exist-sub-dag');
+    my $super_dag = create_test_dag('outputs-exist-super-dag');
+    $super_dag->add_node($sub_dag);
+
+    is_deeply([$super_dag->_validate_outputs_exist], [],
+        'no validate outputs error');
+
+    $super_dag->connect_output(
+        source => 'outputs-exist-sub-dag',
+        source_property => 'missing-property',
+        destination_property => 'arbitrary'
+    );
+
+    is_deeply([$super_dag->_validate_outputs_exist],
+        ['Node "outputs-exist-sub-dag" has no output named "missing-property"'],
+        'validate outputs error');
+}
+
+{
     my $dag = create_test_dag('multiple-links-target-dag');
 
     is_deeply([$dag->_validate_link_targets_are_unique], [],

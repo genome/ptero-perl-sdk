@@ -265,6 +265,27 @@ sub _validate_mandatory_inputs {
     return @errors;
 }
 
+sub _validate_outputs_exist {
+    my $self = shift;
+    my @errors;
+
+    for my $link (@{$self->links}) {
+        my $node = $self->node_named($link->source);
+
+        next unless defined $node;
+
+        unless ($node->is_output_property($link->source_property)) {
+            push @errors, sprintf(
+                'Node %s has no output named %s',
+                Data::Dump::pp($link->source),
+                Data::Dump::pp($link->source_property)
+            );
+        }
+    }
+
+    return @errors;
+}
+
 sub _validate_link_targets_are_unique {
     my $self = shift;
     my @errors;
@@ -298,6 +319,7 @@ sub validation_errors {
         _validate_node_names_are_unique
         _validate_link_node_consistency
         _validate_mandatory_inputs
+        _validate_outputs_exist
         _validate_link_targets_are_unique
     );
 
