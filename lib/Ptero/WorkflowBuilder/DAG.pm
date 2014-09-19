@@ -93,7 +93,7 @@ sub _property_names_from_links {
             $property_names->insert($link->$property_holder);
         }
     }
-    return @{$property_names};
+    return $property_names->members;
 }
 
 sub input_properties {
