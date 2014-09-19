@@ -9,6 +9,7 @@ use Set::Scalar qw();
 use Ptero::WorkflowBuilder::Detail::OperationMethod;
 
 with 'Ptero::WorkflowBuilder::Detail::ConvertsToHashref';
+with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
 with 'Ptero::WorkflowBuilder::Detail::Node';
 
 has methods => (
@@ -56,23 +57,27 @@ sub from_hashref {
 }
 
 my $_INVALID_NAMES = new Set::Scalar('input connector', 'output connector');
-sub validate {
+sub validation_errors {
     my $self = shift;
+    my @errors;
 
     if ($_INVALID_NAMES->contains($self->name)) {
-        die sprintf("Operation name '%s' is not allowed",
-            $self->name);
+        push @errors, sprintf(
+            'Operation may not be named %s',
+            Data::Dump::pp($self->name)
+        );
     }
 
     my @methods = @{$self->methods};
-
     unless (@methods) {
-        die sprintf("Operation must have at least one method")
+        push @errors, sprintf(
+            'Operation named %s must have at least one method',
+            Data::Dump::pp($self->name)
+        );
     }
 
-    return;
-};
+    return @errors;
+}
 
 
 __PACKAGE__->meta->make_immutable;
-

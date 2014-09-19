@@ -8,13 +8,13 @@ use Ptero::WorkflowBuilder::Detail::OperationMethod;
 
 use_ok('Ptero::WorkflowBuilder::Operation');
 
-{
-    my $opmethod = {
-        name => 'foo',
-        submit_url => 'http://example.com',
-        parameters => {}
-    };
+my $opmethod = {
+    name => 'foo',
+    submit_url => 'http://example.com',
+    parameters => {}
+};
 
+{
     my $operation_hashref = {
         name => 'squid',
         methods => [$opmethod],
@@ -49,8 +49,28 @@ use_ok('Ptero::WorkflowBuilder::Operation');
 
     my $operation = Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref);
 
-    throws_ok {$operation->validate}
-        qr/Operation must have at least one method/, 'caught no methods okay';
+    is_deeply([$operation->validation_errors],
+        ['Operation named "halibut" must have at least one method'],
+        'operation must have at least one method');
+};
+
+{
+    my $operation_hashref = {
+        name => 'input connector',
+        methods => [$opmethod],
+    };
+
+    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref);
+
+    is_deeply([$operation->validation_errors],
+        ['Operation may not be named "input connector"'],
+        'operation may not be named "input connector"');
+
+    $operation->name('output connector');
+
+    is_deeply([$operation->validation_errors],
+        ['Operation may not be named "output connector"'],
+        'operation may not be named "output conenctor"');
 };
 
 done_testing();
