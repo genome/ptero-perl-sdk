@@ -75,4 +75,30 @@ use_ok('Ptero::WorkflowBuilder::Detail::Link');
         'source and destination nodes on link have same name');
 };
 
+{
+    use Ptero::WorkflowBuilder::Operation;
+
+    my $source_name = 'coerce-source-op';
+    my $destination_name = 'coerce-destination-op';
+
+    my $source = Ptero::WorkflowBuilder::Operation->new(
+        name => $source_name,
+    );
+    my $destination = Ptero::WorkflowBuilder::Operation->new(
+        name => $destination_name,
+    );
+
+    my $link = Ptero::WorkflowBuilder::Detail::Link->new(
+        source => $source, source_property => 'output',
+        destination => $destination, destination_property => 'input',
+    );
+
+    my $expected = {
+        source => $source_name, source_property => 'output',
+        destination => $destination_name, destination_property => 'input',
+    };
+
+    is_deeply($link->to_hashref, $expected, 'test');
+}
+
 done_testing();
