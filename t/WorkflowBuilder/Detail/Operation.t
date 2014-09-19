@@ -54,4 +54,23 @@ my $opmethod = {
         'operation must have at least one method');
 };
 
+{
+    my $operation_hashref = {
+        name => 'input connector',
+        methods => [$opmethod],
+    };
+
+    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref);
+
+    is_deeply([$operation->validation_errors],
+        ['Operation may not be named "input connector"'],
+        'operation may not be named "input connector"');
+
+    $operation->name('output connector');
+
+    is_deeply([$operation->validation_errors],
+        ['Operation may not be named "output connector"'],
+        'operation may not be named "output conenctor"');
+};
+
 done_testing();
