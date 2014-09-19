@@ -2,28 +2,39 @@ package Ptero::WorkflowBuilder::Detail::Link;
 
 use Data::Dump qw();
 use Moose;
+use Moose::Util::TypeConstraints;
+use Ptero::WorkflowBuilder::Detail::Node;
 use warnings FATAL => 'all';
 
 with 'Ptero::WorkflowBuilder::Detail::ConvertsToHashref';
 with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
+subtype 'Ptero::WorkflowBuilder::NodeName' => as 'Str';
+
+coerce 'Ptero::WorkflowBuilder::NodeName',
+    from 'Ptero::WorkflowBuilder::Detail::Node',
+    via { $_->name };
 
 has source => (
     is => 'rw',
-    isa => 'Str',
+    isa => 'Ptero::WorkflowBuilder::NodeName',
     default => 'input connector',
     predicate => 'has_source',
+    coerce => 1,
 );
+
 has destination => (
     is => 'rw',
-    isa => 'Str',
+    isa => 'Ptero::WorkflowBuilder::NodeName',
     default => 'output connector',
     predicate => 'has_destination',
+    coerce => 1,
 );
 
 has source_property => (
     is => 'rw',
     isa => 'Str',
 );
+
 has destination_property => (
     is => 'rw',
     isa => 'Str',
@@ -80,7 +91,7 @@ sub validation_errors {
     my @errors;
     if ($self->source eq $self->destination) {
         push @errors, sprintf(
-            'Source and destination operations on link are both named %s',
+            'Source and destination nodes on link are both named %s',
             Data::Dump::pp($self->source)
         );
     }

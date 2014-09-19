@@ -86,7 +86,7 @@ my $links = [
 {
     my $hashref = {
         name => 'some-workflow',
-        operations => $operations,
+        nodes => $operations,
         links => $links,
     };
 
@@ -98,13 +98,13 @@ my $links = [
 {
     my $child_hashref = {
         name => 'child-workflow',
-        operations => $operations,
+        nodes => $operations,
         links => $links,
     };
 
     my $parent_hashref = {
         name => 'parent-workflow',
-        operations => [$child_hashref],
+        nodes => [$child_hashref],
         links => [
             {
                 source => 'input connector',
