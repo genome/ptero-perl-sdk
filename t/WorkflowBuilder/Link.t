@@ -5,7 +5,6 @@ use Test::Exception;
 use Test::More;
 
 
-use_ok('Ptero::WorkflowBuilder::Operation');
 use_ok('Ptero::WorkflowBuilder::Detail::Link');
 
 {
