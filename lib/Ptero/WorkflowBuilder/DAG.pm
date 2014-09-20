@@ -15,6 +15,8 @@ use Ptero::WorkflowBuilder::Operation;
 with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
 with 'Ptero::WorkflowBuilder::Detail::Node';
 
+my $codec = JSON->new()->canonical([1]);
+
 has nodes => (
     is => 'rw',
     isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Node]',
@@ -83,6 +85,22 @@ sub node_named {
     return;
 }
 
+sub node_names {
+    my $self = shift;
+
+    my $node_names = Set::Scalar->new('input connector', 'output connector');
+    for my $node (@{$self->nodes}) {
+        $node_names->insert($node->name);
+    }
+    return $node_names;
+}
+
+sub sorted_links {
+    my $self = shift;
+
+    return [sort { $a->sort_key cmp $b->sort_key } @{$self->links}];
+}
+
 sub _property_names_from_links {
     my ($self, $query_name, $property_holder) = @_;
 
@@ -93,7 +111,7 @@ sub _property_names_from_links {
             $property_names->insert($link->$property_holder);
         }
     }
-    return @{$property_names};
+    return $property_names->members;
 }
 
 sub input_properties {
@@ -106,18 +124,6 @@ sub output_properties {
     my $self = shift;
     return sort $self->_property_names_from_links('external_output',
         'destination_property');
-}
-
-sub is_input_property {
-    my ($self, $property_name) = @_;
-
-    return List::MoreUtils::any {$property_name eq $_} $self->input_properties;
-}
-
-sub is_output_property {
-    my ($self, $property_name) = @_;
-
-    return List::MoreUtils::any {$property_name eq $_} $self->output_properties;
 }
 
 sub from_hashref {
@@ -157,8 +163,41 @@ sub to_hashref {
         name => $self->name,
         links => \@links,
         nodes => \@nodes,
-    }
+    };
 }
+
+sub to_json_hashref {
+    my $self = shift;
+
+    my @links = map $_->to_hashref, @{$self->sorted_links};
+
+    my %node_hash;
+    for my $node (@{$self->nodes}) {
+        my $node_hashref = $node->to_hashref;
+        my $name = delete $node_hashref->{name};
+        $node_hash{$name} = $node_hashref;
+    }
+
+    return {
+        name => $self->name,
+        links => \@links,
+        nodes => \%node_hash,
+    };
+}
+
+sub encode_as_json {
+    my $self = shift;
+
+    $self->validate;
+
+    my $hashref = $self->to_json_hashref;
+
+    return $codec->encode($hashref);
+}
+
+##############################
+# Validations
+##############################
 
 sub _validate_node_names_are_unique {
     my $self = shift;
@@ -192,16 +231,6 @@ sub link_targets {
         $link_targets->insert($link->destination);
     }
     return $link_targets;
-}
-
-sub node_names {
-    my $self = shift;
-
-    my $node_names = Set::Scalar->new('input connector', 'output connector');
-    for my $node (@{$self->nodes}) {
-        $node_names->insert($node->name);
-    }
-    return $node_names;
 }
 
 sub _validate_link_node_consistency {
@@ -273,6 +302,27 @@ sub _validate_mandatory_inputs {
     return @errors;
 }
 
+sub _validate_outputs_exist {
+    my $self = shift;
+    my @errors;
+
+    for my $link (@{$self->links}) {
+        my $node = $self->node_named($link->source);
+
+        next unless defined $node;
+
+        unless ($node->is_output_property($link->source_property)) {
+            push @errors, sprintf(
+                'Node %s has no output named %s',
+                Data::Dump::pp($link->source),
+                Data::Dump::pp($link->source_property)
+            );
+        }
+    }
+
+    return @errors;
+}
+
 sub _validate_link_targets_are_unique {
     my $self = shift;
     my @errors;
@@ -306,6 +356,7 @@ sub validation_errors {
         _validate_node_names_are_unique
         _validate_link_node_consistency
         _validate_mandatory_inputs
+        _validate_outputs_exist
         _validate_link_targets_are_unique
     );
 

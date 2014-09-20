@@ -63,7 +63,7 @@ sub external_output {
 
 sub sort_key {
     my $self = shift;
-    return sprintf('%s|%s|%s|%s',
+    return Data::Dump::pp(
         $self->source, $self->destination,
         $self->source_property, $self->destination_property);
 }
