@@ -168,6 +168,14 @@ sub to_hashref {
     };
 }
 
+sub from_json {
+    my ($class, $json_string, $name) = validate_pos(@_, 1,
+        {type => SCALAR}, {type => SCALAR});
+    my $hashref = $codec->decode($json_string);
+
+    return $class->from_hashref($hashref, $name);
+}
+
 sub to_json {
     my $self = shift;
 

@@ -100,4 +100,14 @@ my $links = [
     is($dag->to_json, $blessed_json, 'encode_as_json')
 }
 
+{
+    my $blessed_json = File::Slurp::read_file(
+        File::Spec->join($test_dir, 'blessed-dag.json')
+    );
+    chomp($blessed_json);
+
+    my $dag = Ptero::WorkflowBuilder::DAG->from_json($blessed_json, 'some-workflow');
+    is($dag->to_json, $blessed_json, 'json roundtrip')
+}
+
 done_testing();
