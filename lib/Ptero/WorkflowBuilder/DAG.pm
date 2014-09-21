@@ -4,7 +4,7 @@ use Moose;
 use warnings FATAL => 'all';
 
 use Data::Dump qw();
-use JSON;
+use JSON qw();
 use List::MoreUtils qw();
 use Params::Validate qw(validate_pos :types);
 use Set::Scalar qw();
@@ -168,7 +168,7 @@ sub to_hashref {
     };
 }
 
-sub encode_as_json {
+sub to_json {
     my $self = shift;
 
     $self->validate;

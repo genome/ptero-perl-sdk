@@ -97,7 +97,7 @@ my $links = [
     );
     chomp($blessed_json);
 
-    is($dag->encode_as_json, $blessed_json, 'encode_as_json')
+    is($dag->to_json, $blessed_json, 'encode_as_json')
 }
 
 done_testing();
