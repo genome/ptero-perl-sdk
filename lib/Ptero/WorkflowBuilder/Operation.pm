@@ -5,6 +5,7 @@ use warnings FATAL => 'all';
 
 use Data::Dump qw();
 use Set::Scalar qw();
+use Params::Validate qw(validate_pos :types);
 
 use Ptero::WorkflowBuilder::Detail::OperationMethod;
 
@@ -44,13 +45,13 @@ sub to_hashref {
     my $self = shift;
 
     return {
-        name    => $self->name,
         methods => [map { $_->to_hashref } @{$self->methods}],
     };
 }
 
 sub from_hashref {
-    my ($class, $hashref) = @_;
+    my ($class, $hashref, $name) = validate_pos(@_, 1,
+        {type => HASHREF}, {type => SCALAR});
 
     unless (exists $hashref->{methods} && ref($hashref->{methods}) eq 'ARRAY') {
         die 'Operation hashref must contain a methods arrayref: '
@@ -65,7 +66,7 @@ sub from_hashref {
 
     delete $hash{methods};
 
-    return $class->new(%hash, methods => \@methods);
+    return $class->new(%hash, methods => \@methods, name => $name);
 }
 
 my $_INVALID_NAMES = new Set::Scalar('input connector', 'output connector');

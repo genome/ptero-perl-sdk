@@ -11,16 +11,6 @@ has name => (
     required => 1,
 );
 
-sub to_json_hashref {
-    my $self = shift;
-    return $self->to_hashref;
-}
-
-sub from_json_hashref {
-    my $self = shift;
-    return $self->from_hashref;
-}
-
 sub input_properties {
     my $self = shift;
     return;

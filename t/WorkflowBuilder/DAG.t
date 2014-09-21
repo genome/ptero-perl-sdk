@@ -39,16 +39,14 @@ my $operation_methods = [
     },
 ];
 
-my $operations = [
-    {
-        name => 'A',
+my $operations = {
+    A => {
         methods => $operation_methods,
     },
-    {
-        name => 'B',
+    B => {
         methods => $operation_methods,
     },
-];
+};
 
 my $links = [
     {
@@ -85,26 +83,23 @@ my $links = [
 
 {
     my $hashref = {
-        name => 'some-workflow',
         nodes => $operations,
         links => $links,
     };
 
-    my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($hashref);
+    my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($hashref, 'some-workflow');
 
     is_deeply($dag->to_hashref, $hashref, 'round trip hashref to dag');
 }
 
 {
     my $child_hashref = {
-        name => 'child-workflow',
         nodes => $operations,
         links => $links,
     };
 
     my $parent_hashref = {
-        name => 'parent-workflow',
-        nodes => [$child_hashref],
+        nodes => {'child-workflow' => $child_hashref},
         links => [
             {
                 source => 'input connector',
@@ -133,7 +128,7 @@ my $links = [
         ]
     };
 
-    my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($parent_hashref);
+    my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($parent_hashref, 'parent-workflow');
 
     is_deeply($dag->to_hashref, $parent_hashref,
         'round trip nested hashref to dag');
