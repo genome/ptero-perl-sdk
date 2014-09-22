@@ -19,11 +19,6 @@ has methods => (
     default => sub { [] },
 );
 
-# has parallel_by => (
-#     is => 'rw',
-#     isa => 'Maybe[Str]',
-# );
-
 sub is_input_property {
     my ($self, $property_name) = @_;
 

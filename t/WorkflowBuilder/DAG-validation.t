@@ -141,6 +141,21 @@ sub create_test_dag {
 
     is_deeply([$super_dag->_validate_mandatory_inputs], [],
         'fixed mandatory inputs error');
+
+    $sub_dag->parallel_by('in_parallel');
+
+    is_deeply([$super_dag->_validate_mandatory_inputs],
+        ['No edges targeting mandatory input(s): ("mandatory-inputs-sub-dag", "in_parallel")'],
+        'mandatory inputs error for parallel_by');
+
+    $super_dag->connect_input(
+        destination => 'mandatory-inputs-sub-dag',
+        destination_property => 'in_parallel',
+        source_property => 'sub_in_parallel'
+    );
+
+    is_deeply([$super_dag->_validate_mandatory_inputs], [],
+        'fixed mandatory inputs error for parallel_by');
 }
 
 {

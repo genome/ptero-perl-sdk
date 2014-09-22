@@ -75,4 +75,17 @@ my $opmethod = {
         'operation may not be named "output conenctor"');
 };
 
+{
+    my $operation_hashref = {
+        methods => [$opmethod],
+        parallel_by => 'qux',
+    };
+
+    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref(
+        $operation_hashref, 'with-parallel-by');
+
+    is_deeply([$operation->input_properties], ['qux'],
+        'parallel_by is in input_properties');
+};
+
 done_testing();

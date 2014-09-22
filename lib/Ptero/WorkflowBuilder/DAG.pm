@@ -114,11 +114,14 @@ sub _property_names_from_edges {
     return $property_names->members;
 }
 
-sub input_properties {
+around 'input_properties' => sub {
+    my $orig = shift;
     my $self = shift;
-    return sort $self->_property_names_from_edges('external_input',
-        'source_property');
-}
+    my $properties = Set::Scalar->new($self->$orig());
+    $properties->insert($self->_property_names_from_edges('external_input',
+            'source_property'));
+    return sort $properties->members();
+};
 
 sub output_properties {
     my $self = shift;
