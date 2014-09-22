@@ -42,16 +42,14 @@ my $operation_methods = [
     },
 ];
 
-my $operations = [
-    {
-        name => 'A',
+my $operations = {
+    A => {
         methods => $operation_methods,
     },
-    {
-        name => 'B',
+    B => {
         methods => $operation_methods,
     },
-];
+};
 
 my $links = [
     {
@@ -88,18 +86,28 @@ my $links = [
 
 {
     my $hashref = {
-        name => 'some-workflow',
         nodes => $operations,
         links => $links,
     };
 
-    my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($hashref);
+    my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($hashref, 'some-workflow');
 
     my $blessed_json = File::Slurp::read_file(
         File::Spec->join($test_dir, 'blessed-dag.json')
     );
+    chomp($blessed_json);
 
-    is($dag->encode_as_json, $blessed_json, 'encode_as_json')
+    is($dag->to_json, $blessed_json, 'encode_as_json')
+}
+
+{
+    my $blessed_json = File::Slurp::read_file(
+        File::Spec->join($test_dir, 'blessed-dag.json')
+    );
+    chomp($blessed_json);
+
+    my $dag = Ptero::WorkflowBuilder::DAG->from_json($blessed_json, 'some-workflow');
+    is($dag->to_json, $blessed_json, 'json roundtrip')
 }
 
 done_testing();

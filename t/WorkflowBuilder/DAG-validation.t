@@ -20,16 +20,14 @@ my $operation_methods = [
     },
 ];
 
-my $operations = [
-    {
-        name => 'A',
+my $operations = {
+    A => {
         methods => $operation_methods,
     },
-    {
-        name => 'B',
+    B => {
         methods => $operation_methods,
     },
-];
+};
 
 my $links = [
     {
@@ -67,11 +65,10 @@ my $links = [
 sub create_test_dag {
     my $name = shift;
     my $hashref = {
-        name => $name,
         nodes => $operations,
         links => $links,
     };
-    return Ptero::WorkflowBuilder::DAG->from_hashref($hashref);
+    return Ptero::WorkflowBuilder::DAG->from_hashref($hashref, $name);
 }
 
 {

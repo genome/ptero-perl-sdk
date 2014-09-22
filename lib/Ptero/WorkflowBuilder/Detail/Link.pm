@@ -58,7 +58,7 @@ sub external_input {
 
 sub external_output {
     my $self = shift;
-    return $self->source eq 'output connector';
+    return $self->destination eq 'output connector';
 }
 
 sub sort_key {

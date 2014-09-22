@@ -4,9 +4,9 @@ use Moose;
 use warnings FATAL => 'all';
 
 use Data::Dump qw();
-use JSON;
+use JSON qw();
 use List::MoreUtils qw();
-use Params::Validate qw();
+use Params::Validate qw(validate_pos :types);
 use Set::Scalar qw();
 
 use Ptero::WorkflowBuilder::Detail::Link;
@@ -127,21 +127,24 @@ sub output_properties {
 }
 
 sub from_hashref {
-    my ($class, $hashref) = @_;
+    my ($class, $hashref, $name) = validate_pos(@_, 1,
+        {type => HASHREF}, {type => SCALAR});
 
     my $self = $class->new(
-        name => $hashref->{name},
+        name => $name,
     );
 
     for my $link_hashref (@{$hashref->{links}}) {
         $self->add_link(Ptero::WorkflowBuilder::Detail::Link->from_hashref($link_hashref));
     }
 
-    for my $node_hashref (@{$hashref->{nodes}}) {
+    while (my ($node_name, $node_hashref) = each %{$hashref->{nodes}}) {
         if (exists $node_hashref->{nodes}) {
-            $self->add_node(Ptero::WorkflowBuilder::DAG->from_hashref($node_hashref));
+            $self->add_node(Ptero::WorkflowBuilder::DAG->from_hashref(
+                    $node_hashref, $node_name));
         } elsif (exists $node_hashref->{methods}) {
-            $self->add_node(Ptero::WorkflowBuilder::Operation->from_hashref($node_hashref));
+            $self->add_node(Ptero::WorkflowBuilder::Operation->from_hashref(
+                    $node_hashref, $node_name));
         } else {
             die sprintf(
                 'Could not determine the class to instantiate with hashref (%s)',
@@ -157,42 +160,27 @@ sub to_hashref {
     my $self = shift;
 
     my @links = map {$_->to_hashref} @{$self->links};
-    my @nodes = map {$_->to_hashref} @{$self->nodes};
+    my %nodes = map {$_->name, $_->to_hashref} @{$self->nodes};
 
     return {
-        name => $self->name,
         links => \@links,
-        nodes => \@nodes,
+        nodes => \%nodes,
     };
 }
 
-sub to_json_hashref {
-    my $self = shift;
+sub from_json {
+    my ($class, $json_string, $name) = validate_pos(@_, 1,
+        {type => SCALAR}, {type => SCALAR});
+    my $hashref = $codec->decode($json_string);
 
-    my @links = map $_->to_hashref, @{$self->sorted_links};
-
-    my %node_hash;
-    for my $node (@{$self->nodes}) {
-        my $node_hashref = $node->to_hashref;
-        my $name = delete $node_hashref->{name};
-        $node_hash{$name} = $node_hashref;
-    }
-
-    return {
-        name => $self->name,
-        links => \@links,
-        nodes => \%node_hash,
-    };
+    return $class->from_hashref($hashref, $name);
 }
 
-sub encode_as_json {
+sub to_json {
     my $self = shift;
 
     $self->validate;
-
-    my $hashref = $self->to_json_hashref;
-
-    return $codec->encode($hashref);
+    return $codec->encode($self->to_hashref);
 }
 
 ##############################
