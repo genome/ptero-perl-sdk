@@ -51,7 +51,7 @@ my $operations = {
     },
 };
 
-my $links = [
+my $edges = [
     {
         source => 'input connector',
         destination => 'A',
@@ -87,7 +87,7 @@ my $links = [
 {
     my $hashref = {
         nodes => $operations,
-        links => $links,
+        edges => $edges,
     };
 
     my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($hashref, 'some-workflow');

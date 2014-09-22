@@ -48,7 +48,7 @@ my $operations = {
     },
 };
 
-my $links = [
+my $edges = [
     {
         source => 'input connector',
         destination => 'A',
@@ -84,7 +84,7 @@ my $links = [
 {
     my $hashref = {
         nodes => $operations,
-        links => $links,
+        edges => $edges,
     };
 
     my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($hashref, 'some-workflow');
@@ -95,12 +95,12 @@ my $links = [
 {
     my $child_hashref = {
         nodes => $operations,
-        links => $links,
+        edges => $edges,
     };
 
     my $parent_hashref = {
         nodes => {'child-workflow' => $child_hashref},
-        links => [
+        edges => [
             {
                 source => 'input connector',
                 destination => 'child-workflow',

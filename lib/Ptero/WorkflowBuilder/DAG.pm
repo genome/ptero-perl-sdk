@@ -9,7 +9,7 @@ use List::MoreUtils qw();
 use Params::Validate qw(validate_pos :types);
 use Set::Scalar qw();
 
-use Ptero::WorkflowBuilder::Detail::Link;
+use Ptero::WorkflowBuilder::Detail::Edge;
 use Ptero::WorkflowBuilder::Operation;
 
 with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
@@ -23,9 +23,9 @@ has nodes => (
     default => sub { [] },
 );
 
-has links => (
+has edges => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Link]',
+    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Edge]',
     default => sub { [] },
 );
 
@@ -36,17 +36,17 @@ sub add_node {
     return $node;
 }
 
-sub add_link {
-    my ($self, $link) = @_;
-    push @{$self->links}, $link;
-    return $link;
+sub add_edge {
+    my ($self, $edge) = @_;
+    push @{$self->edges}, $edge;
+    return $edge;
 }
 
-sub create_link {
+sub create_edge {
     my $self = shift;
-    my $link = Ptero::WorkflowBuilder::Detail::Link->new(@_);
-    $self->add_link($link);
-    return $link;
+    my $edge = Ptero::WorkflowBuilder::Detail::Edge->new(@_);
+    $self->add_edge($edge);
+    return $edge;
 }
 
 sub connect_input {
@@ -57,7 +57,7 @@ sub connect_input {
             destination_property => { type => Params::Validate::SCALAR },
     });
 
-    $self->create_link(%args);
+    $self->create_edge(%args);
     return;
 }
 
@@ -69,7 +69,7 @@ sub connect_output {
             destination_property => { type => Params::Validate::SCALAR },
     });
 
-    $self->create_link(%args);
+    $self->create_edge(%args);
     return;
 }
 
@@ -95,20 +95,20 @@ sub node_names {
     return $node_names;
 }
 
-sub sorted_links {
+sub sorted_edges {
     my $self = shift;
 
-    return [sort { $a->sort_key cmp $b->sort_key } @{$self->links}];
+    return [sort { $a->sort_key cmp $b->sort_key } @{$self->edges}];
 }
 
-sub _property_names_from_links {
+sub _property_names_from_edges {
     my ($self, $query_name, $property_holder) = @_;
 
     my $property_names = new Set::Scalar;
 
-    for my $link (@{$self->links}) {
-        if ($link->$query_name) {
-            $property_names->insert($link->$property_holder);
+    for my $edge (@{$self->edges}) {
+        if ($edge->$query_name) {
+            $property_names->insert($edge->$property_holder);
         }
     }
     return $property_names->members;
@@ -116,13 +116,13 @@ sub _property_names_from_links {
 
 sub input_properties {
     my $self = shift;
-    return sort $self->_property_names_from_links('external_input',
+    return sort $self->_property_names_from_edges('external_input',
         'source_property');
 }
 
 sub output_properties {
     my $self = shift;
-    return sort $self->_property_names_from_links('external_output',
+    return sort $self->_property_names_from_edges('external_output',
         'destination_property');
 }
 
@@ -134,8 +134,8 @@ sub from_hashref {
         name => $name,
     );
 
-    for my $link_hashref (@{$hashref->{links}}) {
-        $self->add_link(Ptero::WorkflowBuilder::Detail::Link->from_hashref($link_hashref));
+    for my $edge_hashref (@{$hashref->{edges}}) {
+        $self->add_edge(Ptero::WorkflowBuilder::Detail::Edge->from_hashref($edge_hashref));
     }
 
     while (my ($node_name, $node_hashref) = each %{$hashref->{nodes}}) {
@@ -159,11 +159,11 @@ sub from_hashref {
 sub to_hashref {
     my $self = shift;
 
-    my @links = map {$_->to_hashref} @{$self->links};
+    my @edges = map {$_->to_hashref} @{$self->edges};
     my %nodes = map {$_->name, $_->to_hashref} @{$self->nodes};
 
     return {
-        links => \@links,
+        edges => \@edges,
         nodes => \%nodes,
     };
 }
@@ -210,31 +210,31 @@ sub _validate_node_names_are_unique {
     return @errors;
 }
 
-sub link_targets {
+sub edge_targets {
     my $self = shift;
 
-    my $link_targets = new Set::Scalar;
-    for my $link (@{$self->links}) {
-        $link_targets->insert($link->source);
-        $link_targets->insert($link->destination);
+    my $edge_targets = new Set::Scalar;
+    for my $edge (@{$self->edges}) {
+        $edge_targets->insert($edge->source);
+        $edge_targets->insert($edge->destination);
     }
-    return $link_targets;
+    return $edge_targets;
 }
 
-sub _validate_link_node_consistency {
+sub _validate_edge_node_consistency {
     my $self = shift;
     my @errors;
 
     my $node_names = $self->node_names;
-    my $link_targets = $self->link_targets;
+    my $edge_targets = $self->edge_targets;
 
-    my $invalid_link_targets = $link_targets - $node_names;
-    my $orphaned_node_names = $node_names - $link_targets;
+    my $invalid_edge_targets = $edge_targets - $node_names;
+    my $orphaned_node_names = $node_names - $edge_targets;
 
-    unless ($invalid_link_targets->is_empty) {
+    unless ($invalid_edge_targets->is_empty) {
         push @errors, sprintf(
-            'Links have invalid targets: %s',
-            Data::Dump::pp(sort $invalid_link_targets->members)
+            'Edges have invalid targets: %s',
+            Data::Dump::pp(sort $invalid_edge_targets->members)
         );
     }
     unless ($orphaned_node_names->is_empty) {
@@ -271,9 +271,9 @@ sub _validate_mandatory_inputs {
     my @errors;
 
     my $mandatory_inputs = $self->_get_mandatory_inputs;
-    for my $link (@{$self->links}) {
+    for my $edge (@{$self->edges}) {
         my $destination = $self->_encode_target(
-            $link->destination, $link->destination_property);
+            $edge->destination, $edge->destination_property);
         if ($mandatory_inputs->contains($destination)) {
             $mandatory_inputs->delete($destination);
         }
@@ -281,7 +281,7 @@ sub _validate_mandatory_inputs {
 
     unless ($mandatory_inputs->is_empty) {
         push @errors, sprintf(
-            'No links targeting mandatory input(s): %s',
+            'No edges targeting mandatory input(s): %s',
             # $mandatory_inputs->members are already pp'd, so we can just join
             (join ', ', sort $mandatory_inputs->members)
         );
@@ -294,16 +294,16 @@ sub _validate_outputs_exist {
     my $self = shift;
     my @errors;
 
-    for my $link (@{$self->links}) {
-        my $node = $self->node_named($link->source);
+    for my $edge (@{$self->edges}) {
+        my $node = $self->node_named($edge->source);
 
         next unless defined $node;
 
-        unless ($node->is_output_property($link->source_property)) {
+        unless ($node->is_output_property($edge->source_property)) {
             push @errors, sprintf(
                 'Node %s has no output named %s',
-                Data::Dump::pp($link->source),
-                Data::Dump::pp($link->source_property)
+                Data::Dump::pp($edge->source),
+                Data::Dump::pp($edge->source_property)
             );
         }
     }
@@ -311,25 +311,25 @@ sub _validate_outputs_exist {
     return @errors;
 }
 
-sub _validate_link_targets_are_unique {
+sub _validate_edge_targets_are_unique {
     my $self = shift;
     my @errors;
 
     my %destinations;
 
-    for my $link (@{$self->links}) {
-        my $destination = $link->destination_to_string;
-        push @{$destinations{$destination}}, $link;
+    for my $edge (@{$self->edges}) {
+        my $destination = $edge->destination_to_string;
+        push @{$destinations{$destination}}, $edge;
     }
 
     for my $destination (keys %destinations) {
-        my @links = @{$destinations{$destination}};
+        my @edges = @{$destinations{$destination}};
 
-        if (@links > 1) {
+        if (@edges > 1) {
             push @errors, sprintf(
-                'Destination %s is targeted by multiple links from: %s',
+                'Destination %s is targeted by multiple edges from: %s',
                 Data::Dump::pp($destination),
-                Data::Dump::pp(sort map { $_->source_to_string } @links)
+                Data::Dump::pp(sort map { $_->source_to_string } @edges)
             );
         }
     }
@@ -342,14 +342,14 @@ sub validation_errors {
 
     my @errors = map { $self->$_ } qw(
         _validate_node_names_are_unique
-        _validate_link_node_consistency
+        _validate_edge_node_consistency
         _validate_mandatory_inputs
         _validate_outputs_exist
-        _validate_link_targets_are_unique
+        _validate_edge_targets_are_unique
     );
 
     # Cascade validations
-    for (@{$self->nodes}, @{$self->links}) {
+    for (@{$self->nodes}, @{$self->edges}) {
         push @errors, $_->validation_errors;
     }
 
