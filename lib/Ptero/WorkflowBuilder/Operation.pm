@@ -19,11 +19,6 @@ has methods => (
     default => sub { [] },
 );
 
-# has log_dir => (
-#     is => 'rw',
-#     isa => 'Str',
-# );
-
 # has parallel_by => (
 #     is => 'rw',
 #     isa => 'Maybe[Str]',
