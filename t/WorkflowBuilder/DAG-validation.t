@@ -29,7 +29,7 @@ my $operations = {
     },
 };
 
-my $links = [
+my $edges = [
     {
         source => 'input connector',
         destination => 'A',
@@ -66,7 +66,7 @@ sub create_test_dag {
     my $name = shift;
     my $hashref = {
         nodes => $operations,
-        links => $links,
+        edges => $edges,
     };
     return Ptero::WorkflowBuilder::DAG->from_hashref($hashref, $name);
 }
@@ -87,13 +87,13 @@ sub create_test_dag {
 {
     my $dag = create_test_dag('orphaned-node-dag');
 
-    is_deeply([$dag->_validate_link_node_consistency], [],
+    is_deeply([$dag->_validate_edge_node_consistency], [],
         'no orphaned nodes error');
 
     $dag->add_node(Ptero::WorkflowBuilder::Operation->new(
             name => 'C'));
 
-    is_deeply([$dag->_validate_link_node_consistency],
+    is_deeply([$dag->_validate_edge_node_consistency],
         ['Orphaned node names: "C"'],
         'orphaned nodes error');
 }
@@ -101,16 +101,16 @@ sub create_test_dag {
 {
     my $dag = create_test_dag('orphaned-node-dag');
 
-    is_deeply([$dag->_validate_link_node_consistency], [],
-        'no invalid link target error');
+    is_deeply([$dag->_validate_edge_node_consistency], [],
+        'no invalid edge target error');
 
-    $dag->create_link(
+    $dag->create_edge(
         source => 'A', source_property => 'foo',
         destination => 'C', destination_property => 'bar');
 
-    is_deeply([$dag->_validate_link_node_consistency],
-        ['Links have invalid targets: "C"'],
-        'invalid link target error');
+    is_deeply([$dag->_validate_edge_node_consistency],
+        ['Edges have invalid targets: "C"'],
+        'invalid edge target error');
 }
 
 {
@@ -124,7 +124,7 @@ sub create_test_dag {
     $super_dag->add_node($sub_dag);
 
     is_deeply([$super_dag->_validate_mandatory_inputs],
-        ['No links targeting mandatory input(s): ("mandatory-inputs-sub-dag", "in_a"), ("mandatory-inputs-sub-dag", "in_b")'],
+        ['No edges targeting mandatory input(s): ("mandatory-inputs-sub-dag", "in_a"), ("mandatory-inputs-sub-dag", "in_b")'],
         'mandatory inputs error');
 
     $super_dag->connect_input(
@@ -163,16 +163,16 @@ sub create_test_dag {
 }
 
 {
-    my $dag = create_test_dag('multiple-links-target-dag');
+    my $dag = create_test_dag('multiple-edges-target-dag');
 
-    is_deeply([$dag->_validate_link_targets_are_unique], [],
-        'no multiple links target error');
+    is_deeply([$dag->_validate_edge_targets_are_unique], [],
+        'no multiple edges target error');
 
-    $dag->add_link($dag->links->[0]);
+    $dag->add_edge($dag->edges->[0]);
 
-    is_deeply([$dag->_validate_link_targets_are_unique],
-        ['Destination "A.param" is targeted by multiple links from: ("input connector.in_a", "input connector.in_a")'],
-        'invalid link target error');
+    is_deeply([$dag->_validate_edge_targets_are_unique],
+        ['Destination "A.param" is targeted by multiple edges from: ("input connector.in_a", "input connector.in_a")'],
+        'invalid edge target error');
 }
 
 {

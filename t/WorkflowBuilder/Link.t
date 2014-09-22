@@ -5,10 +5,10 @@ use Test::Exception;
 use Test::More;
 
 
-use_ok('Ptero::WorkflowBuilder::Detail::Link');
+use_ok('Ptero::WorkflowBuilder::Detail::Edge');
 
 {
-    my $link = Ptero::WorkflowBuilder::Detail::Link->new(
+    my $edge = Ptero::WorkflowBuilder::Detail::Edge->new(
         source => 'source node', source_property => 'output',
         destination => 'destination node', destination_property => 'input'
     );
@@ -19,7 +19,7 @@ use_ok('Ptero::WorkflowBuilder::Detail::Link');
         source_property => 'output',
         destination_property => 'input',
     };
-    is_deeply($link->to_hashref, $expected_hashref, 'typical link produces expected hashref');
+    is_deeply($edge->to_hashref, $expected_hashref, 'typical edge produces expected hashref');
 };
 
 {
@@ -29,12 +29,12 @@ use_ok('Ptero::WorkflowBuilder::Detail::Link');
         source_property => 'output',
         destination_property => 'input',
     };
-    my $link = Ptero::WorkflowBuilder::Detail::Link->from_hashref($expected_hashref);
-    is_deeply($link->to_hashref, $expected_hashref, 'link roundtrip from/to_hashref');
+    my $edge = Ptero::WorkflowBuilder::Detail::Edge->from_hashref($expected_hashref);
+    is_deeply($edge->to_hashref, $expected_hashref, 'edge roundtrip from/to_hashref');
 };
 
 {
-    my $link = Ptero::WorkflowBuilder::Detail::Link->new(
+    my $edge = Ptero::WorkflowBuilder::Detail::Edge->new(
         source_property => 'output',
         destination => 'destination node', destination_property => 'input'
     );
@@ -45,11 +45,11 @@ use_ok('Ptero::WorkflowBuilder::Detail::Link');
         source_property => 'output',
         destination_property => 'input',
     };
-    is_deeply($link->to_hashref, $expected_hashref, 'missing source node uses input connector');
+    is_deeply($edge->to_hashref, $expected_hashref, 'missing source node uses input connector');
 };
 
 {
-    my $link = Ptero::WorkflowBuilder::Detail::Link->new(
+    my $edge = Ptero::WorkflowBuilder::Detail::Edge->new(
         source => 'source node', source_property => 'output',
         destination_property => 'input'
     );
@@ -60,19 +60,19 @@ use_ok('Ptero::WorkflowBuilder::Detail::Link');
         source_property => 'output',
         destination_property => 'input',
     };
-    is_deeply($link->to_hashref, $expected_hashref,
+    is_deeply($edge->to_hashref, $expected_hashref,
         'missing destination node uses output connector');
 };
 
 {
-    my $link = Ptero::WorkflowBuilder::Detail::Link->new(
+    my $edge = Ptero::WorkflowBuilder::Detail::Edge->new(
         source => 'single-node', source_property => 'output',
         destination => 'single-node', destination_property => 'input',
     );
 
-    is_deeply([$link->validation_errors],
-        ['Source and destination nodes on link are both named "single-node"'],
-        'source and destination nodes on link have same name');
+    is_deeply([$edge->validation_errors],
+        ['Source and destination nodes on edge are both named "single-node"'],
+        'source and destination nodes on edge have same name');
 };
 
 {
@@ -88,7 +88,7 @@ use_ok('Ptero::WorkflowBuilder::Detail::Link');
         name => $destination_name,
     );
 
-    my $link = Ptero::WorkflowBuilder::Detail::Link->new(
+    my $edge = Ptero::WorkflowBuilder::Detail::Edge->new(
         source => $source, source_property => 'output',
         destination => $destination, destination_property => 'input',
     );
@@ -98,7 +98,7 @@ use_ok('Ptero::WorkflowBuilder::Detail::Link');
         destination => $destination_name, destination_property => 'input',
     };
 
-    is_deeply($link->to_hashref, $expected, 'test');
+    is_deeply($edge->to_hashref, $expected, 'test');
 }
 
 done_testing();
