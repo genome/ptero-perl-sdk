@@ -10,7 +10,7 @@ use_ok('Ptero::WorkflowBuilder::Detail::OperationMethod');
 {
     my $hashref = {
         name => 'foo',
-        submit_url => 'http://example.com',
+        submitUrl => 'http://example.com',
         parameters => {
             hashthing => {
                 keya => 'meow',
