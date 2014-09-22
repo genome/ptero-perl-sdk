@@ -11,7 +11,7 @@ use_ok('Ptero::WorkflowBuilder::Operation');
 my $opmethod = {
     name => 'foo',
     submit_url => 'http://example.com',
-    parameters => {}
+    parameters => {},
 };
 
 {
@@ -19,24 +19,26 @@ my $opmethod = {
         methods => [$opmethod],
     };
 
-    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref, 'squid');
+    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref(
+        $operation_hashref, 'squid');
 
-    is_deeply($operation->to_hashref, $operation_hashref, 'round trip hashref to operation');
+    is_deeply($operation->to_hashref, $operation_hashref,
+        'round trip hashref to operation');
 };
 
 {
     my $operation_hashref = {
     };
 
-    throws_ok {Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref,
-            'bad-methods-in-this-op')}
+    throws_ok {Ptero::WorkflowBuilder::Operation->from_hashref(
+            $operation_hashref, 'bad-methods-in-this-op')}
         qr/Operation hashref must contain a methods arrayref/,
         'no methods in hashref';
 
     $operation_hashref->{methods} = 'not-an-arrayref';
 
-    throws_ok {Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref,
-            'bad-methods-in-this-op')}
+    throws_ok {Ptero::WorkflowBuilder::Operation->from_hashref(
+            $operation_hashref, 'bad-methods-in-this-op')}
         qr/Operation hashref must contain a methods arrayref/,
         'methods is not an arrayref';
 };
@@ -46,7 +48,8 @@ my $opmethod = {
         methods => [],
     };
 
-    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref, 'halibut');
+    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref(
+        $operation_hashref, 'halibut');
 
     is_deeply([$operation->validation_errors],
         ['Operation named "halibut" must have at least one method'],
@@ -58,7 +61,8 @@ my $opmethod = {
         methods => [$opmethod],
     };
 
-    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref($operation_hashref, 'input connector');
+    my $operation = Ptero::WorkflowBuilder::Operation->from_hashref(
+        $operation_hashref, 'input connector');
 
     is_deeply([$operation->validation_errors],
         ['Operation may not be named "input connector"'],
