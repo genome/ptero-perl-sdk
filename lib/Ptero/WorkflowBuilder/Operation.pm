@@ -19,16 +19,6 @@ has methods => (
     default => sub { [] },
 );
 
-# has log_dir => (
-#     is => 'rw',
-#     isa => 'Str',
-# );
-
-# has parallel_by => (
-#     is => 'rw',
-#     isa => 'Maybe[Str]',
-# );
-
 sub is_input_property {
     my ($self, $property_name) = @_;
 

@@ -11,9 +11,19 @@ has name => (
     required => 1,
 );
 
+has parallel_by => (
+    is => 'rw',
+    isa => 'Str',
+    predicate => 'has_parallel_by',
+);
+
 sub input_properties {
     my $self = shift;
-    return;
+    my @properties;
+    if ($self->has_parallel_by) {
+        push @properties, $self->parallel_by;
+    }
+    return @properties;
 }
 
 sub output_properties {
