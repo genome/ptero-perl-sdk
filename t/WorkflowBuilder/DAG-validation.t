@@ -137,4 +137,27 @@ use_ok('Ptero::WorkflowBuilder::DAG');
         'test invalid dag dies on validate';
 }
 
+{
+    my $dag = create_nested_dag('dag-with-cycle');
+
+    is_deeply([$dag->_validate_no_cycles], [], 'no cycles found as expected');
+
+    $dag->create_edge(
+        source => 'sub-dag',
+        destination => 'A',
+        source_property => 'loop_to_a',
+        destination_property => 'loop_to_a',
+    );
+    $dag->create_edge(
+        source => 'A',
+        destination => 'sub-dag',
+        source_property => 'loop_from_a',
+        destination_property => 'loop_from_a',
+    );
+
+    is_deeply([$dag->_validate_no_cycles],
+        ['A cycle exists involving the following nodes: ("A", "sub-dag")'],
+        'a cycle found as expected');
+}
+
 done_testing();
