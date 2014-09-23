@@ -162,7 +162,7 @@ sub from_hashref {
 sub to_hashref {
     my $self = shift;
 
-    my @edges = map {$_->to_hashref} @{$self->edges};
+    my @edges = map {$_->to_hashref} sort {$a->sort_key cmp $b->sort_key} @{$self->edges};
     my %nodes = map {$_->name, $_->to_hashref} @{$self->nodes};
 
     return {
