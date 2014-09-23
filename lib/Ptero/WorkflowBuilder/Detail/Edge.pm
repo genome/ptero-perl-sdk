@@ -2,6 +2,7 @@ package Ptero::WorkflowBuilder::Detail::Edge;
 
 use Data::Dump qw();
 use Moose;
+use MooseX::Aliases;
 use Moose::Util::TypeConstraints;
 use Ptero::WorkflowBuilder::Detail::Node;
 use warnings FATAL => 'all';
@@ -33,11 +34,13 @@ has destination => (
 has source_property => (
     is => 'rw',
     isa => 'Str',
+    alias => 'sourceProperty',
 );
 
 has destination_property => (
     is => 'rw',
     isa => 'Str',
+    alias => 'destinationProperty',
 );
 
 sub to_hashref {
@@ -46,8 +49,8 @@ sub to_hashref {
     return {
         source => $self->source,
         destination => $self->destination,
-        source_property => $self->source_property,
-        destination_property => $self->destination_property,
+        sourceProperty => $self->source_property,
+        destinationProperty => $self->destination_property,
     }
 }
 
