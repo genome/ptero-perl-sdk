@@ -181,9 +181,16 @@ sub from_json {
 
 sub to_json {
     my $self = shift;
+    my %p = Params::Validate::validate(@_, {
+        pretty => {default => 0},
+    });
 
     $self->validate;
-    return $codec->encode($self->to_hashref);
+    if ($p{pretty}) {
+        return $codec->pretty->encode($self->to_hashref);
+    } else {
+        return $codec->encode($self->to_hashref);
+    }
 }
 
 ##############################
