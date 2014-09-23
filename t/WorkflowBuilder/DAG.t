@@ -3,135 +3,139 @@ use warnings FATAL => 'all';
 
 use Test::Exception;
 use Test::More;
-
+use WorkflowBuilder::TestHelper qw(
+    create_simple_dag
+    create_nested_dag
+);
 
 use_ok('Ptero::WorkflowBuilder::DAG');
 
-my $operation_methods = [
-    {
-        name => 'shortcut',
-        submitUrl => 'http://ptero-fork/v1/jobs',
-        parameters => {
-            commandLine => ['genome-ptero-wrapper',
-                'command', 'shortcut', 'NullCommand']
+my $simple_dag_hashref = {
+    nodes => {
+        A => {
+            methods => [
+                {
+                    name => 'shortcut',
+                    submitUrl => 'http://ptero-fork/v1/jobs',
+                    parameters => {
+                        commandLine => ['genome-ptero-wrapper',
+                            'command', 'shortcut', 'NullCommand']
+                    },
+                },
+                {
+                    name => 'execute',
+                    submitUrl => 'http://ptero-lsf/v1/jobs',
+                    parameters => {
+                        commandLine => ['genome-ptero-wrapper',
+                            'command', 'execute', 'NullCommand'],
+                        limit => {
+                            virtual_memory => 204800,
+                        },
+                        request => {
+                            min_cores => 4,
+                            memory => 200,
+                            temp_space => 5,
+                        },
+                        reserve => {
+                            min_cores => 4,
+                            memory => 200,
+                            temp_space => 5,
+                        },
+                    },
+                },
+            ],
         },
     },
-    {
-        name => 'execute',
-        submitUrl => 'http://ptero-lsf/v1/jobs',
-        parameters => {
-            commandLine => ['genome-ptero-wrapper',
-                'command', 'execute', 'NullCommand'],
-            limit => {
-                virtual_memory => 204800,
-            },
-            request => {
-                min_cores => 4,
-                memory => 200,
-                temp_space => 5,
-            },
-            reserve => {
-                min_cores => 4,
-                memory => 200,
-                temp_space => 5,
-            },
+    edges => [
+        {
+            source => 'A',
+            destination => 'output connector',
+            sourceProperty => 'out_a',
+            destinationProperty => 'out_a',
         },
-    },
-];
-
-my $operations = {
-    A => {
-        methods => $operation_methods,
-    },
-    B => {
-        methods => $operation_methods,
-    },
+        {
+            source => 'input connector',
+            destination => 'A',
+            sourceProperty => 'in_a',
+            destinationProperty => 'in_a',
+        },
+    ],
 };
 
-my $edges = [
-    {
-        source => 'input connector',
-        destination => 'A',
-        sourceProperty => 'in_a',
-        destinationProperty => 'param',
-    },
-    {
-        source => 'input connector',
-        destination => 'B',
-        sourceProperty => 'in_b',
-        destinationProperty => 'param',
-    },
-    {
-        source => 'A',
-        destination => 'output connector',
-        sourceProperty => 'out_a',
-        destinationProperty => 'out_a',
-    },
-    {
-        source => 'B',
-        destination => 'output connector',
-        sourceProperty => 'out_a',
-        destinationProperty => 'out_b',
-    },
-    {
-        source => 'A',
-        destination => 'B',
-        sourceProperty => 'out_a',
-        destinationProperty => 'a_to_b',
-    },
-];
-
 {
-    my $hashref = {
-        nodes => $operations,
-        edges => $edges,
-    };
-
-    my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($hashref, 'some-workflow');
-
-    is_deeply($dag->to_hashref, $hashref, 'round trip hashref to dag');
+    my $dag = create_simple_dag('some-workflow');
+    is_deeply($dag->to_hashref, $simple_dag_hashref, 'simple_dag created expected hashref output');
 }
 
 {
-    my $child_hashref = {
-        nodes => $operations,
-        edges => $edges,
-    };
-
-    my $parent_hashref = {
-        nodes => {'child-workflow' => $child_hashref},
+    my $nested_dag_hashref = {
+        nodes => {
+            'sub-dag' => $simple_dag_hashref,
+            A => {
+                methods => [
+                    {
+                        name => 'shortcut',
+                        submitUrl => 'http://ptero-fork/v1/jobs',
+                        parameters => {
+                            commandLine => ['genome-ptero-wrapper',
+                                'command', 'shortcut', 'NullCommand']
+                        },
+                    },
+                    {
+                        name => 'execute',
+                        submitUrl => 'http://ptero-lsf/v1/jobs',
+                        parameters => {
+                            commandLine => ['genome-ptero-wrapper',
+                                'command', 'execute', 'NullCommand'],
+                            limit => {
+                                virtual_memory => 204800,
+                            },
+                            request => {
+                                min_cores => 4,
+                                memory => 200,
+                                temp_space => 5,
+                            },
+                            reserve => {
+                                min_cores => 4,
+                                memory => 200,
+                                temp_space => 5,
+                            },
+                        },
+                    },
+                ],
+            },
+        },
         edges => [
             {
+                source => 'A',
+                destination => 'output connector',
+                sourceProperty => 'out_a',
+                destinationProperty => 'out_a',
+            },
+            {
                 source => 'input connector',
-                destination => 'child-workflow',
+                destination => 'A',
+                sourceProperty => 'in_a',
                 destinationProperty => 'in_a',
-                sourceProperty => 'sub_in_a'
             },
             {
                 source => 'input connector',
-                destination => 'child-workflow',
-                destinationProperty => 'in_b',
-                sourceProperty => 'sub_in_b'
+                destination => 'sub-dag',
+                sourceProperty => 'sub_in_a',
+                destinationProperty => 'in_a',
             },
             {
-                source => 'child-workflow',
+                source => 'sub-dag',
                 destination => 'output connector',
+                sourceProperty => 'out_a',
                 destinationProperty => 'sub_out_a',
-                sourceProperty => 'out_a'
             },
-            {
-                source => 'child-workflow',
-                destination => 'output connector',
-                destinationProperty => 'sub_out_b',
-                sourceProperty => 'out_b'
-            }
-        ]
+        ],
     };
 
-    my $dag = Ptero::WorkflowBuilder::DAG->from_hashref($parent_hashref, 'parent-workflow');
-
-    is_deeply($dag->to_hashref, $parent_hashref,
-        'round trip nested hashref to dag');
+    my $dag = create_nested_dag('parent-dag');
+    is_deeply($dag->to_hashref, $nested_dag_hashref,
+        'nested dag produces expected hashref');
 }
 
 done_testing();
