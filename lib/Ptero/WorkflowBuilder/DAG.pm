@@ -220,15 +220,24 @@ sub _validate_node_names_are_unique {
     return @errors;
 }
 
-sub edge_targets {
+sub edge_sources {
     my $self = shift;
 
-    my $edge_targets = new Set::Scalar;
+    my $edge_sources = new Set::Scalar;
     for my $edge (@{$self->edges}) {
-        $edge_targets->insert($edge->source);
-        $edge_targets->insert($edge->destination);
+        $edge_sources->insert($edge->source);
     }
-    return $edge_targets;
+    return $edge_sources;
+}
+
+sub edge_destinations {
+    my $self = shift;
+
+    my $edge_destinations = new Set::Scalar;
+    for my $edge (@{$self->edges}) {
+        $edge_destinations->insert($edge->destination);
+    }
+    return $edge_destinations;
 }
 
 sub _validate_edge_node_consistency {
@@ -236,10 +245,11 @@ sub _validate_edge_node_consistency {
     my @errors;
 
     my $node_names = $self->node_names;
-    my $edge_targets = $self->edge_targets;
+    my $edge_sources = $self->edge_sources;
+    my $edge_destinations = $self->edge_destinations;
 
-    my $invalid_edge_targets = $edge_targets - $node_names;
-    my $orphaned_node_names = $node_names - $edge_targets;
+    my $invalid_edge_targets = ($edge_sources + $edge_destinations) - $node_names;
+    my $orphaned_node_names = $node_names - $edge_destinations - 'input connector';
 
     unless ($invalid_edge_targets->is_empty) {
         push @errors, sprintf(
