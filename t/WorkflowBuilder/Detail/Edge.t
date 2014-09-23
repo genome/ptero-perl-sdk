@@ -16,8 +16,8 @@ use_ok('Ptero::WorkflowBuilder::Detail::Edge');
     my $expected_hashref = {
         source => 'source node',
         destination => 'destination node',
-        source_property => 'output',
-        destination_property => 'input',
+        sourceProperty => 'output',
+        destinationProperty => 'input',
     };
     is_deeply($edge->to_hashref, $expected_hashref, 'typical edge produces expected hashref');
 };
@@ -26,8 +26,8 @@ use_ok('Ptero::WorkflowBuilder::Detail::Edge');
     my $expected_hashref = {
         source => 'source node',
         destination => 'destination node',
-        source_property => 'output',
-        destination_property => 'input',
+        sourceProperty => 'output',
+        destinationProperty => 'input',
     };
     my $edge = Ptero::WorkflowBuilder::Detail::Edge->from_hashref($expected_hashref);
     is_deeply($edge->to_hashref, $expected_hashref, 'edge roundtrip from/to_hashref');
@@ -42,8 +42,8 @@ use_ok('Ptero::WorkflowBuilder::Detail::Edge');
     my $expected_hashref = {
         source => 'input connector',
         destination => 'destination node',
-        source_property => 'output',
-        destination_property => 'input',
+        sourceProperty => 'output',
+        destinationProperty => 'input',
     };
     is_deeply($edge->to_hashref, $expected_hashref, 'missing source node uses input connector');
 };
@@ -57,8 +57,8 @@ use_ok('Ptero::WorkflowBuilder::Detail::Edge');
     my $expected_hashref = {
         source => 'source node',
         destination => 'output connector',
-        source_property => 'output',
-        destination_property => 'input',
+        sourceProperty => 'output',
+        destinationProperty => 'input',
     };
     is_deeply($edge->to_hashref, $expected_hashref,
         'missing destination node uses output connector');
@@ -94,8 +94,8 @@ use_ok('Ptero::WorkflowBuilder::Detail::Edge');
     );
 
     my $expected = {
-        source => $source_name, source_property => 'output',
-        destination => $destination_name, destination_property => 'input',
+        source => $source_name, sourceProperty => 'output',
+        destination => $destination_name, destinationProperty => 'input',
     };
 
     is_deeply($edge->to_hashref, $expected, 'test');

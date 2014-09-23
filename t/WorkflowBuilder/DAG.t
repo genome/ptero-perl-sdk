@@ -52,32 +52,32 @@ my $edges = [
     {
         source => 'input connector',
         destination => 'A',
-        source_property => 'in_a',
-        destination_property => 'param',
+        sourceProperty => 'in_a',
+        destinationProperty => 'param',
     },
     {
         source => 'input connector',
         destination => 'B',
-        source_property => 'in_b',
-        destination_property => 'param',
+        sourceProperty => 'in_b',
+        destinationProperty => 'param',
     },
     {
         source => 'A',
         destination => 'output connector',
-        source_property => 'out_a',
-        destination_property => 'out_a',
+        sourceProperty => 'out_a',
+        destinationProperty => 'out_a',
     },
     {
         source => 'B',
         destination => 'output connector',
-        source_property => 'out_a',
-        destination_property => 'out_b',
+        sourceProperty => 'out_a',
+        destinationProperty => 'out_b',
     },
     {
         source => 'A',
         destination => 'B',
-        source_property => 'out_a',
-        destination_property => 'a_to_b',
+        sourceProperty => 'out_a',
+        destinationProperty => 'a_to_b',
     },
 ];
 
@@ -104,26 +104,26 @@ my $edges = [
             {
                 source => 'input connector',
                 destination => 'child-workflow',
-                destination_property => 'in_a',
-                source_property => 'sub_in_a'
+                destinationProperty => 'in_a',
+                sourceProperty => 'sub_in_a'
             },
             {
                 source => 'input connector',
                 destination => 'child-workflow',
-                destination_property => 'in_b',
-                source_property => 'sub_in_b'
+                destinationProperty => 'in_b',
+                sourceProperty => 'sub_in_b'
             },
             {
                 source => 'child-workflow',
                 destination => 'output connector',
-                destination_property => 'sub_out_a',
-                source_property => 'out_a'
+                destinationProperty => 'sub_out_a',
+                sourceProperty => 'out_a'
             },
             {
                 source => 'child-workflow',
                 destination => 'output connector',
-                destination_property => 'sub_out_b',
-                source_property => 'out_b'
+                destinationProperty => 'sub_out_b',
+                sourceProperty => 'out_b'
             }
         ]
     };
