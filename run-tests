@@ -1,4 +1,4 @@
 #!/bin/sh
 rm -rf cover_db
-HARNESS_PERL_SWITCHES=-MDevel::Cover=+ignore,local carton exec prove -vrl t/
+HARNESS_PERL_SWITCHES=-MDevel::Cover=+ignore,local carton exec prove -vrl -I t t/
 carton exec cover -report html
