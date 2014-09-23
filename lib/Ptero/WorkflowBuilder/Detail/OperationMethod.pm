@@ -1,6 +1,7 @@
 package Ptero::WorkflowBuilder::Detail::OperationMethod;
 
 use Moose;
+use MooseX::Aliases;
 use warnings FATAL => 'all';
 
 with 'Ptero::WorkflowBuilder::Detail::ConvertsToHashref';
@@ -14,6 +15,7 @@ has name => (
 has submit_url => (
     is => 'rw',
     isa => 'Str',
+    alias => 'submitUrl',
     required => 1,
 );
 
@@ -29,7 +31,7 @@ sub to_hashref {
 
     return {
         name       => $self->name,
-        submit_url => $self->submit_url,
+        submitUrl  => $self->submit_url,
         parameters => $self->parameters,
     };
 }

@@ -10,7 +10,7 @@ use_ok('Ptero::WorkflowBuilder::DAG');
 my $operation_methods = [
     {
         name => 'shortcut',
-        submit_url => 'http://ptero-fork/v1/jobs',
+        submitUrl => 'http://ptero-fork/v1/jobs',
         parameters => {
             commandLine => ['genome-ptero-wrapper',
                 'command', 'shortcut', 'NullCommand']
@@ -18,7 +18,7 @@ my $operation_methods = [
     },
     {
         name => 'execute',
-        submit_url => 'http://ptero-lsf/v1/jobs',
+        submitUrl => 'http://ptero-lsf/v1/jobs',
         parameters => {
             commandLine => ['genome-ptero-wrapper',
                 'command', 'execute', 'NullCommand'],

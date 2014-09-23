@@ -5,7 +5,7 @@ requires "File::Slurp";
 requires "JSON";
 requires "Log::Log4perl";
 requires "Moose";
-requires "MooseX::Getopt";
+requires "MooseX::Aliases";
 requires "Params::Validate";
 requires "Set::Scalar";
 

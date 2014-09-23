@@ -10,7 +10,7 @@ use_ok('Ptero::WorkflowBuilder::Operation');
 
 my $opmethod = {
     name => 'foo',
-    submit_url => 'http://example.com',
+    submitUrl => 'http://example.com',
     parameters => {},
 };
 
