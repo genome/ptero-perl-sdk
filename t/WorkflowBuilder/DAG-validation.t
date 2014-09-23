@@ -6,6 +6,7 @@ use Test::More;
 use WorkflowBuilder::TestHelper qw(
     create_simple_dag
     create_nested_dag
+    create_operation
 );
 
 use_ok('Ptero::WorkflowBuilder::DAG');
@@ -135,6 +136,59 @@ use_ok('Ptero::WorkflowBuilder::DAG');
 
     dies_ok {$dag->validate}
         'test invalid dag dies on validate';
+}
+
+{
+    my $dag = create_nested_dag('dag-with-cycle');
+
+    is_deeply([$dag->_validate_no_cycles], [], 'no cycles found as expected');
+
+    $dag->create_edge(
+        source => 'sub-dag',
+        destination => 'A',
+        source_property => 'loop_to_a',
+        destination_property => 'loop_to_a',
+    );
+    $dag->create_edge(
+        source => 'A',
+        destination => 'sub-dag',
+        source_property => 'loop_from_a',
+        destination_property => 'loop_from_a',
+    );
+
+    is_deeply([$dag->_validate_no_cycles],
+        ['A cycle exists involving the following nodes: ("A", "sub-dag")'],
+        'a cycle found as expected');
+}
+
+{
+    my $dag = create_simple_dag('dag-with-isolated-cycle');
+
+    for my $name (qw(B C D)) {
+        $dag->add_node(create_operation($name));
+    }
+    $dag->create_edge(
+        source => 'B',
+        destination => 'C',
+        source_property => 'loop',
+        destination_property => 'loop',
+    );
+    $dag->create_edge(
+        source => 'C',
+        destination => 'D',
+        source_property => 'loop',
+        destination_property => 'loop',
+    );
+    $dag->create_edge(
+        source => 'D',
+        destination => 'B',
+        source_property => 'loop',
+        destination_property => 'loop',
+    );
+
+    is_deeply([$dag->_validate_no_cycles],
+        ['A cycle exists involving the following nodes: ("B", "C", "D")'],
+        'an isolated cycle found as expected');
 }
 
 done_testing();

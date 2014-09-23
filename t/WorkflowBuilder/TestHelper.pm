@@ -7,6 +7,7 @@ use Exporter 'import';
 our @EXPORT_OK = qw(
     create_simple_dag
     create_nested_dag
+    create_operation
 );
 
 sub create_operation {

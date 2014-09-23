@@ -8,6 +8,7 @@ use JSON qw();
 use List::MoreUtils qw();
 use Params::Validate qw(validate_pos :types);
 use Set::Scalar qw();
+use Graph::Directed qw();
 
 use Ptero::WorkflowBuilder::Detail::Edge;
 use Ptero::WorkflowBuilder::Operation;
@@ -197,6 +198,24 @@ sub to_json {
 # Validations
 ##############################
 
+sub _validate_no_cycles {
+    my $self = shift;
+    my @errors;
+
+    my $g = Graph::Directed->new();
+    for my $edge (@{$self->edges}) {
+        $g->add_edge($edge->source, $edge->destination);
+    }
+
+    for my $region ($g->strongly_connected_components) {
+        if (@$region > 1) {
+            push @errors, sprintf("A cycle exists involving the following nodes: %s",
+                Data::Dump::pp(sort @$region));
+        }
+    }
+    return @errors;
+}
+
 sub _validate_node_names_are_unique {
     my $self = shift;
     my @errors;
@@ -366,6 +385,7 @@ sub validation_errors {
         _validate_mandatory_inputs
         _validate_outputs_exist
         _validate_edge_targets_are_unique
+        _validate_no_cycles
     );
 
     # Cascade validations
