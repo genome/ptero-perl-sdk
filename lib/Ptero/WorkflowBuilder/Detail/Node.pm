@@ -1,5 +1,6 @@
 package Ptero::WorkflowBuilder::Detail::Node;
 use Moose::Role;
+use MooseX::Aliases;
 use warnings FATAL => 'all';
 
 requires 'to_hashref';
@@ -14,6 +15,7 @@ has name => (
 has parallel_by => (
     is => 'rw',
     isa => 'Str',
+    alias => 'parallelBy',
     predicate => 'has_parallel_by',
 );
 
