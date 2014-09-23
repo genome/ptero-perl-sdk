@@ -210,7 +210,7 @@ sub _validate_no_cycles {
     for my $region ($g->strongly_connected_components) {
         if (@$region > 1) {
             push @errors, sprintf("A cycle exists involving the following nodes: %s",
-                Data::Dump::pp(@$region));
+                Data::Dump::pp(sort @$region));
         }
     }
     return @errors;
