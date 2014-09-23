@@ -52,9 +52,9 @@ sub create_edge {
 sub connect_input {
     my $self = shift;
     my %args = Params::Validate::validate(@_, {
-            source_property => { type => Params::Validate::SCALAR },
-            destination => { type => Params::Validate::SCALAR },
-            destination_property => { type => Params::Validate::SCALAR },
+            source_property => { type => SCALAR },
+            destination => { type => SCALAR|OBJECT },
+            destination_property => { type => SCALAR },
     });
 
     $self->create_edge(%args);
@@ -64,9 +64,9 @@ sub connect_input {
 sub connect_output {
     my $self = shift;
     my %args = Params::Validate::validate(@_, {
-            source => { type => Params::Validate::SCALAR },
-            source_property => { type => Params::Validate::SCALAR },
-            destination_property => { type => Params::Validate::SCALAR },
+            source => { type => SCALAR|OBJECT },
+            source_property => { type => SCALAR },
+            destination_property => { type => SCALAR },
     });
 
     $self->create_edge(%args);
