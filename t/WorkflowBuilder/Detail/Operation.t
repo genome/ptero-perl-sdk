@@ -78,7 +78,7 @@ my $opmethod = {
 {
     my $operation_hashref = {
         methods => [$opmethod],
-        parallel_by => 'qux',
+        parallelBy => 'qux',
     };
 
     my $operation = Ptero::WorkflowBuilder::Operation->from_hashref(
@@ -86,6 +86,8 @@ my $opmethod = {
 
     is_deeply([$operation->input_properties], ['qux'],
         'parallel_by is in input_properties');
+    is_deeply($operation->to_hashref, $operation_hashref,
+        'operation hashref roundtrip');
 };
 
 done_testing();

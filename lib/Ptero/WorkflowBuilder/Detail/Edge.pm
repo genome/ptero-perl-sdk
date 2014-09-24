@@ -66,9 +66,10 @@ sub external_output {
 
 sub sort_key {
     my $self = shift;
-    return Data::Dump::pp(
+    my @parts = map Data::Dump::quote($_), (
         $self->source, $self->destination,
         $self->source_property, $self->destination_property);
+    return join('|', @parts);
 }
 
 sub source_to_string {

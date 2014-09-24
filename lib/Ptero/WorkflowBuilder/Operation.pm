@@ -34,9 +34,13 @@ sub is_output_property {
 sub to_hashref {
     my $self = shift;
 
-    return {
+    my $result = {
         methods => [map { $_->to_hashref } @{$self->methods}],
     };
+    if ($self->has_parallel_by) {
+        $result->{parallelBy} = $self->parallel_by;
+    }
+    return $result;
 }
 
 sub from_hashref {

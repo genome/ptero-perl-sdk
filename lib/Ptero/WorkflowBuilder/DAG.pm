@@ -134,9 +134,13 @@ sub from_hashref {
     my ($class, $hashref, $name) = validate_pos(@_, 1,
         {type => HASHREF}, {type => SCALAR});
 
-    my $self = $class->new(
+    my %params = (
         name => $name,
     );
+    if (exists $hashref->{parallelBy}) {
+        $params{parallel_by} = $hashref->{parallelBy};
+    }
+    my $self = $class->new(%params);
 
     for my $edge_hashref (@{$hashref->{edges}}) {
         $self->add_edge(Ptero::WorkflowBuilder::Detail::Edge->from_hashref($edge_hashref));
@@ -166,10 +170,14 @@ sub to_hashref {
     my @edges = map {$_->to_hashref} sort {$a->sort_key cmp $b->sort_key} @{$self->edges};
     my %nodes = map {$_->name, $_->to_hashref} @{$self->nodes};
 
-    return {
+    my $result = {
         edges => \@edges,
         nodes => \%nodes,
     };
+    if ($self->has_parallel_by) {
+        $result->{parallelBy} = $self->parallel_by;
+    }
+    return $result;
 }
 
 sub from_json {
