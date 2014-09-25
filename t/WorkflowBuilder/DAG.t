@@ -137,8 +137,8 @@ my $simple_dag_hashref = {
     is_deeply($dag->to_hashref, $nested_dag_hashref,
         'nested dag produces expected hashref');
 
-    $dag->parallel_by('dag_pb_input');
-    $nested_dag_hashref->{parallelBy} = 'dag_pb_input';
+    $dag->parallel_by([['dag_pb_input']]);
+    $nested_dag_hashref->{parallelBy} = [['dag_pb_input']];
     is_deeply($dag->to_hashref, $nested_dag_hashref,
         'nested dag (with parallel_by) produces expected hashref');
 }

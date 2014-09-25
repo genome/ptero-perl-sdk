@@ -14,17 +14,31 @@ has name => (
 
 has parallel_by => (
     is => 'rw',
-    isa => 'Str',
+    isa => 'ArrayRef[ArrayRef[Str]]',
     alias => 'parallelBy',
     predicate => 'has_parallel_by',
 );
 
+sub parallel_by_properties {
+    my $self = shift;
+
+    return unless $self->has_parallel_by;
+
+    my @flattened_properties;
+    for my $group (@{$self->parallel_by}) {
+        for my $property (@$group) {
+            push @flattened_properties, $property;
+        }
+    }
+    return @flattened_properties;
+}
+
 sub input_properties {
     my $self = shift;
+
     my @properties;
-    if ($self->has_parallel_by) {
-        push @properties, $self->parallel_by;
-    }
+    push @properties, $self->parallel_by_properties;
+
     return @properties;
 }
 
