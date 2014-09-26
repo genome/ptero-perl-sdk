@@ -5,7 +5,7 @@ use Test::Exception;
 use Test::More;
 
 
-use_ok('Ptero::WorkflowBuilder::Detail::OperationMethod');
+use_ok('Ptero::WorkflowBuilder::Detail::Method');
 
 {
     my $hashref = {
@@ -23,9 +23,9 @@ use_ok('Ptero::WorkflowBuilder::Detail::OperationMethod');
         }
     };
 
-    my $opmethod = Ptero::WorkflowBuilder::Detail::OperationMethod->from_hashref($hashref);
+    my $method = Ptero::WorkflowBuilder::Detail::Method->from_hashref($hashref);
 
-    is_deeply($opmethod->to_hashref, $hashref, 'round trip hashref to operation method');
+    is_deeply($method->to_hashref, $hashref, 'round trip hashref to method');
 };
 
 

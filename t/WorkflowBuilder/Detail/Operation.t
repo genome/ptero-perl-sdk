@@ -3,12 +3,12 @@ use warnings FATAL => 'all';
 
 use Test::Exception;
 use Test::More;
-use Ptero::WorkflowBuilder::Detail::OperationMethod;
+use Ptero::WorkflowBuilder::Detail::Method;
 
 
 use_ok('Ptero::WorkflowBuilder::Operation');
 
-my $opmethod = {
+my $method = {
     name => 'foo',
     submitUrl => 'http://example.com',
     parameters => {},
@@ -16,7 +16,7 @@ my $opmethod = {
 
 {
     my $operation_hashref = {
-        methods => [$opmethod],
+        methods => [$method],
     };
 
     my $operation = Ptero::WorkflowBuilder::Operation->from_hashref(
@@ -58,7 +58,7 @@ my $opmethod = {
 
 {
     my $operation_hashref = {
-        methods => [$opmethod],
+        methods => [$method],
     };
 
     my $operation = Ptero::WorkflowBuilder::Operation->from_hashref(
@@ -77,7 +77,7 @@ my $opmethod = {
 
 {
     my $operation_hashref = {
-        methods => [$opmethod],
+        methods => [$method],
         parallelBy => 'qux',
     };
 

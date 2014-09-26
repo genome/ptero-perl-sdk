@@ -1,4 +1,4 @@
-package Ptero::WorkflowBuilder::Detail::OperationMethod;
+package Ptero::WorkflowBuilder::Detail::Method;
 
 use Moose;
 use MooseX::Aliases;

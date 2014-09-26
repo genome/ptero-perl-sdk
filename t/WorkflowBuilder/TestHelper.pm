@@ -13,8 +13,8 @@ our @EXPORT_OK = qw(
 sub create_operation {
     my $name = shift;
 
-    my $operation_methods = [
-        Ptero::WorkflowBuilder::Detail::OperationMethod->new(
+    my $methods = [
+        Ptero::WorkflowBuilder::Detail::Method->new(
             name => 'shortcut',
             submitUrl => 'http://ptero-fork/v1/jobs',
             parameters => {
@@ -22,7 +22,7 @@ sub create_operation {
                     'command', 'shortcut', 'NullCommand']
             },
         ),
-        Ptero::WorkflowBuilder::Detail::OperationMethod->new(
+        Ptero::WorkflowBuilder::Detail::Method->new(
             name => 'execute',
             submitUrl => 'http://ptero-lsf/v1/jobs',
             parameters => {
@@ -46,7 +46,7 @@ sub create_operation {
     ];
     return Ptero::WorkflowBuilder::Operation->new(
         name => $name,
-        methods => $operation_methods,
+        methods => $methods,
     );
 }
 

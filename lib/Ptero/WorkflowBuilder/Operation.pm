@@ -7,7 +7,7 @@ use Data::Dump qw();
 use Set::Scalar qw();
 use Params::Validate qw(validate_pos :types);
 
-use Ptero::WorkflowBuilder::Detail::OperationMethod;
+use Ptero::WorkflowBuilder::Detail::Method;
 
 with 'Ptero::WorkflowBuilder::Detail::ConvertsToHashref';
 with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
@@ -15,7 +15,7 @@ with 'Ptero::WorkflowBuilder::Detail::Node';
 
 has methods => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::OperationMethod]',
+    isa => 'ArrayRef[Ptero::WorkflowBuilder::Detail::Method]',
     default => sub { [] },
 );
 
@@ -55,7 +55,7 @@ sub from_hashref {
     my %hash = %$hashref; # copy the hashref
 
     my @methods = map {
-        Ptero::WorkflowBuilder::Detail::OperationMethod->from_hashref($_)
+        Ptero::WorkflowBuilder::Detail::Method->from_hashref($_)
     } @{$hashref->{methods}};
 
     delete $hash{methods};
