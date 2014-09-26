@@ -1,4 +1,4 @@
-package Ptero::WorkflowBuilder::Operation;
+package Ptero::WorkflowBuilder::Command;
 
 use Moose;
 use warnings FATAL => 'all';
@@ -48,7 +48,7 @@ sub from_hashref {
         {type => HASHREF}, {type => SCALAR});
 
     unless (exists $hashref->{methods} && ref($hashref->{methods}) eq 'ARRAY') {
-        die 'Operation hashref must contain a methods arrayref: '
+        die 'Command hashref must contain a methods arrayref: '
             . Data::Dump::pp($hashref);
     }
 
@@ -70,7 +70,7 @@ sub validation_errors {
 
     if ($_INVALID_NAMES->contains($self->name)) {
         push @errors, sprintf(
-            'Operation may not be named %s',
+            'Command may not be named %s',
             Data::Dump::pp($self->name)
         );
     }
@@ -78,7 +78,7 @@ sub validation_errors {
     my @methods = @{$self->methods};
     unless (@methods) {
         push @errors, sprintf(
-            'Operation named %s must have at least one method',
+            'Command named %s must have at least one method',
             Data::Dump::pp($self->name)
         );
     }

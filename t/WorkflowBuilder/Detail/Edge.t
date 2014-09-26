@@ -76,15 +76,15 @@ use_ok('Ptero::WorkflowBuilder::Detail::Edge');
 };
 
 {
-    use Ptero::WorkflowBuilder::Operation;
+    use Ptero::WorkflowBuilder::Command;
 
-    my $source_name = 'coerce-source-op';
-    my $destination_name = 'coerce-destination-op';
+    my $source_name = 'coerce-source-command';
+    my $destination_name = 'coerce-destination-command';
 
-    my $source = Ptero::WorkflowBuilder::Operation->new(
+    my $source = Ptero::WorkflowBuilder::Command->new(
         name => $source_name,
     );
-    my $destination = Ptero::WorkflowBuilder::Operation->new(
+    my $destination = Ptero::WorkflowBuilder::Command->new(
         name => $destination_name,
     );
 

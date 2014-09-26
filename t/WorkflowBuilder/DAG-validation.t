@@ -6,7 +6,7 @@ use Test::More;
 use WorkflowBuilder::TestHelper qw(
     create_simple_dag
     create_nested_dag
-    create_operation
+    create_command
 );
 
 use_ok('Ptero::WorkflowBuilder::DAG');
@@ -30,7 +30,7 @@ use_ok('Ptero::WorkflowBuilder::DAG');
     is_deeply([$dag->_validate_edge_node_consistency], [],
         'no orphaned nodes error');
 
-    $dag->add_node(Ptero::WorkflowBuilder::Operation->new(
+    $dag->add_node(Ptero::WorkflowBuilder::Command->new(
             name => 'C'));
 
     is_deeply([$dag->_validate_edge_node_consistency],
@@ -165,7 +165,7 @@ use_ok('Ptero::WorkflowBuilder::DAG');
     my $dag = create_simple_dag('dag-with-isolated-cycle');
 
     for my $name (qw(B C D)) {
-        $dag->add_node(create_operation($name));
+        $dag->add_node(create_command($name));
     }
     $dag->create_edge(
         source => 'B',
