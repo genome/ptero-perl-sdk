@@ -51,7 +51,7 @@ my $method = {
     my $command = Ptero::WorkflowBuilder::Command->from_hashref(
         $command_hashref, 'halibut');
 
-    is_deeply([$command->validation_errors],
+    is_deeply([$command->_method_errors],
         ['Command named "halibut" must have at least one method'],
         'command must have at least one method');
 };
@@ -64,13 +64,13 @@ my $method = {
     my $command = Ptero::WorkflowBuilder::Command->from_hashref(
         $command_hashref, 'input connector');
 
-    is_deeply([$command->validation_errors],
+    is_deeply([$command->_name_errors],
         ['Node may not be named "input connector"'],
         'command may not be named "input connector"');
 
     $command->name('output connector');
 
-    is_deeply([$command->validation_errors],
+    is_deeply([$command->_name_errors],
         ['Node may not be named "output connector"'],
         'command may not be named "output conenctor"');
 };
