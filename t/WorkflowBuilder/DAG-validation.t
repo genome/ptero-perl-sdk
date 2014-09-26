@@ -6,7 +6,7 @@ use Test::More;
 use WorkflowBuilder::TestHelper qw(
     create_simple_dag
     create_nested_dag
-    create_operation
+    create_command
 );
 
 use_ok('Ptero::WorkflowBuilder::DAG');
@@ -14,12 +14,12 @@ use_ok('Ptero::WorkflowBuilder::DAG');
 {
     my $dag = create_simple_dag('duplicate-nodes-dag');
 
-    is_deeply([$dag->_validate_node_names_are_unique], [],
+    is_deeply([$dag->_node_name_errors], [],
         'no duplicate nodes error');
 
     $dag->add_node($dag->node_named('A'));
 
-    is_deeply([$dag->_validate_node_names_are_unique],
+    is_deeply([$dag->_node_name_errors],
         ['Duplicate node names: "A"'],
         'duplicate nodes error');
 }
@@ -27,13 +27,13 @@ use_ok('Ptero::WorkflowBuilder::DAG');
 {
     my $dag = create_simple_dag('orphaned-node-dag');
 
-    is_deeply([$dag->_validate_edge_node_consistency], [],
+    is_deeply([$dag->_orphaned_node_errors], [],
         'no orphaned nodes error');
 
-    $dag->add_node(Ptero::WorkflowBuilder::Operation->new(
+    $dag->add_node(Ptero::WorkflowBuilder::Command->new(
             name => 'C'));
 
-    is_deeply([$dag->_validate_edge_node_consistency],
+    is_deeply([$dag->_orphaned_node_errors],
         ['Orphaned node names: "C"'],
         'orphaned nodes error');
 }
@@ -41,28 +41,28 @@ use_ok('Ptero::WorkflowBuilder::DAG');
 {
     my $dag = create_simple_dag('orphaned-node-dag');
 
-    is_deeply([$dag->_validate_edge_node_consistency], [],
-        'no invalid edge target error');
+    is_deeply([$dag->_edge_target_errors], [],
+        'no edge target error');
 
     $dag->create_edge(
         source => 'A', source_property => 'foo',
         destination => 'C', destination_property => 'bar');
 
-    is_deeply([$dag->_validate_edge_node_consistency],
+    is_deeply([$dag->_edge_target_errors],
         ['Edges have invalid targets: "C"'],
-        'invalid edge target error');
+        'edge target error');
 }
 
 {
     my $parent_dag = create_simple_dag('parent-dag');
     my $sub_dag = create_simple_dag('sub-dag');
 
-    is_deeply([$parent_dag->_validate_mandatory_inputs], [],
+    is_deeply([$parent_dag->_node_input_errors], [],
         'no mandatory inputs error');
 
     $parent_dag->add_node($sub_dag);
 
-    is_deeply([$parent_dag->_validate_mandatory_inputs],
+    is_deeply([$parent_dag->_node_input_errors],
         ['No edges targeting mandatory input(s): ("sub-dag", "in_a")'],
         'mandatory inputs error');
 
@@ -77,12 +77,12 @@ use_ok('Ptero::WorkflowBuilder::DAG');
         destination_property => 'sub_out_a',
     );
 
-    is_deeply([$parent_dag->_validate_mandatory_inputs], [],
+    is_deeply([$parent_dag->_node_input_errors], [],
         'fixed mandatory inputs error');
 
     $sub_dag->parallel_by('in_parallel');
 
-    is_deeply([$parent_dag->_validate_mandatory_inputs],
+    is_deeply([$parent_dag->_node_input_errors],
         ['No edges targeting mandatory input(s): ("sub-dag", "in_parallel")'],
         'mandatory inputs error for parallel_by');
 
@@ -92,15 +92,15 @@ use_ok('Ptero::WorkflowBuilder::DAG');
         source_property => 'sub_in_parallel'
     );
 
-    is_deeply([$parent_dag->_validate_mandatory_inputs], [],
+    is_deeply([$parent_dag->_node_input_errors], [],
         'fixed mandatory inputs error for parallel_by');
 }
 
 {
     my $dag = create_nested_dag('outputs-exist-dag');
 
-    is_deeply([$dag->_validate_outputs_exist], [],
-        'no validate outputs error');
+    is_deeply([$dag->_dag_output_errors], [],
+        'no dag output error');
 
     $dag->connect_output(
         source => 'sub-dag',
@@ -108,40 +108,28 @@ use_ok('Ptero::WorkflowBuilder::DAG');
         destination_property => 'arbitrary'
     );
 
-    is_deeply([$dag->_validate_outputs_exist],
+    is_deeply([$dag->_dag_output_errors],
         ['Node "sub-dag" has no output named "missing-property"'],
-        'validate outputs error');
+        'dag output error');
 }
 
 {
     my $dag = create_simple_dag('multiple-edges-target-dag');
 
-    is_deeply([$dag->_validate_edge_targets_are_unique], [],
+    is_deeply([$dag->_multiple_edge_target_errors], [],
         'no multiple edges target error');
 
     $dag->add_edge($dag->edges->[0]);
 
-    is_deeply([$dag->_validate_edge_targets_are_unique],
+    is_deeply([$dag->_multiple_edge_target_errors],
         ['Destination "A.in_a" is targeted by multiple edges from: ("input connector.in_a", "input connector.in_a")'],
-        'invalid edge target error');
-}
-
-{
-    my $dag = create_simple_dag('invalid-dag-dies');
-
-    lives_ok {$dag->validate}
-        'test dag validates without dying';
-
-    $dag->add_node($dag->node_named('A'));
-
-    dies_ok {$dag->validate}
-        'test invalid dag dies on validate';
+        'multiple edge target error');
 }
 
 {
     my $dag = create_nested_dag('dag-with-cycle');
 
-    is_deeply([$dag->_validate_no_cycles], [], 'no cycles found as expected');
+    is_deeply([$dag->_cycle_errors], [], 'no cycles found as expected');
 
     $dag->create_edge(
         source => 'sub-dag',
@@ -156,7 +144,7 @@ use_ok('Ptero::WorkflowBuilder::DAG');
         destination_property => 'loop_from_a',
     );
 
-    is_deeply([$dag->_validate_no_cycles],
+    is_deeply([$dag->_cycle_errors],
         ['A cycle exists involving the following nodes: ("A", "sub-dag")'],
         'a cycle found as expected');
 }
@@ -165,7 +153,7 @@ use_ok('Ptero::WorkflowBuilder::DAG');
     my $dag = create_simple_dag('dag-with-isolated-cycle');
 
     for my $name (qw(B C D)) {
-        $dag->add_node(create_operation($name));
+        $dag->add_node(create_command($name));
     }
     $dag->create_edge(
         source => 'B',
@@ -186,9 +174,21 @@ use_ok('Ptero::WorkflowBuilder::DAG');
         destination_property => 'loop',
     );
 
-    is_deeply([$dag->_validate_no_cycles],
+    is_deeply([$dag->_cycle_errors],
         ['A cycle exists involving the following nodes: ("B", "C", "D")'],
         'an isolated cycle found as expected');
+}
+
+{
+    my $dag = create_simple_dag('invalid-dag-dies');
+
+    lives_ok {$dag->validate}
+        'test dag validates without dying';
+
+    $dag->add_node($dag->node_named('A'));
+
+    dies_ok {$dag->validate}
+        'test invalid dag dies on validate';
 }
 
 done_testing();

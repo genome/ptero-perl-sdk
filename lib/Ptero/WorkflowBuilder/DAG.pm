@@ -11,7 +11,7 @@ use Set::Scalar qw();
 use Graph::Directed qw();
 
 use Ptero::WorkflowBuilder::Detail::Edge;
-use Ptero::WorkflowBuilder::Operation;
+use Ptero::WorkflowBuilder::Command;
 
 with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
 with 'Ptero::WorkflowBuilder::Detail::Node';
@@ -151,7 +151,7 @@ sub from_hashref {
             $self->add_node(Ptero::WorkflowBuilder::DAG->from_hashref(
                     $node_hashref, $node_name));
         } elsif (exists $node_hashref->{methods}) {
-            $self->add_node(Ptero::WorkflowBuilder::Operation->from_hashref(
+            $self->add_node(Ptero::WorkflowBuilder::Command->from_hashref(
                     $node_hashref, $node_name));
         } else {
             die sprintf(
@@ -206,25 +206,7 @@ sub to_json {
 # Validations
 ##############################
 
-sub _validate_no_cycles {
-    my $self = shift;
-    my @errors;
-
-    my $g = Graph::Directed->new();
-    for my $edge (@{$self->edges}) {
-        $g->add_edge($edge->source, $edge->destination);
-    }
-
-    for my $region ($g->strongly_connected_components) {
-        if (@$region > 1) {
-            push @errors, sprintf("A cycle exists involving the following nodes: %s",
-                Data::Dump::pp(sort @$region));
-        }
-    }
-    return @errors;
-}
-
-sub _validate_node_names_are_unique {
+sub _node_name_errors {
     my $self = shift;
     my @errors;
 
@@ -267,16 +249,12 @@ sub edge_destinations {
     return $edge_destinations;
 }
 
-sub _validate_edge_node_consistency {
+sub _edge_target_errors {
     my $self = shift;
     my @errors;
 
-    my $node_names = $self->node_names;
-    my $edge_sources = $self->edge_sources;
-    my $edge_destinations = $self->edge_destinations;
-
-    my $invalid_edge_targets = ($edge_sources + $edge_destinations) - $node_names;
-    my $orphaned_node_names = $node_names - $edge_destinations - 'input connector';
+    my $invalid_edge_targets =
+        ($self->edge_sources + $self->edge_destinations) - $self->node_names;
 
     unless ($invalid_edge_targets->is_empty) {
         push @errors, sprintf(
@@ -284,6 +262,17 @@ sub _validate_edge_node_consistency {
             Data::Dump::pp(sort $invalid_edge_targets->members)
         );
     }
+
+    return @errors;
+}
+
+sub _orphaned_node_errors {
+    my $self = shift;
+    my @errors;
+
+    my $orphaned_node_names =
+        $self->node_names - $self->edge_destinations - 'input connector';
+
     unless ($orphaned_node_names->is_empty) {
         push @errors, sprintf(
             'Orphaned node names: %s',
@@ -313,7 +302,7 @@ sub _get_mandatory_inputs {
     return $result;
 }
 
-sub _validate_mandatory_inputs {
+sub _node_input_errors {
     my $self = shift;
     my @errors;
 
@@ -337,7 +326,7 @@ sub _validate_mandatory_inputs {
     return @errors;
 }
 
-sub _validate_outputs_exist {
+sub _dag_output_errors {
     my $self = shift;
     my @errors;
 
@@ -358,7 +347,7 @@ sub _validate_outputs_exist {
     return @errors;
 }
 
-sub _validate_edge_targets_are_unique {
+sub _multiple_edge_target_errors {
     my $self = shift;
     my @errors;
 
@@ -384,16 +373,36 @@ sub _validate_edge_targets_are_unique {
     return @errors;
 }
 
+sub _cycle_errors {
+    my $self = shift;
+    my @errors;
+
+    my $g = Graph::Directed->new();
+    for my $edge (@{$self->edges}) {
+        $g->add_edge($edge->source, $edge->destination);
+    }
+
+    for my $region ($g->strongly_connected_components) {
+        if (@$region > 1) {
+            push @errors, sprintf("A cycle exists involving the following nodes: %s",
+                Data::Dump::pp(sort @$region));
+        }
+    }
+    return @errors;
+}
+
 sub validation_errors {
     my $self = shift;
 
     my @errors = map { $self->$_ } qw(
-        _validate_node_names_are_unique
-        _validate_edge_node_consistency
-        _validate_mandatory_inputs
-        _validate_outputs_exist
-        _validate_edge_targets_are_unique
-        _validate_no_cycles
+        _name_errors
+        _node_name_errors
+        _edge_target_errors
+        _orphaned_node_errors
+        _node_input_errors
+        _dag_output_errors
+        _multiple_edge_target_errors
+        _cycle_errors
     );
 
     # Cascade validations

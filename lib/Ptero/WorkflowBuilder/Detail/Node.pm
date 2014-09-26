@@ -19,6 +19,22 @@ has parallel_by => (
     predicate => 'has_parallel_by',
 );
 
+my $_INVALID_NAMES = new Set::Scalar('input connector', 'output connector');
+
+sub _name_errors {
+    my $self = shift;
+    my @errors;
+
+    if ($_INVALID_NAMES->contains($self->name)) {
+        push @errors, sprintf(
+            'Node may not be named %s',
+            Data::Dump::pp($self->name)
+        );
+    }
+
+    return @errors;
+}
+
 sub input_properties {
     my $self = shift;
     my @properties;

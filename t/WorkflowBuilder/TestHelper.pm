@@ -7,14 +7,14 @@ use Exporter 'import';
 our @EXPORT_OK = qw(
     create_simple_dag
     create_nested_dag
-    create_operation
+    create_command
 );
 
-sub create_operation {
+sub create_command {
     my $name = shift;
 
-    my $operation_methods = [
-        Ptero::WorkflowBuilder::Detail::OperationMethod->new(
+    my $methods = [
+        Ptero::WorkflowBuilder::Detail::Method->new(
             name => 'shortcut',
             submitUrl => 'http://ptero-fork/v1/jobs',
             parameters => {
@@ -22,7 +22,7 @@ sub create_operation {
                     'command', 'shortcut', 'NullCommand']
             },
         ),
-        Ptero::WorkflowBuilder::Detail::OperationMethod->new(
+        Ptero::WorkflowBuilder::Detail::Method->new(
             name => 'execute',
             submitUrl => 'http://ptero-lsf/v1/jobs',
             parameters => {
@@ -44,27 +44,27 @@ sub create_operation {
             },
         ),
     ];
-    return Ptero::WorkflowBuilder::Operation->new(
+    return Ptero::WorkflowBuilder::Command->new(
         name => $name,
-        methods => $operation_methods,
+        methods => $methods,
     );
 }
 
 sub create_simple_dag {
     my $name = shift;
 
-    my $op = create_operation('A');
+    my $command = create_command('A');
     my $dag = Ptero::WorkflowBuilder::DAG->new(
         name => $name,
-        nodes => [$op],
+        nodes => [$command],
     );
     $dag->connect_input(
         source_property => 'in_a',
-        destination => $op,
+        destination => $command,
         destination_property => 'in_a',
     );
     $dag->connect_output(
-        source => $op,
+        source => $command,
         source_property => 'out_a',
         destination_property => 'out_a',
     );
