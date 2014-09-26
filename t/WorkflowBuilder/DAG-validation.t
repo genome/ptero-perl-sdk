@@ -127,18 +127,6 @@ use_ok('Ptero::WorkflowBuilder::DAG');
 }
 
 {
-    my $dag = create_simple_dag('invalid-dag-dies');
-
-    lives_ok {$dag->validate}
-        'test dag validates without dying';
-
-    $dag->add_node($dag->node_named('A'));
-
-    dies_ok {$dag->validate}
-        'test invalid dag dies on validate';
-}
-
-{
     my $dag = create_nested_dag('dag-with-cycle');
 
     is_deeply([$dag->_cycle_errors], [], 'no cycles found as expected');
@@ -189,6 +177,18 @@ use_ok('Ptero::WorkflowBuilder::DAG');
     is_deeply([$dag->_cycle_errors],
         ['A cycle exists involving the following nodes: ("B", "C", "D")'],
         'an isolated cycle found as expected');
+}
+
+{
+    my $dag = create_simple_dag('invalid-dag-dies');
+
+    lives_ok {$dag->validate}
+        'test dag validates without dying';
+
+    $dag->add_node($dag->node_named('A'));
+
+    dies_ok {$dag->validate}
+        'test invalid dag dies on validate';
 }
 
 done_testing();

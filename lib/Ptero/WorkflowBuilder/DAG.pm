@@ -206,24 +206,6 @@ sub to_json {
 # Validations
 ##############################
 
-sub _cycle_errors {
-    my $self = shift;
-    my @errors;
-
-    my $g = Graph::Directed->new();
-    for my $edge (@{$self->edges}) {
-        $g->add_edge($edge->source, $edge->destination);
-    }
-
-    for my $region ($g->strongly_connected_components) {
-        if (@$region > 1) {
-            push @errors, sprintf("A cycle exists involving the following nodes: %s",
-                Data::Dump::pp(sort @$region));
-        }
-    }
-    return @errors;
-}
-
 sub _node_name_errors {
     my $self = shift;
     my @errors;
@@ -388,6 +370,24 @@ sub _multiple_edge_target_errors {
         }
     }
 
+    return @errors;
+}
+
+sub _cycle_errors {
+    my $self = shift;
+    my @errors;
+
+    my $g = Graph::Directed->new();
+    for my $edge (@{$self->edges}) {
+        $g->add_edge($edge->source, $edge->destination);
+    }
+
+    for my $region ($g->strongly_connected_components) {
+        if (@$region > 1) {
+            push @errors, sprintf("A cycle exists involving the following nodes: %s",
+                Data::Dump::pp(sort @$region));
+        }
+    }
     return @errors;
 }
 
