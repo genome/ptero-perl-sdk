@@ -143,4 +143,15 @@ my $simple_dag_hashref = {
         'nested dag (with parallel_by) produces expected hashref');
 }
 
+{
+    my $dag = create_simple_dag('multiple-parallel-by');
+
+    $dag->parallel_by([['foo'],['bar','baz']]);
+
+    my @expected_input_properties = sort qw(in_a foo bar baz);
+    is_deeply([$dag->input_properties], \@expected_input_properties,
+        'parallel_by flattens correctly');
+
+}
+
 done_testing();
