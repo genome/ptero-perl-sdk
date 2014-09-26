@@ -78,7 +78,7 @@ my $method = {
 {
     my $command_hashref = {
         methods => [$method],
-        parallelBy => 'qux',
+        parallelBy => [['qux']],
     };
 
     my $command = Ptero::WorkflowBuilder::Command->from_hashref(

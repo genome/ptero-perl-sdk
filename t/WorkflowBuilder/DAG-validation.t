@@ -80,7 +80,7 @@ use_ok('Ptero::WorkflowBuilder::DAG');
     is_deeply([$parent_dag->_node_input_errors], [],
         'fixed mandatory inputs error');
 
-    $sub_dag->parallel_by('in_parallel');
+    $sub_dag->parallel_by([['in_parallel']]);
 
     is_deeply([$parent_dag->_node_input_errors],
         ['No edges targeting mandatory input(s): ("sub-dag", "in_parallel")'],
