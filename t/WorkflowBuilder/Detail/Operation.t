@@ -78,7 +78,7 @@ my $opmethod = {
 {
     my $operation_hashref = {
         methods => [$opmethod],
-        parallelBy => 'qux',
+        parallelBy => [['qux']],
     };
 
     my $operation = Ptero::WorkflowBuilder::Operation->from_hashref(
