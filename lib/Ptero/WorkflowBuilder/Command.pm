@@ -63,17 +63,9 @@ sub from_hashref {
     return $class->new(%hash, methods => \@methods, name => $name);
 }
 
-my $_INVALID_NAMES = new Set::Scalar('input connector', 'output connector');
-sub validation_errors {
+sub _validate_methods {
     my $self = shift;
     my @errors;
-
-    if ($_INVALID_NAMES->contains($self->name)) {
-        push @errors, sprintf(
-            'Command may not be named %s',
-            Data::Dump::pp($self->name)
-        );
-    }
 
     my @methods = @{$self->methods};
     unless (@methods) {
@@ -82,6 +74,17 @@ sub validation_errors {
             Data::Dump::pp($self->name)
         );
     }
+
+    return @errors;
+}
+
+sub validation_errors {
+    my $self = shift;
+
+    my @errors = map { $self->$_ } qw(
+        _validate_name
+        _validate_methods
+    );
 
     return @errors;
 }

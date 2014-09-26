@@ -65,13 +65,13 @@ my $method = {
         $command_hashref, 'input connector');
 
     is_deeply([$command->validation_errors],
-        ['Command may not be named "input connector"'],
+        ['Node may not be named "input connector"'],
         'command may not be named "input connector"');
 
     $command->name('output connector');
 
     is_deeply([$command->validation_errors],
-        ['Command may not be named "output connector"'],
+        ['Node may not be named "output connector"'],
         'command may not be named "output conenctor"');
 };
 

@@ -388,6 +388,7 @@ sub validation_errors {
     my $self = shift;
 
     my @errors = map { $self->$_ } qw(
+        _validate_name
         _validate_node_names_are_unique
         _validate_edge_node_consistency
         _validate_mandatory_inputs
