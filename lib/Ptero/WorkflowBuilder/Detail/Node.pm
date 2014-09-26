@@ -21,7 +21,7 @@ has parallel_by => (
 
 my $_INVALID_NAMES = new Set::Scalar('input connector', 'output connector');
 
-sub _validate_name {
+sub _name_errors {
     my $self = shift;
     my @errors;
 

@@ -63,7 +63,7 @@ sub from_hashref {
     return $class->new(%hash, methods => \@methods, name => $name);
 }
 
-sub _validate_methods {
+sub _method_errors {
     my $self = shift;
     my @errors;
 
@@ -82,8 +82,8 @@ sub validation_errors {
     my $self = shift;
 
     my @errors = map { $self->$_ } qw(
-        _validate_name
-        _validate_methods
+        _name_errors
+        _method_errors
     );
 
     return @errors;
