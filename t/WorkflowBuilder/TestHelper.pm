@@ -3,6 +3,10 @@ package WorkflowBuilder::TestHelper;
 use strict;
 use warnings FATAL => 'all';
 
+use Ptero::WorkflowBuilder::Task;
+use Ptero::WorkflowBuilder::Detail::Method;
+use Ptero::WorkflowBuilder::DAG;
+
 use Exporter 'import';
 our @EXPORT_OK = qw(
     create_simple_dag
