@@ -1,4 +1,4 @@
-package Ptero::WorkflowBuilder::Command;
+package Ptero::WorkflowBuilder::Task;
 
 use Moose;
 use warnings FATAL => 'all';
@@ -48,7 +48,7 @@ sub from_hashref {
         {type => HASHREF}, {type => SCALAR});
 
     unless (exists $hashref->{methods} && ref($hashref->{methods}) eq 'ARRAY') {
-        die 'Command hashref must contain a methods arrayref: '
+        die 'Task hashref must contain a methods arrayref: '
             . Data::Dump::pp($hashref);
     }
 
@@ -70,7 +70,7 @@ sub _method_errors {
     my @methods = @{$self->methods};
     unless (@methods) {
         push @errors, sprintf(
-            'Command named %s must have at least one method',
+            'Task named %s must have at least one method',
             Data::Dump::pp($self->name)
         );
     }

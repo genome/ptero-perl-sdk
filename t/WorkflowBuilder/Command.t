@@ -6,7 +6,7 @@ use Test::More;
 use Ptero::WorkflowBuilder::Detail::Method;
 
 
-use_ok('Ptero::WorkflowBuilder::Command');
+use_ok('Ptero::WorkflowBuilder::Task');
 
 my $method = {
     name => 'foo',
@@ -15,79 +15,79 @@ my $method = {
 };
 
 {
-    my $command_hashref = {
+    my $task_hashref = {
         methods => [$method],
     };
 
-    my $command = Ptero::WorkflowBuilder::Command->from_hashref(
-        $command_hashref, 'squid');
+    my $task = Ptero::WorkflowBuilder::Task->from_hashref(
+        $task_hashref, 'squid');
 
-    is_deeply($command->to_hashref, $command_hashref,
-        'round trip hashref to command');
+    is_deeply($task->to_hashref, $task_hashref,
+        'round trip hashref to task');
 };
 
 {
-    my $command_hashref = {
+    my $task_hashref = {
     };
 
-    throws_ok {Ptero::WorkflowBuilder::Command->from_hashref(
-            $command_hashref, 'bad-methods-in-this-command')}
-        qr/Command hashref must contain a methods arrayref/,
+    throws_ok {Ptero::WorkflowBuilder::Task->from_hashref(
+            $task_hashref, 'bad-methods-in-this-task')}
+        qr/Task hashref must contain a methods arrayref/,
         'no methods in hashref';
 
-    $command_hashref->{methods} = 'not-an-arrayref';
+    $task_hashref->{methods} = 'not-an-arrayref';
 
-    throws_ok {Ptero::WorkflowBuilder::Command->from_hashref(
-            $command_hashref, 'bad-methods-in-this-command')}
-        qr/Command hashref must contain a methods arrayref/,
+    throws_ok {Ptero::WorkflowBuilder::Task->from_hashref(
+            $task_hashref, 'bad-methods-in-this-task')}
+        qr/Task hashref must contain a methods arrayref/,
         'methods is not an arrayref';
 };
 
 {
-    my $command_hashref = {
+    my $task_hashref = {
         methods => [],
     };
 
-    my $command = Ptero::WorkflowBuilder::Command->from_hashref(
-        $command_hashref, 'halibut');
+    my $task = Ptero::WorkflowBuilder::Task->from_hashref(
+        $task_hashref, 'halibut');
 
-    is_deeply([$command->_method_errors],
-        ['Command named "halibut" must have at least one method'],
-        'command must have at least one method');
+    is_deeply([$task->_method_errors],
+        ['Task named "halibut" must have at least one method'],
+        'task must have at least one method');
 };
 
 {
-    my $command_hashref = {
+    my $task_hashref = {
         methods => [$method],
     };
 
-    my $command = Ptero::WorkflowBuilder::Command->from_hashref(
-        $command_hashref, 'input connector');
+    my $task = Ptero::WorkflowBuilder::Task->from_hashref(
+        $task_hashref, 'input connector');
 
-    is_deeply([$command->_name_errors],
+    is_deeply([$task->_name_errors],
         ['Node may not be named "input connector"'],
-        'command may not be named "input connector"');
+        'task may not be named "input connector"');
 
-    $command->name('output connector');
+    $task->name('output connector');
 
-    is_deeply([$command->_name_errors],
+    is_deeply([$task->_name_errors],
         ['Node may not be named "output connector"'],
-        'command may not be named "output conenctor"');
+        'task may not be named "output conenctor"');
 };
 
 {
-    my $command_hashref = {
+    my $task_hashref = {
         methods => [$method],
         parallelBy => [['qux']],
     };
 
-    my $command = Ptero::WorkflowBuilder::Command->from_hashref(
-        $command_hashref, 'with-parallel-by');
+    my $task = Ptero::WorkflowBuilder::Task->from_hashref(
+        $task_hashref, 'with-parallel-by');
 
-    is_deeply([$command->input_properties], ['qux'],
+    is_deeply([$task->input_properties], ['qux'],
         'parallel_by is in input_properties');
-    is_deeply($command->to_hashref, $command_hashref,
-        'command hashref roundtrip');
+    is_deeply($task->to_hashref, $task_hashref,
+        'task hashref roundtrip');
 };
 
 done_testing();
