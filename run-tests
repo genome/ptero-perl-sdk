@@ -1,4 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 rm -rf cover_db
-HARNESS_PERL_SWITCHES=-MDevel::Cover=+ignore,local carton exec prove -vrl -I t t/
+
+FILES=$*
+if [[ $# -gt 1 ]]; then
+    FILES=t
+fi
+
+HARNESS_PERL_SWITCHES=-MDevel::Cover=+ignore,local carton exec prove -vrl -I t $FILES
 carton exec cover -report html
