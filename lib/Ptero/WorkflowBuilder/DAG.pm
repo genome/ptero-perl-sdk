@@ -11,7 +11,7 @@ use Set::Scalar qw();
 use Graph::Directed qw();
 
 use Ptero::WorkflowBuilder::Detail::Edge;
-use Ptero::WorkflowBuilder::Command;
+use Ptero::WorkflowBuilder::Task;
 
 with 'Ptero::WorkflowBuilder::Detail::HasValidationErrors';
 with 'Ptero::WorkflowBuilder::Detail::Node';
@@ -151,7 +151,7 @@ sub from_hashref {
             $self->add_node(Ptero::WorkflowBuilder::DAG->from_hashref(
                     $node_hashref, $node_name));
         } elsif (exists $node_hashref->{methods}) {
-            $self->add_node(Ptero::WorkflowBuilder::Command->from_hashref(
+            $self->add_node(Ptero::WorkflowBuilder::Task->from_hashref(
                     $node_hashref, $node_name));
         } else {
             die sprintf(

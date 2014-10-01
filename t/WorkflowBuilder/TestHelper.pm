@@ -3,14 +3,18 @@ package WorkflowBuilder::TestHelper;
 use strict;
 use warnings FATAL => 'all';
 
+use Ptero::WorkflowBuilder::Task;
+use Ptero::WorkflowBuilder::Detail::Method;
+use Ptero::WorkflowBuilder::DAG;
+
 use Exporter 'import';
 our @EXPORT_OK = qw(
     create_simple_dag
     create_nested_dag
-    create_command
+    create_task
 );
 
-sub create_command {
+sub create_task {
     my $name = shift;
 
     my $methods = [
@@ -44,7 +48,7 @@ sub create_command {
             },
         ),
     ];
-    return Ptero::WorkflowBuilder::Command->new(
+    return Ptero::WorkflowBuilder::Task->new(
         name => $name,
         methods => $methods,
     );
@@ -53,18 +57,18 @@ sub create_command {
 sub create_simple_dag {
     my $name = shift;
 
-    my $command = create_command('A');
+    my $task = create_task('A');
     my $dag = Ptero::WorkflowBuilder::DAG->new(
         name => $name,
-        nodes => [$command],
+        nodes => [$task],
     );
     $dag->connect_input(
         source_property => 'in_a',
-        destination => $command,
+        destination => $task,
         destination_property => 'in_a',
     );
     $dag->connect_output(
-        source => $command,
+        source => $task,
         source_property => 'out_a',
         destination_property => 'out_a',
     );
