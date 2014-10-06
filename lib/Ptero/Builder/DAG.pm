@@ -144,7 +144,8 @@ sub _task_name_errors {
 
     if (@duplicates) {
         push @errors, sprintf(
-            'Duplicate task names: %s',
+            'Duplicate task names on DAG (%s): %s',
+            $self->name,
             Data::Dump::pp(sort @duplicates)
         );
     }

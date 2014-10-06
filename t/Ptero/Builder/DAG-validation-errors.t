@@ -16,7 +16,7 @@ use Ptero::Builder::TestHelpers qw(
 
     $dag->tasks->[1]->name('A');
     is_deeply([$dag->validation_errors], [
-            'Duplicate task names: "A"',
+            'Duplicate task names on DAG (duplicate-task-name): "A"',
         ], 'duplicate task names');
 }
 
