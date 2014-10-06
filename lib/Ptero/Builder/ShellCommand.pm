@@ -8,6 +8,7 @@ with 'Ptero::Builder::Detail::Method';
 override 'BUILDARGS' => sub {
     my $params = super();
     $params->{service} = 'ShellCommand';
+    $params->{has_unknown_io_properties} = 1;
     return $params;
 };
 

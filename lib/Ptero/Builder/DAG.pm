@@ -123,6 +123,7 @@ sub validation_errors {
         _missing_task_errors
         _orphaned_task_errors
         _task_input_errors
+        _task_output_errors
     );
 
     for (@{$self->tasks}, @{$self->links}) {
@@ -264,6 +265,31 @@ sub _encode_target {
     my ($task_name, $prop_name) = @_;
     return Data::Dump::pp($task_name, $prop_name);
 }
+
+sub _task_output_errors {
+    my $self = shift;
+    my @errors;
+
+    for my $link (@{$self->links}) {
+        my $task = $self->task_named($link->source);
+
+        next unless defined $task;
+
+        next if $task->has_unknown_io_properties;
+
+        unless ($task->is_output_property($link->source_property)) {
+            push @errors, sprintf(
+                'Task %s in DAG (%s) has no output named %s',
+                Data::Dump::pp($link->source),
+                $self->name,
+                Data::Dump::pp($link->source_property)
+            );
+        }
+    }
+
+    return @errors;
+}
+
 
 
 __PACKAGE__->meta->make_immutable;

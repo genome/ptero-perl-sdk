@@ -53,4 +53,25 @@ use Ptero::Builder::TestHelpers qw(
         ], 'missing manditory input');
 }
 
+{
+    my $dag = build_nested_dag('invalid-output');
+
+    my $inner_dag = $dag->task_named('A')->methods->[0];
+    $inner_dag->connect_output(
+        source => 'A',
+        source_property => 'A_out_two',
+        destination_property => 'A_out_two',
+    );
+    is_deeply([$dag->validation_errors], [], 'no validation errors (task has unknown io properties)');
+
+    $dag->connect_output(
+        source => 'A',
+        source_property => 'A_out_missing',
+        destination_property => 'A_out_missing',
+    );
+    is_deeply([$dag->validation_errors], [
+            'Task "A" in DAG (invalid-output) has no output named "A_out_missing"',
+        ], 'invalid output');
+}
+
 done_testing();

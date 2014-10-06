@@ -48,6 +48,15 @@ sub input_properties {
     return $properties->members;
 }
 
+sub has_unknown_io_properties {
+    my $self = shift;
+
+    for my $method (@{$self->methods}) {
+        return 1 if $method->has_unknown_io_properties;
+    }
+    return 0;
+}
+
 sub parallel_by_properties {
     my $self = shift;
 
@@ -65,15 +74,25 @@ sub parallel_by_properties {
 sub output_properties {
     my $self = shift;
 
+    my $properties = $self->_output_properties_set;
+    return $properties->members;
+}
+
+sub _output_properties_set {
+    my $self = shift;
     my $properties = Set::Scalar->new();
 
     for my $method (@{$self->methods}) {
         $properties->insert($method->output_properties);
     }
-
-    return $properties->members;
+    return $properties;
 }
 
+sub is_output_property {
+    my ($self, $name) = validate_pos(@_, 1, 1);
+
+    return $self->_output_properties_set->contains($name);
+}
 
 sub validation_errors {
     my $self = shift;
