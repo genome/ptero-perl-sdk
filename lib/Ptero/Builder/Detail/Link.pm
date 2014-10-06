@@ -65,5 +65,14 @@ sub validation_errors {
     return @errors;
 }
 
+sub to_string {
+    my $self = shift;
+    return sprintf('Ptero::Builder::Detail::Link(source => %s, source_property => %s, destination => %s, destination_property => %s)',
+        Data::Dump::pp($self->source),
+        Data::Dump::pp($self->source_property),
+        Data::Dump::pp($self->destination),
+        Data::Dump::pp($self->destination_property),
+    );
+}
 
 __PACKAGE__->meta->make_immutable;

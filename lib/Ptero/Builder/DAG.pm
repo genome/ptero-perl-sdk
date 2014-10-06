@@ -124,6 +124,7 @@ sub validation_errors {
         _orphaned_task_errors
         _task_input_errors
         _task_output_errors
+        _multiple_link_target_errors
     );
 
     for (@{$self->tasks}, @{$self->links}) {
@@ -290,6 +291,32 @@ sub _task_output_errors {
     return @errors;
 }
 
+sub _multiple_link_target_errors {
+    my $self = shift;
+    my @errors;
+
+    my %destinations;
+
+    for my $link (@{$self->links}) {
+        my $destination = _encode_target($link->destination,
+            $link->destination_property);
+        push @{$destinations{$destination}}, $link;
+    }
+
+    for my $destination (keys %destinations) {
+        my @links = @{$destinations{$destination}};
+
+        if (@links > 1) {
+            push @errors, sprintf(
+                "Multiple links on DAG (%s) target the same input_property:\n%s",
+                $self->name,
+                join(",\n", map { $_->to_string } @links),
+            );
+        }
+    }
+
+    return @errors;
+}
 
 
 __PACKAGE__->meta->make_immutable;

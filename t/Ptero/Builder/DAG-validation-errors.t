@@ -74,4 +74,17 @@ use Ptero::Builder::TestHelpers qw(
         ], 'invalid output');
 }
 
+{
+    my $dag = build_basic_dag('multi-link-target');
+    $dag->connect_input(
+        source_property => 'A_in_two',
+        destination => 'A',
+        destination_property => 'A_in',
+    );
+    is_deeply([$dag->validation_errors], [
+            qq(Multiple links on DAG (multi-link-target) target the same input_property:\nPtero::Builder::Detail::Link(source => "input connector", source_property => "A_in", destination => "A", destination_property => "A_in"),\nPtero::Builder::Detail::Link(source => "input connector", source_property => "A_in_two", destination => "A", destination_property => "A_in")),
+        ], 'multi link target');
+
+}
+
 done_testing();
