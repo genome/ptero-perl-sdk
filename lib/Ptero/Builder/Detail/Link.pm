@@ -42,6 +42,16 @@ has destination_property => (
     alias => 'destinationProperty',
 );
 
+sub is_external_input {
+    my $self = shift;
+    return $self->source eq 'input connector';
+}
+
+sub is_external_output {
+    my $self = shift;
+    return $self->destination eq 'output connector';
+}
+
 sub validation_errors {
     my $self = shift;
     my @errors;
