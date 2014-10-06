@@ -18,7 +18,7 @@ has name => (
 
 has methods => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::Builder::Method]',
+    isa => 'ArrayRef[Ptero::Builder::Detail::Method]',
     default => sub { [] },
 );
 
@@ -31,7 +31,7 @@ has parallel_by => (
 
 sub add_method {
     my ($self, $method) = validate_pos(@_, 1, {type=>OBJECT});
-    push @{$self->methods}, $method;
+    $self->methods([@{$self->methods}, $method]);
     return $method;
 }
 
