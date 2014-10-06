@@ -4,8 +4,9 @@ use warnings FATAL => 'all';
 use Test::Exception;
 use Test::More;
 use Ptero::Builder::TestHelpers qw(
-    build_basic_task
+    build_nested_dag
     build_basic_dag
+    build_basic_task
 );
 
 {
@@ -33,6 +34,23 @@ use Ptero::Builder::TestHelpers qw(
     is_deeply([$dag->validation_errors], [
         'Links on DAG (missing-task-names) refer to non-existing tasks: "C"'
         ], 'missing task names');
+}
+
+{
+    my $dag = build_nested_dag('missing-manditory-input');
+
+    is_deeply([$dag->validation_errors], [], 'no validation errors (nested)');
+
+    # create an additional manditory input
+    my $task = $dag->task_named('A');
+    $task->methods->[0]->connect_input(
+        source_property => 'A_in_two',
+        destination => 'A',
+        destination_property => 'A_in_two',
+    );
+    is_deeply([$dag->validation_errors], [
+            'No links on DAG (missing-manditory-input) targeting mandatory input(s): ("A", "A_in_two")'
+        ], 'missing manditory input');
 }
 
 done_testing();

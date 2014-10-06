@@ -122,6 +122,7 @@ sub validation_errors {
         _task_name_errors
         _missing_task_errors
         _orphaned_task_errors
+        _task_input_errors
     );
 
     for (@{$self->tasks}, @{$self->links}) {
@@ -219,6 +220,49 @@ sub _orphaned_task_errors {
     }
 
     return @errors;
+}
+
+sub _task_input_errors {
+    my $self = shift;
+    my @errors;
+
+    my $mandatory_inputs = $self->_mandatory_inputs;
+    for my $link (@{$self->links}) {
+        my $destination = _encode_target(
+            $link->destination, $link->destination_property);
+        if ($mandatory_inputs->contains($destination)) {
+            $mandatory_inputs->delete($destination);
+        }
+    }
+
+    unless ($mandatory_inputs->is_empty) {
+        push @errors, sprintf(
+            'No links on DAG (%s) targeting mandatory input(s): %s',
+            $self->name,
+            (join ', ', sort $mandatory_inputs->members)
+        );
+    }
+
+    return @errors;
+}
+
+sub _mandatory_inputs {
+    my $self = shift;
+
+    my $result = new Set::Scalar;
+
+    for my $task (@{$self->tasks}) {
+        for my $prop_name ($task->input_properties) {
+            $result->insert(_encode_target($task->name, $prop_name));
+        }
+    }
+
+    return $result;
+}
+
+sub _encode_target {
+    my ($task_name, $prop_name) = @_;
+    return Data::Dump::pp($task_name, $prop_name);
 }
 
 
