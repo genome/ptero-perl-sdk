@@ -120,6 +120,7 @@ sub validation_errors {
 
     my @errors = map { $self->$_ } qw(
         _task_name_errors
+        _missing_task_errors
     );
 
     for (@{$self->tasks}, @{$self->links}) {
@@ -151,6 +152,54 @@ sub _task_name_errors {
     }
 
     return @errors;
+}
+
+sub _missing_task_errors {
+    my $self = shift;
+    my @errors;
+
+    my $missing_task_names =
+        ($self->_link_sources + $self->_link_destinations) - $self->_task_names;
+
+    unless ($missing_task_names->is_empty) {
+        push @errors, sprintf(
+            'Links on DAG (%s) refer to non-existing tasks: %s',
+            $self->name,
+            Data::Dump::pp(sort $missing_task_names->members)
+        );
+    }
+
+    return @errors;
+}
+
+sub _link_sources {
+    my $self = shift;
+
+    my $link_sources = new Set::Scalar;
+    for my $link (@{$self->links}) {
+        $link_sources->insert($link->source);
+    }
+    return $link_sources;
+}
+
+sub _link_destinations {
+    my $self = shift;
+
+    my $link_destinations = new Set::Scalar;
+    for my $link (@{$self->links}) {
+        $link_destinations->insert($link->destination);
+    }
+    return $link_destinations;
+}
+
+sub _task_names {
+    my $self = shift;
+
+    my $task_names = Set::Scalar->new('input connector', 'output connector');
+    for my $task (@{$self->tasks}) {
+        $task_names->insert($task->name);
+    }
+    return $task_names;
 }
 
 

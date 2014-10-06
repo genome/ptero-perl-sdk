@@ -20,4 +20,17 @@ use Ptero::Builder::TestHelpers qw(
         ], 'duplicate task names');
 }
 
+{
+    my $dag = build_basic_dag('missing-task-names');
+    $dag->connect_input(
+        source_property => 'C_in',
+        destination => 'C',
+        destination_property => 'C_in',
+    );
+
+    is_deeply([$dag->validation_errors], [
+        'Links on DAG (missing-task-names) refer to non-existing tasks: "C"'
+        ], 'missing task names');
+}
+
 done_testing();
