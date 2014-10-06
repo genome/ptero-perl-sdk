@@ -121,6 +121,7 @@ sub validation_errors {
     my @errors = map { $self->$_ } qw(
         _task_name_errors
         _missing_task_errors
+        _orphaned_task_errors
     );
 
     for (@{$self->tasks}, @{$self->links}) {
@@ -200,6 +201,24 @@ sub _task_names {
         $task_names->insert($task->name);
     }
     return $task_names;
+}
+
+sub _orphaned_task_errors {
+    my $self = shift;
+    my @errors;
+
+    my $orphaned_task_names =
+        $self->_task_names - $self->_link_destinations - 'input connector';
+
+    unless ($orphaned_task_names->is_empty) {
+        push @errors, sprintf(
+            'Orphaned task(s) on DAG (%s) named: %s',
+            $self->name,
+            Data::Dump::pp(sort $orphaned_task_names->members)
+        );
+    }
+
+    return @errors;
 }
 
 
