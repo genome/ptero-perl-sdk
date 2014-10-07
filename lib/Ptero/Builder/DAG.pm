@@ -7,11 +7,14 @@ use Data::Dump qw();
 use Params::Validate qw(validate_pos :types);
 use Set::Scalar qw();
 use Graph::Directed qw();
+use JSON qw();
 
 use Ptero::Builder::Detail::Link;
 use Ptero::Builder::Task;
 
 with 'Ptero::Builder::Detail::Method';
+
+my $codec = JSON->new()->canonical([1]);
 
 has tasks => (
     is => 'rw',
@@ -391,6 +394,52 @@ after 'validate_hashref' => sub {
             ref($parameters{links}), Data::Dump::pp($hashref));
     }
 };
+
+sub from_json {
+    my ($class, $json_string, $name) = validate_pos(@_, 1,
+        {type => SCALAR}, {type => SCALAR});
+    my $hashref = $codec->decode($json_string);
+
+    $hashref->{name} = $name;
+    $hashref->{parameters}->{tasks} = delete $hashref->{tasks};
+    $hashref->{parameters}->{links} = delete $hashref->{links};
+    $hashref->{service} = 'Workflow';
+
+    return $class->from_hashref($hashref);
+}
+
+sub to_json {
+    my $self = shift;
+    my %p = Params::Validate::validate(@_, {
+        pretty => {default => 0},
+    });
+
+    $self->validate;
+
+    my $self_hashref = $self->to_hashref;
+    my $json_hashref = {
+        tasks => $self_hashref->{parameters}->{tasks},
+        links => $self_hashref->{parameters}->{links},
+    };
+
+    if ($p{pretty}) {
+        return $codec->pretty->encode($json_hashref);
+    } else {
+        return $codec->encode($json_hashref);
+    }
+}
+
+sub validate {
+    my $self = shift;
+    my @errors = $self->validation_errors;
+    if (@errors) {
+        die sprintf(
+            "DAG named %s failed validation:\n%s",
+            $self->name, (join "\n", sort @errors)
+        );
+    }
+    return;
+}
 
 
 __PACKAGE__->meta->make_immutable;
