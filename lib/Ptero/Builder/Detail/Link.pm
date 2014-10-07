@@ -55,15 +55,45 @@ sub is_external_output {
 
 sub validation_errors {
     my $self = shift;
-    my @errors;
+
+    return map { $self->$_ } qw(
+        _source_and_destination_unique_errors
+        _source_is_output_connector_errors
+        _destination_is_input_connector_errors
+    );
+}
+
+sub _source_and_destination_unique_errors {
+    my $self = shift;
+
     if ($self->source eq $self->destination) {
-        push @errors, sprintf(
+        return sprintf(
             'Source and destination tasks on link are both named %s',
             Data::Dump::pp($self->source)
         );
+    } else {
+        return ();
     }
+}
 
-    return @errors;
+sub _source_is_output_connector_errors {
+    my $self = shift;
+
+    if ($self->source eq 'output connector') {
+        return 'Source cannot be named named "output connector"';
+    } else {
+        return ();
+    }
+}
+
+sub _destination_is_input_connector_errors {
+    my $self = shift;
+
+    if ($self->destination eq 'input connector') {
+        return 'Destination cannot be named named "input connector"';
+    } else {
+        return ();
+    }
 }
 
 sub to_string {

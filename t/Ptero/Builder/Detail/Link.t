@@ -22,4 +22,19 @@ use_ok('Ptero::Builder::Detail::Link');
         'source is destination');
 }
 
+{
+    my $link = Ptero::Builder::Detail::Link->new(
+        source => 'output connector',
+        destination => 'input connector',
+        source_property => 'baz',
+        destination_property => 'qux',
+    );
+
+    is_deeply([$link->validation_errors], [
+            'Source cannot be named named "output connector"',
+            'Destination cannot be named named "input connector"',
+        ],
+        'source and destination name errors');
+}
+
 done_testing();
