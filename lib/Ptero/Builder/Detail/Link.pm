@@ -5,6 +5,7 @@ use MooseX::Aliases;
 use Moose::Util::TypeConstraints;
 use Ptero::Builder::Task;
 use warnings FATAL => 'all';
+use Params::Validate qw(validate_pos :types);
 
 with 'Ptero::Builder::Detail::HasValidationErrors';
 
