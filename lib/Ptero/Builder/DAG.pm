@@ -91,17 +91,18 @@ sub task_named {
         $self->name, Data::Dump::pp($name));
 }
 
-sub input_properties {
+sub known_input_properties {
     my $self = shift;
-    my $properties = Set::Scalar->new($self->_property_names_from_links('is_external_input',
-            'source_property'));
+    my $properties = $self->_property_names_from_links('is_external_input',
+            'source_property');
     return sort $properties->members();
 };
 
-sub output_properties {
-    my $self = shift;
-    return sort $self->_property_names_from_links('is_external_output',
+sub has_possible_output_property {
+    my ($self, $name) = validate_pos(@_, 1, {type => SCALAR});
+    my $output_properties = $self->_property_names_from_links('is_external_output',
         'destination_property');
+    return $output_properties->contains($name);
 }
 
 sub _property_names_from_links {
@@ -114,7 +115,7 @@ sub _property_names_from_links {
             $property_names->insert($link->$property_holder);
         }
     }
-    return $property_names->members;
+    return $property_names;
 }
 
 
@@ -258,7 +259,7 @@ sub _mandatory_inputs {
     my $result = new Set::Scalar;
 
     for my $task (@{$self->tasks}) {
-        for my $prop_name ($task->input_properties) {
+        for my $prop_name ($task->known_input_properties) {
             $result->insert(_encode_target($task->name, $prop_name));
         }
     }
@@ -280,7 +281,7 @@ sub _task_output_errors {
 
         my $task = $self->task_named($link->source);
 
-        unless ($task->is_output_property($link->source_property)) {
+        unless ($task->has_possible_output_property($link->source_property)) {
             push @errors, sprintf(
                 'Task %s in DAG (%s) has no output named %s',
                 Data::Dump::pp($link->source),

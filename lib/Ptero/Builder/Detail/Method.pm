@@ -10,8 +10,8 @@ use Params::Validate qw(validate_pos :types);
 with 'Ptero::Builder::Detail::HasValidationErrors';
 with 'Ptero::Builder::Detail::ConvertsToHashref';
 
-requires 'input_properties';
-requires 'output_properties';
+requires 'known_input_properties';
+requires 'has_possible_output_property';
 
 has name => (
     is => 'rw',

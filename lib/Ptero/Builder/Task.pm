@@ -36,26 +36,17 @@ sub add_method {
     return $method;
 }
 
-sub input_properties {
+sub known_input_properties {
     my $self = shift;
 
     my $properties = Set::Scalar->new();
     $properties-> insert($self->parallel_by_properties);
 
     for my $method (@{$self->methods}) {
-        $properties->insert($method->input_properties);
+        $properties->insert($method->known_input_properties);
     }
 
     return $properties->members;
-}
-
-sub has_unknown_io_properties {
-    my $self = shift;
-
-    for my $method (@{$self->methods}) {
-        return 1 if $method->has_unknown_io_properties;
-    }
-    return 0;
 }
 
 sub parallel_by_properties {
@@ -72,27 +63,14 @@ sub parallel_by_properties {
     return @flattened_properties;
 }
 
-sub output_properties {
-    my $self = shift;
-
-    my $properties = $self->_output_properties_set;
-    return $properties->members;
-}
-
-sub _output_properties_set {
-    my $self = shift;
-    my $properties = Set::Scalar->new();
-
-    for my $method (@{$self->methods}) {
-        $properties->insert($method->output_properties);
-    }
-    return $properties;
-}
-
-sub is_output_property {
+sub has_possible_output_property {
     my ($self, $name) = validate_pos(@_, 1, 1);
 
-    return $self->_output_properties_set->contains($name);
+    my $result = 1;
+    for my $method (@{$self->methods}) {
+        $result = $result && $method->has_possible_output_property($name);
+    }
+    return $result;
 }
 
 sub validation_errors {

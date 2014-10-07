@@ -13,8 +13,9 @@ use_ok('Ptero::Builder::ShellCommand');
 
 {
     my $dag = build_basic_dag('basic');
-    is_deeply([$dag->input_properties], ['A_in'], 'input properties');
-    is_deeply([$dag->output_properties], ['A_out'], 'output properties');
+    is_deeply([$dag->known_input_properties], ['A_in'], 'known input properties');
+    ok($dag->has_possible_output_property('A_out'), 'A_out is an output');
+    ok(!$dag->has_possible_output_property('foo'), 'foo is not an output');
 
     is_deeply($dag->task_named('A')->methods->[0]->parameters->{commandLine},
         ['echo', 'basic-dag'], 'task named');
@@ -37,8 +38,7 @@ use_ok('Ptero::Builder::ShellCommand');
         destination_property => 'A_to_B',
     );
 
-    is_deeply([$dag->input_properties], ['A_in', 'B_in'], 'new input properties');
-    is_deeply([$dag->output_properties], ['A_out'], 'new output properties');
+    is_deeply([$dag->known_input_properties], ['A_in', 'B_in'], 'new known input properties');
 }
 
 done_testing();

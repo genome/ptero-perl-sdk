@@ -14,8 +14,6 @@ use_ok('Ptero::Builder::ShellCommand');
 
     is($sc->service, 'ShellCommand',
         'service automatically set to ShellCommand');
-    is($sc->has_unknown_io_properties, 1,
-        'has unknown io properties');
 }
 
 subtest VALIDATION_ERRORS => sub {

@@ -16,8 +16,8 @@ use_ok('Ptero::Builder::Task');
     is_deeply([$t->parallel_by_properties], ['bar', 'baz', 'qux'],
         'parallel_by_properties');
 
-    is_deeply([$t->parallel_by_properties], [sort $t->input_properties],
-        'input_properties from parallel_by');
+    is_deeply([$t->parallel_by_properties], [sort $t->known_input_properties],
+        'known_input_properties from parallel_by');
 }
 
 subtest VALIDATION_ERRORS => sub {

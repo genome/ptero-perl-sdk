@@ -9,18 +9,15 @@ with 'Ptero::Builder::Detail::Method';
 override 'BUILDARGS' => sub {
     my $params = super();
     $params->{service} = 'ShellCommand';
-    $params->{has_unknown_io_properties} = 1;
     return $params;
 };
 
-sub input_properties {
-    my $self = shift;
+sub known_input_properties {
     return ();
 }
 
-sub output_properties {
-    my $self = shift;
-    return ();
+sub has_possible_output_property {
+    return 1;
 }
 
 sub required_parameters {
