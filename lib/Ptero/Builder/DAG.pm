@@ -125,6 +125,7 @@ sub validation_errors {
         _task_input_errors
         _task_output_errors
         _multiple_link_target_errors
+        _cycle_errors
     );
 
     for (@{$self->tasks}, @{$self->links}) {
@@ -315,6 +316,26 @@ sub _multiple_link_target_errors {
         }
     }
 
+    return @errors;
+}
+
+sub _cycle_errors {
+    my $self = shift;
+    my @errors;
+
+    my $g = Graph::Directed->new();
+    for my $link (@{$self->links}) {
+        $g->add_edge($link->source, $link->destination);
+    }
+
+    for my $region ($g->strongly_connected_components) {
+        if (@$region > 1) {
+            push @errors, sprintf(
+                "A cycle exists in DAG (%s) involving the following tasks: %s",
+                $self->name,
+                Data::Dump::pp(sort @$region));
+        }
+    }
     return @errors;
 }
 

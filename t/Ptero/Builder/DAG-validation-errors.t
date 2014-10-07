@@ -87,4 +87,25 @@ use Ptero::Builder::TestHelpers qw(
 
 }
 
+{
+    my $dag = build_nested_dag('cycle');
+    my $B = build_basic_task('B');
+    $dag->add_task($B);
+    $dag->link_tasks(
+        source => 'A',
+        source_property => 'A_out',
+        destination => 'B',
+        destination_property => 'B_in',
+    );
+    $dag->link_tasks(
+        source => 'B',
+        source_property => 'B_out',
+        destination => 'A',
+        destination_property => 'A_in_from_B',
+    );
+    is_deeply([$dag->validation_errors], [
+            'A cycle exists in DAG (cycle) involving the following tasks: ("A", "B")',
+        ], 'cycle');
+}
+
 done_testing();
