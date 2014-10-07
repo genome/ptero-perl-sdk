@@ -2,6 +2,7 @@ package Ptero::Builder::ShellCommand;
 
 use Moose;
 use warnings FATAL => 'all';
+use Params::Validate qw(validate_pos :types);
 
 with 'Ptero::Builder::Detail::Method';
 
@@ -36,5 +37,21 @@ sub optional_parameters {
     );
 }
 
+sub from_hashref {
+    my ($class, $hashref) = validate_pos(@_, 1, {type => HASHREF});
+
+    $class->validate_hashref($hashref);
+    return $class->new(%$hashref);
+}
+
+sub to_hashref {
+    my $self = shift;
+
+    return {
+        name => $self->name,
+        service => $self->service,
+        parameters => $self->parameters,
+    };
+}
 
 __PACKAGE__->meta->make_immutable;

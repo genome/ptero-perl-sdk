@@ -338,5 +338,59 @@ sub _cycle_errors {
     return @errors;
 }
 
+sub from_hashref {
+    my ($class, $hashref) = validate_pos(@_, 1, {type => HASHREF});
+
+    $class->validate_hashref($hashref);
+
+    my $self = $class->new(name => $hashref->{name});
+
+    for my $link_hashref (@{$hashref->{parameters}->{links}}) {
+        $self->link_tasks(%$link_hashref);
+    }
+
+    while (my ($task_name, $task_hashref) = each %{$hashref->{parameters}->{tasks}}) {
+        $self->add_task(Ptero::Builder::Task->from_hashref(
+            $task_hashref, $task_name));
+    }
+
+    return $self;
+}
+
+sub to_hashref {
+    my $self = shift;
+
+    return {
+        name => $self->name,
+        service => $self->service,
+        parameters => {
+            tasks => {map {$_->name, $_->to_hashref} @{$self->tasks}},
+            links => [map {$_->to_hashref} @{$self->links}],
+        },
+    };
+}
+
+after 'validate_hashref' => sub {
+    my ($class, $hashref) = @_;
+
+    my %parameters = %{$hashref->{parameters}};
+    for my $key (qw(tasks links)) {
+        unless (exists $parameters{$key}) {
+            die sprintf("DAG dashref missing required parameter (%s): %s",
+                $key, Data::Dump::pp($hashref));
+        }
+    }
+
+    unless (ref($parameters{tasks}) eq 'HASH') {
+        die sprintf("The 'tasks' parameter must be a hashref not (%s): %s",
+            ref($parameters{tasks}), Data::Dump::pp($hashref));
+    }
+
+    unless (ref($parameters{links}) eq 'ARRAY') {
+        die sprintf("The 'links' parameter must be an arrayref not (%s): %s",
+            ref($parameters{links}), Data::Dump::pp($hashref));
+    }
+};
+
 
 __PACKAGE__->meta->make_immutable;

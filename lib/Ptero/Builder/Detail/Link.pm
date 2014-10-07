@@ -75,4 +75,15 @@ sub to_string {
     );
 }
 
+sub to_hashref {
+    my $self = shift;
+
+    return {
+        source => $self->source,
+        sourceProperty => $self->source_property,
+        destination => $self->destination,
+        destinationProperty => $self->destination_property,
+    };
+}
+
 __PACKAGE__->meta->make_immutable;

@@ -5,8 +5,10 @@ use warnings FATAL => 'all';
 
 use Data::Dump qw();
 use Set::Scalar;
+use Params::Validate qw(validate_pos :types);
 
 with 'Ptero::Builder::Detail::HasValidationErrors';
+with 'Ptero::Builder::Detail::ConvertsToHashref';
 
 requires 'input_properties';
 requires 'output_properties';
@@ -65,5 +67,22 @@ sub validation_errors {
 
     return @errors;
 }
+
+sub validate_hashref {
+    my ($class, $hashref) = validate_pos(@_, 1, {type => HASHREF});
+
+    for my $key (qw(service name parameters)) {
+        unless (exists $hashref->{$key}) {
+            die sprintf("Method hashref must contain key (%s): %s",
+                $key, Data::Dump::pp($hashref));
+        }
+    }
+
+    unless (ref($hashref->{parameters}) eq 'HASH') {
+        die sprintf("The 'parameters' entry must be a hashref not (%s): %s",
+            ref($hashref->{parameters}), Data::Dump::pp($hashref));
+    }
+}
+
 
 1;

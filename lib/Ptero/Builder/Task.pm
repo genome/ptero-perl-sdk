@@ -9,6 +9,7 @@ use Set::Scalar qw();
 use Params::Validate qw(validate_pos :types);
 
 with 'Ptero::Builder::Detail::HasValidationErrors';
+with 'Ptero::Builder::Detail::ConvertsToHashref';
 
 has name => (
     is => 'rw',
@@ -137,6 +138,62 @@ sub _method_errors {
     }
 
     return @errors;
+}
+
+sub from_hashref {
+    my ($class, $hashref, $name) = validate_pos(@_, 1, {type => HASHREF}, {type => SCALAR});
+
+    unless (exists $hashref->{methods} && ref($hashref->{methods}) eq 'ARRAY') {
+        die 'Task hashref must contain a methods arrayref: '
+            . Data::Dump::pp($hashref);
+    }
+
+
+    my @methods;
+    for my $method_hashref (@{$hashref->{methods}}) {
+        my $method_class = method_class_from_hashref($method_hashref);
+        push @methods, $method_class->from_hashref($method_hashref);
+    }
+    my %params = (
+        name => $name,
+        methods => \@methods,
+    );
+
+    if (exists $hashref->{parallelBy}) {
+        $params{parallel_by} = $hashref->{parallelBy};
+    }
+
+    return $class->new(%params);
+}
+
+my $lookup = {
+    ShellCommand => 'Ptero::Builder::ShellCommand',
+    Workflow => 'Ptero::Builder::DAG',
+};
+
+sub method_class_from_hashref {
+    my $hashref = shift;
+
+    my $service = $hashref->{service};
+    if (exists $lookup->{$service}) {
+        return $lookup->{$service};
+    } else {
+        die sprintf("Could not determine method class from hashref: %s",
+            Data::Dump::pp($hashref));
+    }
+}
+
+sub to_hashref {
+    my $self = shift;
+
+    my $hashref = {
+        methods => [map {$_->to_hashref} @{$self->methods}],
+    };
+    if ($self->has_parallel_by) {
+        $hashref->{parallelBy} = $self->parallel_by;
+    }
+
+    return $hashref;
 }
 
 
