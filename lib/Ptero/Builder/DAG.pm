@@ -87,7 +87,8 @@ sub task_named {
         }
     }
 
-    return;
+    die sprintf("DAG (%s) has no task named %s",
+        $self->name, Data::Dump::pp($name));
 }
 
 sub input_properties {
@@ -275,11 +276,9 @@ sub _task_output_errors {
     my @errors;
 
     for my $link (@{$self->links}) {
+        next if $link->is_external_input;
+
         my $task = $self->task_named($link->source);
-
-        next unless defined $task;
-
-        next if $task->has_unknown_io_properties;
 
         unless ($task->is_output_property($link->source_property)) {
             push @errors, sprintf(

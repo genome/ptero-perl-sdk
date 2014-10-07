@@ -18,6 +18,8 @@ use_ok('Ptero::Builder::ShellCommand');
 
     is_deeply($dag->task_named('A')->methods->[0]->parameters->{commandLine},
         ['echo', 'basic-dag'], 'task named');
+    throws_ok {$dag->task_named('input connector')}
+        qr/no task named/, 'no task named input connector';
 }
 
 {
