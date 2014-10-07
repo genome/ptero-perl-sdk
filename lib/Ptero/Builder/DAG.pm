@@ -11,7 +11,6 @@ use Graph::Directed qw();
 use Ptero::Builder::Detail::Link;
 use Ptero::Builder::Task;
 
-with 'Ptero::Builder::Detail::HasValidationErrors';
 with 'Ptero::Builder::Detail::Method';
 
 has tasks => (
