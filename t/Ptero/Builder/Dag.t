@@ -4,8 +4,8 @@ use warnings FATAL => 'all';
 use Test::Exception;
 use Test::More;
 use Ptero::Builder::TestHelpers qw(
-    build_basic_task
     build_basic_dag
+    create_basic_task
 );
 
 use_ok('Ptero::Builder::DAG');
@@ -25,7 +25,7 @@ use_ok('Ptero::Builder::ShellCommand');
 
 {
     my $dag = build_basic_dag('basic');
-    $dag->add_task(build_basic_task('B'));
+    create_basic_task($dag, 'B');
     $dag->connect_input(
         source_property => 'B_in',
         destination => 'B',

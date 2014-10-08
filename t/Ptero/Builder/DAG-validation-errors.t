@@ -6,12 +6,12 @@ use Test::More;
 use Ptero::Builder::TestHelpers qw(
     build_nested_dag
     build_basic_dag
-    build_basic_task
+    create_basic_task
 );
 
 {
     my $dag = build_basic_dag('duplicate-task-name');
-    $dag->add_task(build_basic_task('B'));
+    create_basic_task($dag, 'B');
 
     is_deeply([$dag->validation_errors], [
             'Orphaned task(s) on DAG (duplicate-task-name) named: "B"'
@@ -89,8 +89,7 @@ use Ptero::Builder::TestHelpers qw(
 
 {
     my $dag = build_nested_dag('cycle');
-    my $B = build_basic_task('B');
-    $dag->add_task($B);
+    create_basic_task($dag, 'B');
     $dag->link_tasks(
         source => 'A',
         source_property => 'A_out',

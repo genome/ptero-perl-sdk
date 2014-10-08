@@ -34,16 +34,15 @@ override 'BUILDARGS' => sub {
     return $params;
 };
 
-sub add_task {
-    my ($self, $task) = @_;
-    $self->tasks([@{$self->tasks}, $task]);
-    return $task;
-}
-
 sub create_task {
     my $self = shift;
     my $task= Ptero::Builder::Detail::Task->new(@_);
-    $self->add_task($task);
+    return $self->_add_task($task);
+}
+
+sub _add_task {
+    my ($self, $task) = @_;
+    $self->tasks([@{$self->tasks}, $task]);
     return $task;
 }
 
@@ -353,7 +352,7 @@ sub from_hashref {
     }
 
     while (my ($task_name, $task_hashref) = each %{$hashref->{parameters}->{tasks}}) {
-        $self->add_task(Ptero::Builder::Detail::Task->from_hashref(
+        $self->_add_task(Ptero::Builder::Detail::Task->from_hashref(
             $task_hashref, $task_name));
     }
 

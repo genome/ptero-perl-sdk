@@ -11,7 +11,7 @@ use Exporter 'import';
 our @EXPORT_OK = qw(
     build_nested_dag
     build_basic_dag
-    build_basic_task
+    create_basic_task
 );
 
 sub build_nested_dag {
@@ -65,10 +65,11 @@ sub build_basic_dag {
     return $dag;
 }
 
-sub build_basic_task {
+sub create_basic_task {
+    my $dag = shift;
     my $name = shift;
 
-    my $task = Ptero::Builder::Detail::Task->new(
+    return $dag->create_task(
         name => $name,
         methods => [
             Ptero::Builder::ShellCommand->new(
@@ -79,7 +80,6 @@ sub build_basic_task {
             ),
         ],
     );
-    return $task;
 }
 
 1;
