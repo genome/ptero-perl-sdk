@@ -9,8 +9,8 @@ use Set::Scalar qw();
 use Graph::Directed qw();
 use JSON qw();
 
-use Ptero::Builder::Detail::Link;
-use Ptero::Builder::Detail::Task;
+use Ptero::Builder::Detail::Workflow::Link;
+use Ptero::Builder::Detail::Workflow::Task;
 
 with 'Ptero::Builder::Detail::Method';
 
@@ -18,13 +18,13 @@ my $codec = JSON->new()->canonical([1]);
 
 has tasks => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::Builder::Detail::Task]',
+    isa => 'ArrayRef[Ptero::Builder::Detail::Workflow::Task]',
     default => sub { [] },
 );
 
 has links => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::Builder::Detail::Link]',
+    isa => 'ArrayRef[Ptero::Builder::Detail::Workflow::Link]',
     default => sub { [] },
 );
 
@@ -36,7 +36,7 @@ override 'BUILDARGS' => sub {
 
 sub create_task {
     my $self = shift;
-    my $task= Ptero::Builder::Detail::Task->new(@_);
+    my $task= Ptero::Builder::Detail::Workflow::Task->new(@_);
     return $self->_add_task($task);
 }
 
@@ -48,7 +48,7 @@ sub _add_task {
 
 sub link_tasks {
     my $self = shift;
-    my $link = Ptero::Builder::Detail::Link->new(@_);
+    my $link = Ptero::Builder::Detail::Workflow::Link->new(@_);
     $self->links([@{$self->links}, $link]);
     return $link;
 }
@@ -352,7 +352,7 @@ sub from_hashref {
     }
 
     while (my ($task_name, $task_hashref) = each %{$hashref->{parameters}->{tasks}}) {
-        $self->_add_task(Ptero::Builder::Detail::Task->from_hashref(
+        $self->_add_task(Ptero::Builder::Detail::Workflow::Task->from_hashref(
             $task_hashref, $task_name));
     }
 

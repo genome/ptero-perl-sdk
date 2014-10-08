@@ -5,10 +5,10 @@ use Test::Exception;
 use Test::More;
 
 use_ok('Ptero::Builder::ShellCommand');
-use_ok('Ptero::Builder::Detail::Task');
+use_ok('Ptero::Builder::Detail::Workflow::Task');
 
 {
-    my $t = Ptero::Builder::Detail::Task->new(
+    my $t = Ptero::Builder::Detail::Workflow::Task->new(
         name => 'foo',
         parallel_by => [['bar', 'baz'], ['qux']],
     );
@@ -25,7 +25,7 @@ subtest VALIDATION_ERRORS => sub {
         name => 'test-shell-command',
         parameters => { commandLine => ['echo', 'hi']},
     );
-    my $t = Ptero::Builder::Detail::Task->new(
+    my $t = Ptero::Builder::Detail::Workflow::Task->new(
         name => 'test-task',
     );
     $t->add_method($sc);

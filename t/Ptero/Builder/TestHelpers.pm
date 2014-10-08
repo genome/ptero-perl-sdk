@@ -4,7 +4,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Ptero::Builder::ShellCommand;
-use Ptero::Builder::Detail::Task;
+use Ptero::Builder::Detail::Workflow::Task;
 use Ptero::Builder::Workflow;
 
 use Exporter 'import';

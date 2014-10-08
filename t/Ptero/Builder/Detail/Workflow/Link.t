@@ -4,10 +4,10 @@ use warnings FATAL => 'all';
 use Test::Exception;
 use Test::More;
 
-use_ok('Ptero::Builder::Detail::Link');
+use_ok('Ptero::Builder::Detail::Workflow::Link');
 
 {
-    my $link = Ptero::Builder::Detail::Link->new(
+    my $link = Ptero::Builder::Detail::Workflow::Link->new(
         source => 'foo',
         destination => 'bar',
         source_property => 'baz',
@@ -23,7 +23,7 @@ use_ok('Ptero::Builder::Detail::Link');
 }
 
 {
-    my $link = Ptero::Builder::Detail::Link->new(
+    my $link = Ptero::Builder::Detail::Workflow::Link->new(
         source => 'output connector',
         destination => 'input connector',
         source_property => 'baz',

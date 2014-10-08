@@ -82,7 +82,7 @@ use Ptero::Builder::TestHelpers qw(
         destination_property => 'A_in',
     );
     is_deeply([$workflow->validation_errors], [
-            qq(Multiple links on Workflow (multi-link-target) target the same input_property:\nPtero::Builder::Detail::Link(source => "input connector", source_property => "A_in", destination => "A", destination_property => "A_in"),\nPtero::Builder::Detail::Link(source => "input connector", source_property => "A_in_two", destination => "A", destination_property => "A_in")),
+            qq(Multiple links on Workflow (multi-link-target) target the same input_property:\nPtero::Builder::Detail::Workflow::Link(source => "input connector", source_property => "A_in", destination => "A", destination_property => "A_in"),\nPtero::Builder::Detail::Workflow::Link(source => "input connector", source_property => "A_in_two", destination => "A", destination_property => "A_in")),
         ], 'multi link target');
 
 }

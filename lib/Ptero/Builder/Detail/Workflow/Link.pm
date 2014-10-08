@@ -1,23 +1,23 @@
-package Ptero::Builder::Detail::Link;
+package Ptero::Builder::Detail::Workflow::Link;
 
 use Moose;
 use MooseX::Aliases;
 use Moose::Util::TypeConstraints;
-use Ptero::Builder::Detail::Task;
+use Ptero::Builder::Detail::Workflow::Task;
 use warnings FATAL => 'all';
 use Params::Validate qw(validate_pos :types);
 
 with 'Ptero::Builder::Detail::HasValidationErrors';
 
-subtype 'Ptero::Builder::Detail::TaskName' => as 'Str';
+subtype 'Ptero::Builder::Detail::Workflow::TaskName' => as 'Str';
 
-coerce 'Ptero::Builder::Detail::TaskName',
-    from 'Ptero::Builder::Detail::Task',
+coerce 'Ptero::Builder::Detail::Workflow::TaskName',
+    from 'Ptero::Builder::Detail::Workflow::Task',
     via { $_->name };
 
 has source => (
     is => 'rw',
-    isa => 'Ptero::Builder::Detail::TaskName',
+    isa => 'Ptero::Builder::Detail::Workflow::TaskName',
     default => 'input connector',
     predicate => 'has_source',
     coerce => 1,
@@ -25,7 +25,7 @@ has source => (
 
 has destination => (
     is => 'rw',
-    isa => 'Ptero::Builder::Detail::TaskName',
+    isa => 'Ptero::Builder::Detail::Workflow::TaskName',
     default => 'output connector',
     predicate => 'has_destination',
     coerce => 1,
@@ -98,7 +98,7 @@ sub _destination_is_input_connector_errors {
 
 sub to_string {
     my $self = shift;
-    return sprintf('Ptero::Builder::Detail::Link(source => %s, source_property => %s, destination => %s, destination_property => %s)',
+    return sprintf('Ptero::Builder::Detail::Workflow::Link(source => %s, source_property => %s, destination => %s, destination_property => %s)',
         Data::Dump::pp($self->source),
         Data::Dump::pp($self->source_property),
         Data::Dump::pp($self->destination),
