@@ -4,7 +4,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Ptero::Builder::ShellCommand;
-use Ptero::Builder::Task;
+use Ptero::Builder::Detail::Task;
 use Ptero::Builder::DAG;
 
 use Exporter 'import';
@@ -68,7 +68,7 @@ sub build_basic_dag {
 sub build_basic_task {
     my $name = shift;
 
-    my $task = Ptero::Builder::Task->new(
+    my $task = Ptero::Builder::Detail::Task->new(
         name => $name,
         methods => [
             Ptero::Builder::ShellCommand->new(

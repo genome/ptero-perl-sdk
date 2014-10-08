@@ -10,7 +10,7 @@ use Graph::Directed qw();
 use JSON qw();
 
 use Ptero::Builder::Detail::Link;
-use Ptero::Builder::Task;
+use Ptero::Builder::Detail::Task;
 
 with 'Ptero::Builder::Detail::Method';
 
@@ -18,7 +18,7 @@ my $codec = JSON->new()->canonical([1]);
 
 has tasks => (
     is => 'rw',
-    isa => 'ArrayRef[Ptero::Builder::Task]',
+    isa => 'ArrayRef[Ptero::Builder::Detail::Task]',
     default => sub { [] },
 );
 
@@ -42,7 +42,7 @@ sub add_task {
 
 sub create_task {
     my $self = shift;
-    my $task= Ptero::Builder::Task->new(@_);
+    my $task= Ptero::Builder::Detail::Task->new(@_);
     $self->add_task($task);
     return $task;
 }
@@ -353,7 +353,7 @@ sub from_hashref {
     }
 
     while (my ($task_name, $task_hashref) = each %{$hashref->{parameters}->{tasks}}) {
-        $self->add_task(Ptero::Builder::Task->from_hashref(
+        $self->add_task(Ptero::Builder::Detail::Task->from_hashref(
             $task_hashref, $task_name));
     }
 

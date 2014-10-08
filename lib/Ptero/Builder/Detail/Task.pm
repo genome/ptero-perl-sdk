@@ -1,4 +1,4 @@
-package Ptero::Builder::Task;
+package Ptero::Builder::Detail::Task;
 
 use Moose;
 use MooseX::Aliases;

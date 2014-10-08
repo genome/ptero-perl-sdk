@@ -3,21 +3,21 @@ package Ptero::Builder::Detail::Link;
 use Moose;
 use MooseX::Aliases;
 use Moose::Util::TypeConstraints;
-use Ptero::Builder::Task;
+use Ptero::Builder::Detail::Task;
 use warnings FATAL => 'all';
 use Params::Validate qw(validate_pos :types);
 
 with 'Ptero::Builder::Detail::HasValidationErrors';
 
-subtype 'Ptero::Builder::TaskName' => as 'Str';
+subtype 'Ptero::Builder::Detail::TaskName' => as 'Str';
 
-coerce 'Ptero::Builder::TaskName',
-    from 'Ptero::Builder::Task',
+coerce 'Ptero::Builder::Detail::TaskName',
+    from 'Ptero::Builder::Detail::Task',
     via { $_->name };
 
 has source => (
     is => 'rw',
-    isa => 'Ptero::Builder::TaskName',
+    isa => 'Ptero::Builder::Detail::TaskName',
     default => 'input connector',
     predicate => 'has_source',
     coerce => 1,
@@ -25,7 +25,7 @@ has source => (
 
 has destination => (
     is => 'rw',
-    isa => 'Ptero::Builder::TaskName',
+    isa => 'Ptero::Builder::Detail::TaskName',
     default => 'output connector',
     predicate => 'has_destination',
     coerce => 1,
