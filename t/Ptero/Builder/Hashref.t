@@ -4,8 +4,8 @@ use warnings FATAL => 'all';
 use Test::Exception;
 use Test::More;
 use Ptero::Builder::TestHelpers qw(
-    build_nested_dag
-    build_basic_dag
+    build_nested_workflow
+    build_basic_workflow
 );
 
 {
@@ -31,7 +31,7 @@ use Ptero::Builder::TestHelpers qw(
                     methods => [
                         {
                             name => "do something",
-                            parameters => { commandLine => ["echo", "basic-dag"] },
+                            parameters => { commandLine => ["echo", "basic-workflow"] },
                             service => "ShellCommand",
                         },
                     ],
@@ -41,10 +41,10 @@ use Ptero::Builder::TestHelpers qw(
         service => "Workflow",
     };
 
-    my $dag = build_basic_dag('foo');
-    is_deeply($dag->to_hashref, $expected_hashref, 'basic_dag hashref');
-    is_deeply(Ptero::Builder::DAG->from_hashref($expected_hashref)->to_hashref,
-        $expected_hashref, 'basic_dag hashref roundtrip');
+    my $workflow = build_basic_workflow('foo');
+    is_deeply($workflow->to_hashref, $expected_hashref, 'basic_workflow hashref');
+    is_deeply(Ptero::Builder::Workflow->from_hashref($expected_hashref)->to_hashref,
+        $expected_hashref, 'basic_workflow hashref roundtrip');
 }
 
 {
@@ -70,7 +70,7 @@ use Ptero::Builder::TestHelpers qw(
                     methods => [
                         {
                             name => "do something",
-                            parameters => { commandLine => ["echo", "basic-dag"] },
+                            parameters => { commandLine => ["echo", "basic-workflow"] },
                             service => "ShellCommand",
                         },
                     ],
@@ -81,12 +81,12 @@ use Ptero::Builder::TestHelpers qw(
         service => "Workflow",
     };
 
-    my $dag = build_basic_dag('foo');
-    $dag->task_named('A')->parallel_by([['A_in']]);
+    my $workflow = build_basic_workflow('foo');
+    $workflow->task_named('A')->parallel_by([['A_in']]);
 
-    is_deeply($dag->to_hashref, $expected_hashref, 'basic_dag parallel_by hashref');
-    is_deeply(Ptero::Builder::DAG->from_hashref($expected_hashref)->to_hashref,
-        $expected_hashref, 'basic_dag parallel_by hashref roundtrip');
+    is_deeply($workflow->to_hashref, $expected_hashref, 'basic_workflow parallel_by hashref');
+    is_deeply(Ptero::Builder::Workflow->from_hashref($expected_hashref)->to_hashref,
+        $expected_hashref, 'basic_workflow parallel_by hashref roundtrip');
 }
 
 {
@@ -132,7 +132,7 @@ use Ptero::Builder::TestHelpers qw(
                                         methods => [
                                             {
                                                 name => "do something",
-                                                parameters => { commandLine => ["echo", "basic-dag"] },
+                                                parameters => { commandLine => ["echo", "basic-workflow"] },
                                                 service => "ShellCommand",
                                             },
                                         ],
@@ -148,10 +148,10 @@ use Ptero::Builder::TestHelpers qw(
         service => "Workflow",
     };
 
-    my $dag = build_nested_dag('foo');
-    is_deeply($dag->to_hashref, $expected_hashref, 'nested_dag hashref');
-    is_deeply(Ptero::Builder::DAG->from_hashref($expected_hashref)->to_hashref,
-        $expected_hashref, 'nested_dag hashref roundtrip');
+    my $workflow = build_nested_workflow('foo');
+    is_deeply($workflow->to_hashref, $expected_hashref, 'nested_workflow hashref');
+    is_deeply(Ptero::Builder::Workflow->from_hashref($expected_hashref)->to_hashref,
+        $expected_hashref, 'nested_workflow hashref roundtrip');
 }
 
 done_testing();

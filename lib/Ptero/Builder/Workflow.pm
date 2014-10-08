@@ -1,4 +1,4 @@
-package Ptero::Builder::DAG;
+package Ptero::Builder::Workflow;
 
 use Moose;
 use warnings FATAL => 'all';
@@ -86,7 +86,7 @@ sub task_named {
         }
     }
 
-    die sprintf("DAG (%s) has no task named %s",
+    die sprintf("Workflow (%s) has no task named %s",
         $self->name, Data::Dump::pp($name));
 }
 
@@ -153,7 +153,7 @@ sub _task_name_errors {
 
     if (@duplicates) {
         push @errors, sprintf(
-            'Duplicate task names on DAG (%s): %s',
+            'Duplicate task names on Workflow (%s): %s',
             $self->name,
             Data::Dump::pp(sort @duplicates)
         );
@@ -171,7 +171,7 @@ sub _missing_task_errors {
 
     unless ($missing_task_names->is_empty) {
         push @errors, sprintf(
-            'Links on DAG (%s) refer to non-existing tasks: %s',
+            'Links on Workflow (%s) refer to non-existing tasks: %s',
             $self->name,
             Data::Dump::pp(sort $missing_task_names->members)
         );
@@ -219,7 +219,7 @@ sub _orphaned_task_errors {
 
     unless ($orphaned_task_names->is_empty) {
         push @errors, sprintf(
-            'Orphaned task(s) on DAG (%s) named: %s',
+            'Orphaned task(s) on Workflow (%s) named: %s',
             $self->name,
             Data::Dump::pp(sort $orphaned_task_names->members)
         );
@@ -243,7 +243,7 @@ sub _task_input_errors {
 
     unless ($mandatory_inputs->is_empty) {
         push @errors, sprintf(
-            'No links on DAG (%s) targeting mandatory input(s): %s',
+            'No links on Workflow (%s) targeting mandatory input(s): %s',
             $self->name,
             (join ', ', sort $mandatory_inputs->members)
         );
@@ -282,7 +282,7 @@ sub _task_output_errors {
 
         unless ($task->has_possible_output_property($link->source_property)) {
             push @errors, sprintf(
-                'Task %s in DAG (%s) has no output named %s',
+                'Task %s in Workflow (%s) has no output named %s',
                 Data::Dump::pp($link->source),
                 $self->name,
                 Data::Dump::pp($link->source_property)
@@ -310,7 +310,7 @@ sub _multiple_link_target_errors {
 
         if (@links > 1) {
             push @errors, sprintf(
-                "Multiple links on DAG (%s) target the same input_property:\n%s",
+                "Multiple links on Workflow (%s) target the same input_property:\n%s",
                 $self->name,
                 join(",\n", map { $_->to_string } @links),
             );
@@ -332,7 +332,7 @@ sub _cycle_errors {
     for my $region ($g->strongly_connected_components) {
         if (@$region > 1) {
             push @errors, sprintf(
-                "A cycle exists in DAG (%s) involving the following tasks: %s",
+                "A cycle exists in Workflow (%s) involving the following tasks: %s",
                 $self->name,
                 Data::Dump::pp(sort @$region));
         }
@@ -378,7 +378,7 @@ after 'validate_hashref' => sub {
     my %parameters = %{$hashref->{parameters}};
     for my $key (qw(tasks links)) {
         unless (exists $parameters{$key}) {
-            die sprintf("DAG dashref missing required parameter (%s): %s",
+            die sprintf("Workflow dashref missing required parameter (%s): %s",
                 $key, Data::Dump::pp($hashref));
         }
     }
@@ -433,7 +433,7 @@ sub validate {
     my @errors = $self->validation_errors;
     if (@errors) {
         die sprintf(
-            "DAG named %s failed validation:\n%s",
+            "Workflow named %s failed validation:\n%s",
             $self->name, (join "\n", sort @errors)
         );
     }

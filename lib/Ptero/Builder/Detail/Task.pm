@@ -146,7 +146,7 @@ sub from_hashref {
 
 my $lookup = {
     ShellCommand => 'Ptero::Builder::ShellCommand',
-    Workflow => 'Ptero::Builder::DAG',
+    Workflow => 'Ptero::Builder::Workflow',
 };
 
 sub method_class_from_hashref {

@@ -5,71 +5,71 @@ use warnings FATAL => 'all';
 
 use Ptero::Builder::ShellCommand;
 use Ptero::Builder::Detail::Task;
-use Ptero::Builder::DAG;
+use Ptero::Builder::Workflow;
 
 use Exporter 'import';
 our @EXPORT_OK = qw(
-    build_nested_dag
-    build_basic_dag
+    build_nested_workflow
+    build_basic_workflow
     create_basic_task
 );
 
-sub build_nested_dag {
+sub build_nested_workflow {
     my $name = shift;
 
-    my $dag = Ptero::Builder::DAG->new(name => $name);
-    my $task = $dag->create_task(
+    my $workflow = Ptero::Builder::Workflow->new(name => $name);
+    my $task = $workflow->create_task(
         name => 'A',
         methods => [
-            build_basic_dag('inner'),
+            build_basic_workflow('inner'),
         ],
     );
-    $dag->connect_input(
+    $workflow->connect_input(
         source_property => 'A_in',
         destination => $task,
         destination_property => 'A_in',
     );
-    $dag->connect_output(
+    $workflow->connect_output(
         source => $task,
         source_property => 'A_out',
         destination_property => 'A_out',
     );
-    return $dag;
+    return $workflow;
 }
 
-sub build_basic_dag {
+sub build_basic_workflow {
     my $name = shift;
 
-    my $dag = Ptero::Builder::DAG->new(name => $name);
-    my $task = $dag->create_task(
+    my $workflow = Ptero::Builder::Workflow->new(name => $name);
+    my $task = $workflow->create_task(
         name => 'A',
         methods => [
             Ptero::Builder::ShellCommand->new(
                 name => 'do something',
                 parameters => {
-                    commandLine => ['echo', 'basic-dag'],
+                    commandLine => ['echo', 'basic-workflow'],
                 },
             ),
         ],
     );
-    $dag->connect_input(
+    $workflow->connect_input(
         source_property => 'A_in',
         destination => $task,
         destination_property => 'A_in',
     );
-    $dag->connect_output(
+    $workflow->connect_output(
         source => $task,
         source_property => 'A_out',
         destination_property => 'A_out',
     );
-    return $dag;
+    return $workflow;
 }
 
 sub create_basic_task {
-    my $dag = shift;
+    my $workflow = shift;
     my $name = shift;
 
-    return $dag->create_task(
+    return $workflow->create_task(
         name => $name,
         methods => [
             Ptero::Builder::ShellCommand->new(

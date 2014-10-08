@@ -41,7 +41,7 @@
                               "parameters" : {
                                  "commandLine" : [
                                     "echo",
-                                    "basic-dag"
+                                    "basic-workflow"
                                  ]
                               },
                               "service" : "ShellCommand"
