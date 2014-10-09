@@ -37,4 +37,14 @@ use_ok('Ptero::Builder::Detail::Workflow::Link');
         'source and destination name errors');
 }
 
+{
+    my $link = Ptero::Builder::Detail::Workflow::Link->new(
+        source_property => 'baz',
+        destination_property => 'qux',
+    );
+
+    is($link->source, 'input connector', 'source default');
+    is($link->destination, 'output connector', 'destination default');
+}
+
 done_testing();
