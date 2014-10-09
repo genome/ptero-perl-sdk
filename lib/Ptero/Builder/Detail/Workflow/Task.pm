@@ -31,7 +31,7 @@ has parallel_by => (
 );
 
 sub add_method {
-    my ($self, $method) = validate_pos(@_, 1, {type=>OBJECT});
+    my ($self, $method) = @_;
     $self->methods([@{$self->methods}, $method]);
     return $method;
 }
