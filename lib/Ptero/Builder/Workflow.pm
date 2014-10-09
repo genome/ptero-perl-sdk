@@ -224,20 +224,16 @@ sub _task_input_errors {
     my $self = shift;
     my @errors;
 
-    my $mandatory_inputs = $self->_mandatory_inputs;
-    for my $link (@{$self->links}) {
-        my $destination = _encode_target(
-            $link->destination, $link->destination_property);
-        if ($mandatory_inputs->contains($destination)) {
-            $mandatory_inputs->delete($destination);
-        }
-    }
+    my $existing_inputs = Set::Scalar->new(
+        map {_encode_target($_->destination, $_->destination_property)} @{$self->links}
+    );
+    my $missing_inputs = $self->_mandatory_inputs - $existing_inputs;
 
-    unless ($mandatory_inputs->is_empty) {
+    unless ($missing_inputs->is_empty) {
         push @errors, sprintf(
             'No links on Workflow (%s) targeting mandatory input(s): %s',
             $self->name,
-            (join ', ', sort $mandatory_inputs->members)
+            (join ', ', sort $missing_inputs->members)
         );
     }
 
