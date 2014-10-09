@@ -183,21 +183,13 @@ sub _missing_task_errors {
 sub _link_sources {
     my $self = shift;
 
-    my $link_sources = new Set::Scalar;
-    for my $link (@{$self->links}) {
-        $link_sources->insert($link->source);
-    }
-    return $link_sources;
+    return Set::Scalar->new(map {$_->source} @{$self->links});
 }
 
 sub _link_destinations {
     my $self = shift;
 
-    my $link_destinations = new Set::Scalar;
-    for my $link (@{$self->links}) {
-        $link_destinations->insert($link->destination);
-    }
-    return $link_destinations;
+    return Set::Scalar->new(map {$_->destination} @{$self->links});
 }
 
 sub _task_names {
