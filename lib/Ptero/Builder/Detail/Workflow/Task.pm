@@ -52,15 +52,8 @@ sub known_input_properties {
 sub parallel_by_properties {
     my $self = shift;
 
-    return unless $self->has_parallel_by;
-
-    my @flattened_properties;
-    for my $group (@{$self->parallel_by}) {
-        for my $property (@$group) {
-            push @flattened_properties, $property;
-        }
-    }
-    return @flattened_properties;
+    return () unless $self->has_parallel_by;
+    return map {@$_} @{$self->parallel_by};
 }
 
 sub has_possible_output_property {
