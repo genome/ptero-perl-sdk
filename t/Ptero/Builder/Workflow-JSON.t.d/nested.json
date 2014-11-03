@@ -1,0 +1,59 @@
+{
+   "links" : [
+      {
+         "destination" : "A",
+         "destinationProperty" : "A_in",
+         "source" : "input connector",
+         "sourceProperty" : "A_in"
+      },
+      {
+         "destination" : "output connector",
+         "destinationProperty" : "A_out",
+         "source" : "A",
+         "sourceProperty" : "A_out"
+      }
+   ],
+   "tasks" : {
+      "A" : {
+         "methods" : [
+            {
+               "name" : "inner",
+               "parameters" : {
+                  "links" : [
+                     {
+                        "destination" : "A",
+                        "destinationProperty" : "A_in",
+                        "source" : "input connector",
+                        "sourceProperty" : "A_in"
+                     },
+                     {
+                        "destination" : "output connector",
+                        "destinationProperty" : "A_out",
+                        "source" : "A",
+                        "sourceProperty" : "A_out"
+                     }
+                  ],
+                  "tasks" : {
+                     "A" : {
+                        "methods" : [
+                           {
+                              "name" : "do something",
+                              "parameters" : {
+                                 "commandLine" : [
+                                    "echo",
+                                    "basic-workflow"
+                                 ]
+                              },
+                              "service" : "ShellCommand"
+                           }
+                        ]
+                     }
+                  }
+               },
+               "service" : "Workflow"
+            }
+         ]
+      }
+   }
+}
+
