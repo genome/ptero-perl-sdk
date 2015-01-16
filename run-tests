@@ -1,9 +1,10 @@
 #!/bin/bash
 rm -rf cover_db
 
-FILES=$*
-if [[ $# -gt 1 ]]; then
-    FILES=t
+if [[ $# -gt 0 ]]; then
+    FILES=$*
+else
+    FILES=t/Ptero
 fi
 
 HARNESS_PERL_SWITCHES=-MDevel::Cover=+ignore,local carton exec prove -vrl -I t $FILES
