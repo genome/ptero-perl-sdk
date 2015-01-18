@@ -23,7 +23,11 @@ use_ok('Ptero::Builder::Detail::Workflow::Task');
 subtest VALIDATION_ERRORS => sub {
     my $sc = Ptero::Builder::ShellCommand->new(
         name => 'test-shell-command',
-        parameters => { commandLine => ['echo', 'hi']},
+        parameters => {
+            commandLine => ['echo', 'hi'],
+            user => 'testuser',
+            workingDirectory => '/test/working/directory',
+        },
     );
     my $t = Ptero::Builder::Detail::Workflow::Task->new(
         name => 'test-task',

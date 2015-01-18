@@ -48,6 +48,8 @@ sub build_basic_workflow {
                 name => 'do something',
                 parameters => {
                     commandLine => ['echo', 'basic-workflow'],
+                    user => 'testuser',
+                    workingDirectory => '/test/working/directory',
                 },
             ),
         ],
@@ -76,6 +78,8 @@ sub create_basic_task {
                 name => 'do something',
                 parameters => {
                     commandLine => ['echo', 'basic-task'],
+                    user => 'testuser',
+                    workingDirectory => '/test/working/directory',
                 },
             ),
         ],

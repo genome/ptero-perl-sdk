@@ -31,7 +31,11 @@ use Ptero::Builder::TestHelpers qw(
                     methods => [
                         {
                             name => "do something",
-                            parameters => { commandLine => ["echo", "basic-workflow"] },
+                            parameters => {
+                                commandLine => ["echo", "basic-workflow"],
+                                user => 'testuser',
+                                workingDirectory => '/test/working/directory',
+                            },
                             service => "shell-command",
                         },
                     ],
@@ -70,7 +74,11 @@ use Ptero::Builder::TestHelpers qw(
                     methods => [
                         {
                             name => "do something",
-                            parameters => { commandLine => ["echo", "basic-workflow"] },
+                            parameters => {
+                                commandLine => ["echo", "basic-workflow"],
+                                user => 'testuser',
+                                workingDirectory => '/test/working/directory',
+                            },
                             service => "shell-command",
                         },
                     ],
@@ -132,7 +140,11 @@ use Ptero::Builder::TestHelpers qw(
                                         methods => [
                                             {
                                                 name => "do something",
-                                                parameters => { commandLine => ["echo", "basic-workflow"] },
+                                                parameters => {
+                                                    commandLine => ["echo", "basic-workflow"],
+                                                    user => 'testuser',
+                                                    workingDirectory => '/test/working/directory',
+                                                },
                                                 service => "shell-command",
                                             },
                                         ],
