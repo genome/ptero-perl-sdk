@@ -82,7 +82,7 @@ use Ptero::Builder::TestHelpers qw(
                             service => "shell-command",
                         },
                     ],
-                    parallelBy => [["A_in"]],
+                    parallelBy => "A_in",
                 },
             },
         },
@@ -90,7 +90,7 @@ use Ptero::Builder::TestHelpers qw(
     };
 
     my $workflow = build_basic_workflow('foo');
-    $workflow->task_named('A')->parallel_by([['A_in']]);
+    $workflow->task_named('A')->parallel_by('A_in');
 
     is_deeply($workflow->to_hashref, $expected_hashref, 'basic_workflow parallel_by hashref');
     is_deeply(Ptero::Builder::Workflow->from_hashref($expected_hashref)->to_hashref,

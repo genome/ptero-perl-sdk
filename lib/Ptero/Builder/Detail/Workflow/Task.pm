@@ -25,7 +25,7 @@ has methods => (
 
 has parallel_by => (
     is => 'rw',
-    isa => 'ArrayRef[ArrayRef[Str]]',
+    isa => 'Str',
     alias => 'parallelBy',
     predicate => 'has_parallel_by',
 );
@@ -40,20 +40,15 @@ sub known_input_properties {
     my $self = shift;
 
     my $properties = Set::Scalar->new();
-    $properties-> insert($self->parallel_by_properties);
+    if ($self->has_parallel_by) {
+        $properties->insert($self->parallel_by);
+    }
 
     for my $method (@{$self->methods}) {
         $properties->insert($method->known_input_properties);
     }
 
     return $properties->members;
-}
-
-sub parallel_by_properties {
-    my $self = shift;
-
-    return () unless $self->has_parallel_by;
-    return map {@$_} @{$self->parallel_by};
 }
 
 sub has_possible_output_property {

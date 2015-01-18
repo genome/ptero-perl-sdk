@@ -10,13 +10,13 @@ use_ok('Ptero::Builder::Detail::Workflow::Task');
 {
     my $t = Ptero::Builder::Detail::Workflow::Task->new(
         name => 'foo',
-        parallel_by => [['bar', 'baz'], ['qux']],
+        parallel_by => 'bar',
     );
 
-    is_deeply([$t->parallel_by_properties], ['bar', 'baz', 'qux'],
-        'parallel_by_properties');
+    is_deeply($t->parallel_by, 'bar',
+        'parallel_by set');
 
-    is_deeply([$t->parallel_by_properties], [sort $t->known_input_properties],
+    is_deeply([$t->parallel_by], [$t->known_input_properties],
         'known_input_properties from parallel_by');
 }
 
