@@ -32,13 +32,13 @@ use Ptero::Builder::TestHelpers qw(
                         {
                             name => "do something",
                             parameters => { commandLine => ["echo", "basic-workflow"] },
-                            service => "ShellCommand",
+                            service => "shell-command",
                         },
                     ],
                 },
             },
         },
-        service => "Workflow",
+        service => "workflow",
     };
 
     my $workflow = build_basic_workflow('foo');
@@ -71,14 +71,14 @@ use Ptero::Builder::TestHelpers qw(
                         {
                             name => "do something",
                             parameters => { commandLine => ["echo", "basic-workflow"] },
-                            service => "ShellCommand",
+                            service => "shell-command",
                         },
                     ],
                     parallelBy => [["A_in"]],
                 },
             },
         },
-        service => "Workflow",
+        service => "workflow",
     };
 
     my $workflow = build_basic_workflow('foo');
@@ -133,19 +133,19 @@ use Ptero::Builder::TestHelpers qw(
                                             {
                                                 name => "do something",
                                                 parameters => { commandLine => ["echo", "basic-workflow"] },
-                                                service => "ShellCommand",
+                                                service => "shell-command",
                                             },
                                         ],
                                     },
                                 },
                             },
-                            service => "Workflow",
+                            service => "workflow",
                         },
                     ],
                 },
             },
         },
-        service => "Workflow",
+        service => "workflow",
     };
 
     my $workflow = build_nested_workflow('foo');

@@ -30,7 +30,7 @@ has links => (
 
 override 'BUILDARGS' => sub {
     my $params = super();
-    $params->{service} = 'Workflow';
+    $params->{service} = 'workflow';
     return $params;
 };
 
@@ -390,7 +390,7 @@ sub from_json {
     $hashref->{name} = $name;
     $hashref->{parameters}->{tasks} = delete $hashref->{tasks};
     $hashref->{parameters}->{links} = delete $hashref->{links};
-    $hashref->{service} = 'Workflow';
+    $hashref->{service} = 'workflow';
 
     return $class->from_hashref($hashref);
 }

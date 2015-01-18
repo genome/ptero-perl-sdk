@@ -8,7 +8,7 @@ with 'Ptero::Builder::Detail::Method';
 
 override 'BUILDARGS' => sub {
     my $params = super();
-    $params->{service} = 'ShellCommand';
+    $params->{service} = 'shell-command';
     return $params;
 };
 

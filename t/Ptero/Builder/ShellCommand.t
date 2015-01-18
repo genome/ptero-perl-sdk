@@ -12,8 +12,8 @@ use_ok('Ptero::Builder::ShellCommand');
         parameters => { commandLine => ['echo', 'hi']},
     );
 
-    is($sc->service, 'ShellCommand',
-        'service automatically set to ShellCommand');
+    is($sc->service, 'shell-command',
+        'service automatically set to shell-command');
 }
 
 subtest VALIDATION_ERRORS => sub {
