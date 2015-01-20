@@ -42,15 +42,17 @@
                                  "commandLine" : [
                                     "echo",
                                     "basic-workflow"
-                                 ]
+                                 ],
+                                 "user" : "testuser",
+                                 "workingDirectory" : "/test/working/directory"
                               },
-                              "service" : "ShellCommand"
+                              "service" : "shell-command"
                            }
                         ]
                      }
                   }
                },
-               "service" : "Workflow"
+               "service" : "workflow"
             }
          ]
       }

@@ -31,14 +31,18 @@ use Ptero::Builder::TestHelpers qw(
                     methods => [
                         {
                             name => "do something",
-                            parameters => { commandLine => ["echo", "basic-workflow"] },
-                            service => "ShellCommand",
+                            parameters => {
+                                commandLine => ["echo", "basic-workflow"],
+                                user => 'testuser',
+                                workingDirectory => '/test/working/directory',
+                            },
+                            service => "shell-command",
                         },
                     ],
                 },
             },
         },
-        service => "Workflow",
+        service => "workflow",
     };
 
     my $workflow = build_basic_workflow('foo');
@@ -70,19 +74,23 @@ use Ptero::Builder::TestHelpers qw(
                     methods => [
                         {
                             name => "do something",
-                            parameters => { commandLine => ["echo", "basic-workflow"] },
-                            service => "ShellCommand",
+                            parameters => {
+                                commandLine => ["echo", "basic-workflow"],
+                                user => 'testuser',
+                                workingDirectory => '/test/working/directory',
+                            },
+                            service => "shell-command",
                         },
                     ],
-                    parallelBy => [["A_in"]],
+                    parallelBy => "A_in",
                 },
             },
         },
-        service => "Workflow",
+        service => "workflow",
     };
 
     my $workflow = build_basic_workflow('foo');
-    $workflow->task_named('A')->parallel_by([['A_in']]);
+    $workflow->task_named('A')->parallel_by('A_in');
 
     is_deeply($workflow->to_hashref, $expected_hashref, 'basic_workflow parallel_by hashref');
     is_deeply(Ptero::Builder::Workflow->from_hashref($expected_hashref)->to_hashref,
@@ -132,20 +140,24 @@ use Ptero::Builder::TestHelpers qw(
                                         methods => [
                                             {
                                                 name => "do something",
-                                                parameters => { commandLine => ["echo", "basic-workflow"] },
-                                                service => "ShellCommand",
+                                                parameters => {
+                                                    commandLine => ["echo", "basic-workflow"],
+                                                    user => 'testuser',
+                                                    workingDirectory => '/test/working/directory',
+                                                },
+                                                service => "shell-command",
                                             },
                                         ],
                                     },
                                 },
                             },
-                            service => "Workflow",
+                            service => "workflow",
                         },
                     ],
                 },
             },
         },
-        service => "Workflow",
+        service => "workflow",
     };
 
     my $workflow = build_nested_workflow('foo');

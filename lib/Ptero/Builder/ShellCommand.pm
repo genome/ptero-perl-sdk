@@ -8,7 +8,7 @@ with 'Ptero::Builder::Detail::Method';
 
 override 'BUILDARGS' => sub {
     my $params = super();
-    $params->{service} = 'ShellCommand';
+    $params->{service} = 'shell-command';
     return $params;
 };
 
@@ -23,6 +23,8 @@ sub has_possible_output_property {
 sub required_parameters {
     return qw(
         commandLine
+        user
+        workingDirectory
     );
 }
 
@@ -30,7 +32,6 @@ sub optional_parameters {
     return qw(
         environment
         umask
-        user
     );
 }
 

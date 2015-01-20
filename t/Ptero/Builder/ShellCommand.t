@@ -9,11 +9,15 @@ use_ok('Ptero::Builder::ShellCommand');
 {
     my $sc = Ptero::Builder::ShellCommand->new(
         name => 'foo',
-        parameters => { commandLine => ['echo', 'hi']},
+        parameters => {
+            commandLine => ['echo', 'hi'],
+            user => 'testuser',
+            workingDirectory => '/test/working/directory',
+        },
     );
 
-    is($sc->service, 'ShellCommand',
-        'service automatically set to ShellCommand');
+    is($sc->service, 'shell-command',
+        'service automatically set to shell-command');
 }
 
 subtest VALIDATION_ERRORS => sub {
@@ -21,7 +25,8 @@ subtest VALIDATION_ERRORS => sub {
         name => 'foo',
         parameters => {
             commandLine => ['echo', 'hi'],
-            user => 'bob',
+            user => 'testuser',
+            workingDirectory => '/test/working/directory',
         },
     );
 

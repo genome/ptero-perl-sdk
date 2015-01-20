@@ -30,12 +30,6 @@ has parameters => (
     default => sub {{}},
 );
 
-has has_unknown_io_properties => (
-    is => 'ro',
-    isa => 'Bool',
-    default => 0,
-);
-
 sub required_parameters {
     # potentially redefined in subclasses
     return ();
