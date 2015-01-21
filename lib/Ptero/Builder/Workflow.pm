@@ -398,6 +398,8 @@ sub from_json {
 sub to_json {
     my $self = shift;
     my %p = Params::Validate::validate(@_, {
+        inputs => {type => HASHREF, optional => 1},
+        parallel_by => {type => SCALAR, optional => 1},
         pretty => {default => 0},
     });
 
@@ -408,6 +410,14 @@ sub to_json {
         tasks => $self_hashref->{parameters}->{tasks},
         links => $self_hashref->{parameters}->{links},
     };
+
+    if (exists $p{inputs}) {
+        $json_hashref->{inputs} = $p{inputs};
+    }
+
+    if (exists $p{parallel_by}) {
+        $json_hashref->{parallelBy} = $p{parallel_by};
+    }
 
     if ($p{pretty}) {
         return $codec->pretty->encode($json_hashref);
