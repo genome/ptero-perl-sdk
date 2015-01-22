@@ -8,9 +8,9 @@ use Data::Dump qw();
 use Set::Scalar qw();
 use Params::Validate qw(validate_pos :types);
 
-with 'Ptero::Builder::Detail::HasValidationErrors';
-with 'Ptero::Builder::Detail::ConvertsToHashref';
 use Ptero::Builder::Detail::Method;
+
+with 'Ptero::Builder::Detail::HasValidationErrors', 'Ptero::Builder::Detail::ConvertsToHashref';
 
 has name => (
     is => 'rw',
