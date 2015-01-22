@@ -8,7 +8,10 @@ use HTTP::Request qw();
 use JSON qw();
 use LWP::UserAgent::Determined qw();
 use Log::Log4perl qw();
-use Params::Validate qw(validate_pos);
+use Params::Validate qw(validate_pos :types);
+
+use Exporter 'import';
+our @EXPORT_OK = qw(get_decoded_resource);
 
 Log::Log4perl->easy_init($Log::Log4perl::DEBUG);
 my $logger = Log::Log4perl->get_logger();
@@ -55,6 +58,26 @@ sub make_request {
 sub get   { make_request('GET',   @_) }
 sub patch { make_request('PATCH', @_) }
 sub post  { make_request('POST',  @_) }
+
+sub get_decoded_resource {
+    my %p = Params::Validate::validate(@_, {
+            url => { type => SCALAR },
+            valid_response_codes => { type => ARRAYREF, default => [200] },
+    });
+
+    my $response = get($p{'url'});
+    unless (grep {$response->code == $_} @{$p{valid_response_codes}}) {
+        die sprintf "Failed to fetch json resource from %s\n"
+            ."Status code (%s)\n"
+            ."Valid status codes (%s)"
+            ."Response:\n%s\n",
+            $p{url}, $response->code,
+            join(', ', @{$p{valid_response_codes}}),
+            $response->content;
+    }
+
+    return decode_response($response);
+}
 
 
 sub _random_int {
