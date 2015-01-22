@@ -11,8 +11,10 @@ use JSON qw();
 
 use Ptero::Builder::Detail::Workflow::Link;
 use Ptero::Builder::Detail::Workflow::Task;
+use Ptero::Proxy::Workflow;
+use Ptero::HTTP;
 
-with 'Ptero::Builder::Detail::Method';
+with 'Ptero::Builder::Detail::Method', 'Ptero::Builder::Detail::Submittable';
 
 my $codec = JSON->new()->canonical([1]);
 
@@ -33,6 +35,25 @@ override 'BUILDARGS' => sub {
     $params->{service} = 'workflow';
     return $params;
 };
+
+sub submit {
+    my $self = shift;
+
+    my $url = $ENV{PTERO_WORKFLOW_SUBMIT_URL};
+    my $submission_data = $self->submission_data(@_);
+    my $response = Ptero::HTTP::post($url, $submission_data);
+
+    unless ($response->code == 201) {
+        die sprintf "Failed to submit workflow to '%s'.\n"
+            ."Status Code (%s)\n"
+            ."Request Body\n%s\n"
+            ."Response Body\n%s\n",
+            $url, $response->code,
+            Data::Dump::pp($submission_data), $response->content;
+    }
+
+    return Ptero::Proxy::Workflow->new(url => $response->header('Location'));
+}
 
 sub create_task {
     my $self = shift;
@@ -395,35 +416,35 @@ sub from_json {
     return $class->from_hashref($hashref);
 }
 
-sub to_json {
+sub submission_data {
     my $self = shift;
     my %p = Params::Validate::validate(@_, {
         inputs => {type => HASHREF, optional => 1},
         parallel_by => {type => SCALAR, optional => 1},
-        pretty => {default => 0},
     });
 
     $self->validate;
 
     my $self_hashref = $self->to_hashref;
-    my $json_hashref = {
+    my $hashref = {
         tasks => $self_hashref->{parameters}->{tasks},
         links => $self_hashref->{parameters}->{links},
     };
 
     if (exists $p{inputs}) {
-        $json_hashref->{inputs} = $p{inputs};
+        $hashref->{inputs} = $p{inputs};
     }
 
     if (exists $p{parallel_by}) {
-        $json_hashref->{parallelBy} = $p{parallel_by};
+        $hashref->{parallelBy} = $p{parallel_by};
     }
 
-    if ($p{pretty}) {
-        return $codec->pretty->encode($json_hashref);
-    } else {
-        return $codec->encode($json_hashref);
-    }
+    return $hashref;
+}
+
+sub to_json {
+    my $self = shift;
+    return $codec->pretty->encode($self->submission_data(@_));
 }
 
 sub validate {
