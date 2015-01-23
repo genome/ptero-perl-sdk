@@ -4,7 +4,6 @@ use strict;
 use warnings FATAL => 'all';
 
 use Ptero::Builder::ShellCommand;
-use Ptero::Builder::Detail::Workflow::Task;
 use Ptero::Builder::Workflow;
 
 use Exporter 'import';
@@ -13,6 +12,8 @@ our @EXPORT_OK = qw(
     build_basic_workflow
     create_basic_task
 );
+
+sub echo_test { shift }
 
 sub build_nested_workflow {
     my $name = shift;
