@@ -5,6 +5,10 @@ use warnings FATAL => 'all';
 use Test::Exception;
 use Test::More;
 use File::Spec;
+use Ptero::TestHelper qw(
+    repo_relative_path
+    get_environment
+);
 
 use_ok('Ptero::Builder::Workflow');
 use_ok('Ptero::Builder::ShellCommand');
@@ -48,14 +52,3 @@ sub create_echo_workflow {
     return $workflow;
 }
 
-sub repo_relative_path {
-    return File::Spec->join($ENV{PTERO_PERL_SDK_TEST_HOME}, @_);
-}
-
-sub get_environment {
-    my %env = %ENV;
-    $env{PERL5LIB} = join(':', $env{PERL5LIB},
-        repo_relative_path('lib'),
-        repo_relative_path('t'));
-    return \%env;
-}
