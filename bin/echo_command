@@ -1,0 +1,40 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings FATAL => 'all';
+
+use Data::Dump qw(pp);
+use Getopt::Long;
+use Ptero::HTTP qw();
+
+exit main();
+
+sub main {
+    validate_environment();
+    my $inputs = get_inputs();
+    set_outputs($inputs);
+    return 0;
+}
+
+sub validate_environment {
+    unless (defined $ENV{PTERO_WORKFLOW_EXECUTION_URL}) {
+        print STDERR "echo_command: Environment variable PTERO_WORKFLOW_EXECUTION_URL must be set\n";
+        exit 1;
+    }
+}
+
+sub get_inputs {
+    my $r = Ptero::HTTP::get($ENV{PTERO_WORKFLOW_EXECUTION_URL});
+    return Ptero::HTTP::decode_response($r)->{inputs};
+}
+
+sub set_outputs {
+    my ($outputs) = @_;
+    my $url = $ENV{PTERO_WORKFLOW_EXECUTION_URL};
+    my $r = Ptero::HTTP::patch($url, {outputs => $outputs});
+    unless ($r->is_success) {
+        die sprintf("Unexpected response code (%s: %s) whlie patching %s: %s",
+            $r->code, $r->message, $url, pp($outputs));
+    }
+    return;
+}

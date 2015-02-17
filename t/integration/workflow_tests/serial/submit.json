@@ -1,0 +1,77 @@
+{
+    "tasks": {
+        "A": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./echo_command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        },
+        "B": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./echo_command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        },
+        "C": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./echo_command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        }
+    },
+
+    "links": [
+        {
+            "source": "input connector",
+            "destination": "A",
+            "sourceProperty": "in_val",
+            "destinationProperty": "param"
+        },
+        {
+            "source": "A",
+            "destination": "B",
+            "sourceProperty": "param",
+            "destinationProperty": "param"
+        },
+        {
+            "source": "B",
+            "destination": "C",
+            "sourceProperty": "param",
+            "destinationProperty": "param"
+        },
+        {
+            "source": "C",
+            "destination": "output connector",
+            "sourceProperty": "param",
+            "destinationProperty": "out_val"
+        }
+    ],
+
+    "inputs": {
+        "in_val": "walruses"
+    }
+}

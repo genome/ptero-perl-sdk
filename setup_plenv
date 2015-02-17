@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+
+echo "Cloning plenv"
+git clone git://github.com/tokuhirom/plenv.git ~/.plenv
+
+
+echo "Installing plenv"
+echo 'export PATH="$HOME/.plenv/bin:$PATH"' >> ~/.profile; echo 'eval "$(plenv init -)"' >> ~/.profile
+
+
+export PATH="$HOME/.plenv/bin:$PATH"
+eval "$(plenv init -)"
+
+
+echo "Cloning perl-build"
+git clone git://github.com/tokuhirom/Perl-Build.git ~/.plenv/plugins/perl-build/
+
+
+echo "Installing perl 5.10.1"
+plenv install 5.10.1; plenv rehash
+
+
+echo "Set this shell to use perl 5.10.1"
+plenv local 5.10.1
+
+
+echo "Install cpanm"
+plenv install-cpanm
+
+
+echo "Install Carton"
+cpanm install Carton

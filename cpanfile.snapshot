@@ -1,5 +1,18 @@
 # carton snapshot format: version 1.0
 DISTRIBUTIONS
+  AppConfig-1.69
+    pathname: N/NE/NEILB/AppConfig-1.69.tar.gz
+    provides:
+      AppConfig 1.69
+      AppConfig::Args 1.69
+      AppConfig::CGI 1.69
+      AppConfig::File 1.69
+      AppConfig::Getopt 1.69
+      AppConfig::State 1.69
+      AppConfig::Sys 1.69
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
   B-Hooks-EndOfScope-0.13
     pathname: E/ET/ETHER/B-Hooks-EndOfScope-0.13.tar.gz
     provides:
@@ -108,6 +121,18 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  Compress-Raw-Bzip2-2.068
+    pathname: P/PM/PMQS/Compress-Raw-Bzip2-2.068.tar.gz
+    provides:
+      Compress::Raw::Bzip2 2.068
+    requirements:
+      ExtUtils::MakeMaker 0
+  Compress-Raw-Zlib-2.068
+    pathname: P/PM/PMQS/Compress-Raw-Zlib-2.068.tar.gz
+    provides:
+      Compress::Raw::Zlib 2.068
+    requirements:
+      ExtUtils::MakeMaker 0
   Data-Dump-1.22
     pathname: G/GA/GAAS/Data-Dump-1.22.tar.gz
     provides:
@@ -263,6 +288,15 @@ DISTRIBUTIONS
       base 0
       strict 0
       warnings 0
+  Encode-Locale-1.04
+    pathname: G/GA/GAAS/Encode-Locale-1.04.tar.gz
+    provides:
+      Encode::Locale 1.04
+    requirements:
+      Encode 2
+      Encode::Alias 0
+      ExtUtils::MakeMaker 0
+      perl 5.008
   Eval-Closure-0.11
     pathname: D/DO/DOY/Eval-Closure-0.11.tar.gz
     provides:
@@ -419,6 +453,19 @@ DISTRIBUTIONS
       File::Spec 0
       Symbol 0
       Test::More 0.47
+  File-Listing-6.04
+    pathname: G/GA/GAAS/File-Listing-6.04.tar.gz
+    provides:
+      File::Listing 6.04
+      File::Listing::apache 6.04
+      File::Listing::dosftp 6.04
+      File::Listing::netware 6.04
+      File::Listing::unix 6.04
+      File::Listing::vms 6.04
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Date 6
+      perl 5.006002
   File-Slurp-9999.19
     pathname: U/UR/URI/File-Slurp-9999.19.tar.gz
     provides:
@@ -463,6 +510,102 @@ DISTRIBUTIONS
       Scalar::Util 0
       Storable 2.05
       Test::More 0
+  HTML-Parser-3.71
+    pathname: G/GA/GAAS/HTML-Parser-3.71.tar.gz
+    provides:
+      HTML::Entities 3.69
+      HTML::Filter 3.57
+      HTML::HeadParser 3.71
+      HTML::LinkExtor 3.69
+      HTML::Parser 3.71
+      HTML::PullParser 3.57
+      HTML::TokeParser 3.69
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTML::Tagset 3
+      XSLoader 0
+      perl 5.008
+  HTML-Tagset-3.20
+    pathname: P/PE/PETDANCE/HTML-Tagset-3.20.tar.gz
+    provides:
+      HTML::Tagset 3.20
+    requirements:
+      ExtUtils::MakeMaker 0
+  HTTP-Cookies-6.01
+    pathname: G/GA/GAAS/HTTP-Cookies-6.01.tar.gz
+    provides:
+      HTTP::Cookies 6.01
+      HTTP::Cookies::Microsoft 6.00
+      HTTP::Cookies::Netscape 6.00
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Date 6
+      HTTP::Headers::Util 6
+      Time::Local 0
+      perl 5.008001
+  HTTP-Daemon-6.01
+    pathname: G/GA/GAAS/HTTP-Daemon-6.01.tar.gz
+    provides:
+      HTTP::Daemon 6.01
+      HTTP::Daemon::ClientConn 6.01
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Date 6
+      HTTP::Request 6
+      HTTP::Response 6
+      HTTP::Status 6
+      IO::Socket 0
+      LWP::MediaTypes 6
+      Sys::Hostname 0
+      perl 5.008001
+  HTTP-Date-6.02
+    pathname: G/GA/GAAS/HTTP-Date-6.02.tar.gz
+    provides:
+      HTTP::Date 6.02
+    requirements:
+      ExtUtils::MakeMaker 0
+      Time::Local 0
+      perl 5.006002
+  HTTP-Message-6.06
+    pathname: G/GA/GAAS/HTTP-Message-6.06.tar.gz
+    provides:
+      HTTP::Config 6.00
+      HTTP::Headers 6.05
+      HTTP::Headers::Auth 6.00
+      HTTP::Headers::ETag 6.00
+      HTTP::Headers::Util 6.03
+      HTTP::Message 6.06
+      HTTP::Request 6.00
+      HTTP::Request::Common 6.04
+      HTTP::Response 6.04
+      HTTP::Status 6.03
+    requirements:
+      Compress::Raw::Zlib 0
+      Encode 2.21
+      Encode::Locale 1
+      ExtUtils::MakeMaker 0
+      HTTP::Date 6
+      IO::Compress::Bzip2 2.021
+      IO::Compress::Deflate 0
+      IO::Compress::Gzip 0
+      IO::HTML 0
+      IO::Uncompress::Bunzip2 2.021
+      IO::Uncompress::Gunzip 0
+      IO::Uncompress::Inflate 0
+      IO::Uncompress::RawInflate 0
+      LWP::MediaTypes 6
+      MIME::Base64 2.1
+      MIME::QuotedPrint 0
+      URI 1.10
+      perl 5.008001
+  HTTP-Negotiate-6.01
+    pathname: G/GA/GAAS/HTTP-Negotiate-6.01.tar.gz
+    provides:
+      HTTP::Negotiate 6.01
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Headers 6
+      perl 5.008001
   HTTP-Tiny-0.053
     pathname: D/DA/DAGOLDEN/HTTP-Tiny-0.053.tar.gz
     provides:
@@ -478,6 +621,54 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  IO-Compress-2.068
+    pathname: P/PM/PMQS/IO-Compress-2.068.tar.gz
+    provides:
+      Compress::Zlib 2.068
+      File::GlobMapper 1.000
+      IO::Compress undef
+      IO::Compress::Adapter::Bzip2 2.068
+      IO::Compress::Adapter::Deflate 2.068
+      IO::Compress::Adapter::Identity 2.068
+      IO::Compress::Base 2.068
+      IO::Compress::Base::Common 2.068
+      IO::Compress::Bzip2 2.068
+      IO::Compress::Deflate 2.068
+      IO::Compress::Gzip 2.068
+      IO::Compress::Gzip::Constants 2.068
+      IO::Compress::RawDeflate 2.068
+      IO::Compress::Zip 2.068
+      IO::Compress::Zip::Constants 2.068
+      IO::Compress::Zlib::Constants 2.068
+      IO::Compress::Zlib::Extra 2.068
+      IO::Uncompress::Adapter::Bunzip2 2.068
+      IO::Uncompress::Adapter::Identity 2.068
+      IO::Uncompress::Adapter::Inflate 2.068
+      IO::Uncompress::AnyInflate 2.068
+      IO::Uncompress::AnyUncompress 2.068
+      IO::Uncompress::Base 2.068
+      IO::Uncompress::Bunzip2 2.068
+      IO::Uncompress::Gunzip 2.068
+      IO::Uncompress::Inflate 2.068
+      IO::Uncompress::RawInflate 2.068
+      IO::Uncompress::Unzip 2.068
+      U64 2.068
+      Zlib::OldDeflate 2.068
+      Zlib::OldInflate 2.068
+    requirements:
+      Compress::Raw::Bzip2 2.068
+      Compress::Raw::Zlib 2.068
+      ExtUtils::MakeMaker 0
+      Scalar::Util 0
+  IO-HTML-1.001
+    pathname: C/CJ/CJM/IO-HTML-1.001.tar.gz
+    provides:
+      IO::HTML 1.001
+    requirements:
+      Carp 0
+      Encode 2.10
+      Exporter 5.57
+      ExtUtils::MakeMaker 6.30
   IO-Socket-SSL-2.010
     pathname: S/SU/SULLR/IO-Socket-SSL-2.010.tar.gz
     provides:
@@ -492,7 +683,6 @@ DISTRIBUTIONS
       IO::Socket::SSL::Utils 0.03
     requirements:
       ExtUtils::MakeMaker 0
-      Mozilla::CA 0
       Net::SSLeay 1.46
       Scalar::Util 0
   JSON-2.90
@@ -513,6 +703,20 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       Test::More 0
+  LWP-MediaTypes-6.02
+    pathname: G/GA/GAAS/LWP-MediaTypes-6.02.tar.gz
+    provides:
+      LWP::MediaTypes 6.02
+    requirements:
+      ExtUtils::MakeMaker 0
+      perl 5.006002
+  LWP-UserAgent-Determined-1.07
+    pathname: A/AL/ALEXMV/LWP-UserAgent-Determined-1.07.tar.gz
+    provides:
+      LWP::UserAgent::Determined 1.07
+    requirements:
+      ExtUtils::MakeMaker 0
+      LWP 0
   List-MoreUtils-0.402
     pathname: R/RE/REHSACK/List-MoreUtils-0.402.tar.gz
     provides:
@@ -529,16 +733,20 @@ DISTRIBUTIONS
       L4pResurrectable 0.01
       Log::Log4perl 1.46
       Log::Log4perl::Appender undef
+      Log::Log4perl::Appender::Buffer undef
       Log::Log4perl::Appender::DBI undef
       Log::Log4perl::Appender::File undef
+      Log::Log4perl::Appender::Limit undef
       Log::Log4perl::Appender::RRDs undef
       Log::Log4perl::Appender::Screen undef
       Log::Log4perl::Appender::ScreenColoredLevels undef
       Log::Log4perl::Appender::Socket undef
       Log::Log4perl::Appender::String undef
+      Log::Log4perl::Appender::Synchronized undef
       Log::Log4perl::Appender::TestArrayBuffer undef
       Log::Log4perl::Appender::TestBuffer undef
       Log::Log4perl::Appender::TestFileCreeper undef
+      Log::Log4perl::Catalyst undef
       Log::Log4perl::Config undef
       Log::Log4perl::Config::BaseConfigurator undef
       Log::Log4perl::Config::DOMConfigurator 0.03
@@ -729,6 +937,35 @@ DISTRIBUTIONS
       Class::MOP::Overload 2.1403
       Class::MOP::Package 2.1403
       Moose 2.1403
+      Moose::Cookbook 2.1403
+      Moose::Cookbook::Basics::BankAccount_MethodModifiersAndSubclassing 2.1403
+      Moose::Cookbook::Basics::BinaryTree_AttributeFeatures 2.1403
+      Moose::Cookbook::Basics::BinaryTree_BuilderAndLazyBuild 2.1403
+      Moose::Cookbook::Basics::Company_Subtypes 2.1403
+      Moose::Cookbook::Basics::DateTime_ExtendingNonMooseParent 2.1403
+      Moose::Cookbook::Basics::Document_AugmentAndInner 2.1403
+      Moose::Cookbook::Basics::Genome_OverloadingSubtypesAndCoercion 2.1403
+      Moose::Cookbook::Basics::HTTP_SubtypesAndCoercion 2.1403
+      Moose::Cookbook::Basics::Immutable 2.1403
+      Moose::Cookbook::Basics::Person_BUILDARGSAndBUILD 2.1403
+      Moose::Cookbook::Basics::Point_AttributesAndSubclassing 2.1403
+      Moose::Cookbook::Extending::Debugging_BaseClassRole 2.1403
+      Moose::Cookbook::Extending::ExtensionOverview 2.1403
+      Moose::Cookbook::Extending::Mooseish_MooseSugar 2.1403
+      Moose::Cookbook::Legacy::Debugging_BaseClassReplacement 2.1403
+      Moose::Cookbook::Legacy::Labeled_AttributeMetaclass 2.1403
+      Moose::Cookbook::Legacy::Table_ClassMetaclass 2.1403
+      Moose::Cookbook::Meta::GlobRef_InstanceMetaclass 2.1403
+      Moose::Cookbook::Meta::Labeled_AttributeTrait 2.1403
+      Moose::Cookbook::Meta::PrivateOrPublic_MethodMetaclass 2.1403
+      Moose::Cookbook::Meta::Table_MetaclassTrait 2.1403
+      Moose::Cookbook::Meta::WhyMeta 2.1403
+      Moose::Cookbook::Roles::ApplicationToInstance 2.1403
+      Moose::Cookbook::Roles::Comparable_CodeReuse 2.1403
+      Moose::Cookbook::Roles::Restartable_AdvancedComposition 2.1403
+      Moose::Cookbook::Snack::Keywords 2.1403
+      Moose::Cookbook::Snack::Types 2.1403
+      Moose::Cookbook::Style 2.1403
       Moose::Exception 2.1403
       Moose::Exception::AccessorMustReadWrite 2.1403
       Moose::Exception::AddParameterizableTypeTakesParameterizableType 2.1403
@@ -959,6 +1196,26 @@ DISTRIBUTIONS
       Moose::Exception::WrapTakesACodeRefToBless 2.1403
       Moose::Exception::WrongTypeConstraintGiven 2.1403
       Moose::Exporter 2.1403
+      Moose::Intro 2.1403
+      Moose::Manual 2.1403
+      Moose::Manual::Attributes 2.1403
+      Moose::Manual::BestPractices 2.1403
+      Moose::Manual::Classes 2.1403
+      Moose::Manual::Concepts 2.1403
+      Moose::Manual::Construction 2.1403
+      Moose::Manual::Contributing 2.1403
+      Moose::Manual::Delegation 2.1403
+      Moose::Manual::Delta 2.1403
+      Moose::Manual::Exceptions 2.1403
+      Moose::Manual::Exceptions::Manifest 2.1403
+      Moose::Manual::FAQ 2.1403
+      Moose::Manual::MOP 2.1403
+      Moose::Manual::MethodModifiers 2.1403
+      Moose::Manual::MooseX 2.1403
+      Moose::Manual::Roles 2.1403
+      Moose::Manual::Support 2.1403
+      Moose::Manual::Types 2.1403
+      Moose::Manual::Unsweetened 2.1403
       Moose::Meta::Attribute 2.1403
       Moose::Meta::Attribute::Custom::Moose 2.1403
       Moose::Meta::Attribute::Native 2.1403
@@ -1003,6 +1260,8 @@ DISTRIBUTIONS
       Moose::Meta::TypeConstraint::Union 2.1403
       Moose::Object 2.1403
       Moose::Role 2.1403
+      Moose::Spec::Role 2.1403
+      Moose::Unsweetened 2.1403
       Moose::Util 2.1403
       Moose::Util::MetaRole 2.1403
       Moose::Util::TypeConstraints 2.1403
@@ -1058,6 +1317,21 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Test 0
       perl 5.006
+  Net-HTTP-6.07
+    pathname: M/MS/MSCHILLI/Net-HTTP-6.07.tar.gz
+    provides:
+      Net::HTTP 6.07
+      Net::HTTP::Methods 6.07
+      Net::HTTP::NB 6.04
+      Net::HTTPS 6.04
+    requirements:
+      Compress::Raw::Zlib 0
+      ExtUtils::MakeMaker 0
+      IO::Compress::Gzip 0
+      IO::Select 0
+      IO::Socket::INET 0
+      URI 0
+      perl 5.006002
   Net-SSLeay-1.66
     pathname: M/MI/MIKEM/Net-SSLeay-1.66.tar.gz
     provides:
@@ -1263,6 +1537,67 @@ DISTRIBUTIONS
       Scalar::Util 1.14
       Test::More 0.42
       perl 5.005
+  Template-Toolkit-2.26
+    pathname: A/AB/ABW/Template-Toolkit-2.26.tar.gz
+    provides:
+      Template 2.26
+      Template::Base 2.78
+      Template::Config 2.75
+      Template::Constants 2.75
+      Template::Context 2.98
+      Template::Directive 2.2
+      Template::Document 2.79
+      Template::Exception 2.7
+      Template::Filters 2.87
+      Template::Grammar 2.26
+      Template::Iterator 2.68
+      Template::Monad::Assert 1
+      Template::Monad::Scalar 1
+      Template::Namespace::Constants 1.27
+      Template::Parser 2.89
+      Template::Perl 2.2
+      Template::Plugin 2.7
+      Template::Plugin::Assert 1
+      Template::Plugin::CGI 2.7
+      Template::Plugin::Datafile 2.72
+      Template::Plugin::Date 2.78
+      Template::Plugin::Date::Calc 2.78
+      Template::Plugin::Date::Manip 2.78
+      Template::Plugin::Directory 2.7
+      Template::Plugin::Dumper 2.7
+      Template::Plugin::File 2.71
+      Template::Plugin::Filter 1.38
+      Template::Plugin::Format 2.7
+      Template::Plugin::HTML 2.62
+      Template::Plugin::Image 1.21
+      Template::Plugin::Iterator 2.68
+      Template::Plugin::Math 1.16
+      Template::Plugin::Pod 2.69
+      Template::Plugin::Procedural 1.17
+      Template::Plugin::Scalar 1
+      Template::Plugin::String 2.4
+      Template::Plugin::Table 2.71
+      Template::Plugin::URL 2.74
+      Template::Plugin::View 2.68
+      Template::Plugin::Wrap 2.68
+      Template::Plugins 2.77
+      Template::Provider 2.94
+      Template::Service 2.8
+      Template::Stash 2.91
+      Template::Stash::Context 1.63
+      Template::Stash::XS undef
+      Template::Test 2.75
+      Template::TieString 2.75
+      Template::VMethods 2.16
+      Template::View 2.91
+      bytes 2.94
+    requirements:
+      AppConfig 1.56
+      ExtUtils::MakeMaker 0
+      File::Spec 0.8
+      File::Temp 0.12
+      Scalar::Util 0
+      Test::LeakTrace 0
   Test-Exception-0.36
     pathname: E/EX/EXODIST/Test-Exception-0.36.tar.gz
     provides:
@@ -1340,6 +1675,16 @@ DISTRIBUTIONS
       Test::Harness 3.35
     requirements:
       ExtUtils::MakeMaker 0
+  Test-LeakTrace-0.15
+    pathname: G/GF/GFUJI/Test-LeakTrace-0.15.tar.gz
+    provides:
+      Test::LeakTrace 0.15
+      Test::LeakTrace::Script undef
+    requirements:
+      Exporter 5.57
+      ExtUtils::MakeMaker 6.59
+      Test::More 0.62
+      perl 5.008001
   Test-Requires-0.08
     pathname: T/TO/TOKUHIROM/Test-Requires-0.08.tar.gz
     provides:
@@ -1374,6 +1719,69 @@ DISTRIBUTIONS
       constant 0
       strict 0
       warnings 0
+  URI-1.65
+    pathname: E/ET/ETHER/URI-1.65.tar.gz
+    provides:
+      URI 1.65
+      URI::Escape 3.31
+      URI::Heuristic 4.20
+      URI::IRI undef
+      URI::QueryParam undef
+      URI::Split undef
+      URI::URL 5.04
+      URI::WithBase 2.20
+      URI::_foreign undef
+      URI::_generic undef
+      URI::_idna undef
+      URI::_ldap 1.65
+      URI::_login undef
+      URI::_punycode 1.65
+      URI::_query undef
+      URI::_segment undef
+      URI::_server undef
+      URI::_userpass undef
+      URI::data 1.65
+      URI::file 4.21
+      URI::file::Base undef
+      URI::file::FAT undef
+      URI::file::Mac undef
+      URI::file::OS2 undef
+      URI::file::QNX undef
+      URI::file::Unix undef
+      URI::file::Win32 undef
+      URI::ftp undef
+      URI::gopher undef
+      URI::http undef
+      URI::https undef
+      URI::ldap 1.65
+      URI::ldapi undef
+      URI::ldaps undef
+      URI::mailto undef
+      URI::mms undef
+      URI::news undef
+      URI::nntp undef
+      URI::pop undef
+      URI::rlogin undef
+      URI::rsync undef
+      URI::rtsp undef
+      URI::rtspu undef
+      URI::sip 1.65
+      URI::sips undef
+      URI::snews undef
+      URI::ssh undef
+      URI::telnet undef
+      URI::tn3270 undef
+      URI::urn undef
+      URI::urn::isbn undef
+      URI::urn::oid undef
+    requirements:
+      Exporter 5.57
+      ExtUtils::MakeMaker 0
+      MIME::Base64 2
+      Scalar::Util 0
+      parent 0
+      perl 5.008001
+      utf8 0
   Variable-Magic-0.55
     pathname: V/VP/VPIT/Variable-Magic-0.55.tar.gz
     provides:
@@ -1387,6 +1795,18 @@ DISTRIBUTIONS
       XSLoader 0
       base 0
       perl 5.008
+  WWW-RobotRules-6.02
+    pathname: G/GA/GAAS/WWW-RobotRules-6.02.tar.gz
+    provides:
+      WWW::RobotRules 6.02
+      WWW::RobotRules::AnyDBM_File 6.00
+      WWW::RobotRules::InCore 6.02
+    requirements:
+      AnyDBM_File 0
+      ExtUtils::MakeMaker 0
+      Fcntl 0
+      URI 1.10
+      perl 5.008001
   YAML-1.13
     pathname: I/IN/INGY/YAML-1.13.tar.gz
     provides:
@@ -1414,6 +1834,61 @@ DISTRIBUTIONS
       yaml_sequence undef
     requirements:
       ExtUtils::MakeMaker 6.30
+  libwww-perl-6.13
+    pathname: E/ET/ETHER/libwww-perl-6.13.tar.gz
+    provides:
+      LWP 6.13
+      LWP::Authen::Basic undef
+      LWP::Authen::Digest undef
+      LWP::Authen::Ntlm 6.13
+      LWP::ConnCache 6.13
+      LWP::Debug undef
+      LWP::DebugFile undef
+      LWP::MemberMixin undef
+      LWP::Protocol 6.13
+      LWP::Protocol::GHTTP undef
+      LWP::Protocol::MyFTP undef
+      LWP::Protocol::cpan undef
+      LWP::Protocol::data undef
+      LWP::Protocol::file undef
+      LWP::Protocol::ftp undef
+      LWP::Protocol::gopher undef
+      LWP::Protocol::http undef
+      LWP::Protocol::http::Socket undef
+      LWP::Protocol::http::SocketMethods undef
+      LWP::Protocol::loopback undef
+      LWP::Protocol::mailto undef
+      LWP::Protocol::nntp undef
+      LWP::Protocol::nogo undef
+      LWP::RobotUA 6.13
+      LWP::Simple 6.13
+      LWP::UserAgent 6.13
+    requirements:
+      Digest::MD5 0
+      Encode 2.12
+      Encode::Locale 0
+      ExtUtils::MakeMaker 0
+      File::Listing 6
+      HTML::Entities 0
+      HTML::HeadParser 0
+      HTTP::Cookies 6
+      HTTP::Daemon 6
+      HTTP::Date 6
+      HTTP::Negotiate 6
+      HTTP::Request 6
+      HTTP::Request::Common 6
+      HTTP::Response 6
+      HTTP::Status 6
+      IO::Select 0
+      IO::Socket 0
+      LWP::MediaTypes 6
+      MIME::Base64 2.1
+      Net::FTP 2.58
+      Net::HTTP 6.07
+      URI 1.10
+      URI::Escape 0
+      WWW::RobotRules 6
+      perl 5.008001
   namespace-clean-0.25
     pathname: R/RI/RIBASUSHI/namespace-clean-0.25.tar.gz
     provides:

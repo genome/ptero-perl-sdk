@@ -1,0 +1,90 @@
+{
+    "tasks": {
+        "A": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./echo_command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        },
+        "B": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./echo_command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        },
+        "C": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./echo_command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        }
+    },
+
+    "links": [
+        {
+            "source": "input connector",
+            "destination": "A",
+            "sourceProperty": "in_1",
+            "destinationProperty": "param_1"
+        },
+        {
+            "source": "input connector",
+            "destination": "A",
+            "sourceProperty": "in_2",
+            "destinationProperty": "param_2"
+        },
+        {
+            "source": "A",
+            "destination": "B",
+            "sourceProperty": "param_1",
+            "destinationProperty": "param"
+        },
+        {
+            "source": "A",
+            "destination": "C",
+            "sourceProperty": "param_2",
+            "destinationProperty": "param"
+        },
+        {
+            "source": "B",
+            "destination": "output connector",
+            "sourceProperty": "param",
+            "destinationProperty": "out_1"
+        },
+        {
+            "source": "C",
+            "destination": "output connector",
+            "sourceProperty": "param",
+            "destinationProperty": "out_2"
+        }
+    ],
+
+    "inputs": {
+        "in_1": "parrots",
+        "in_2": "toucans"
+    }
+}
