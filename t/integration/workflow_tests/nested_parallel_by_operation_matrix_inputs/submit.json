@@ -1,0 +1,44 @@
+{
+    "parallelBy": "in_matrix",
+
+    "tasks": {
+        "A": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./echo_command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ],
+            "parallelBy": "name"
+        }
+    },
+
+    "links": [
+        {
+            "source": "input connector",
+            "destination": "A",
+            "sourceProperty": "in_matrix",
+            "destinationProperty": "name"
+        },
+
+        {
+            "source": "A",
+            "destination": "output connector",
+            "sourceProperty": "name",
+            "destinationProperty": "out_matrix"
+        }
+    ],
+
+    "inputs": {
+        "in_matrix": [
+            ["Simba", "Tabby", "Emilio"],
+            ["Pluto", "Snoopy"]
+        ]
+    }
+}

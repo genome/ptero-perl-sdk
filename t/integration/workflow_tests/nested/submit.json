@@ -1,0 +1,116 @@
+{
+    "tasks": {
+        "A": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./echo_command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        },
+        "Inner": {
+            "methods": [
+                {
+                    "name": "some_workflow",
+                    "parameters": {
+                        "tasks": {
+                            "B": {
+                                "methods": [
+                                    {
+                                        "name": "execute",
+                                        "service": "shell-command",
+                                        "parameters": {
+                                            "commandLine": ["./echo_command"],
+                                            "user": "{{ user }}",
+                                            "workingDirectory": "{{ workingDirectory }}",
+                                            "environment": {{ environment }}
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "links": [
+                            {
+                                "source": "input connector",
+                                "destination": "B",
+                                "sourceProperty": "inner_in_b",
+                                "destinationProperty": "param"
+                            },
+                            {
+                                "source": "B",
+                                "destination": "output connector",
+                                "sourceProperty": "param",
+                                "destinationProperty": "inner_out_b"
+                            }
+                        ]
+                    },
+                    "service": "workflow"
+                }
+            ]
+        },
+        "C": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./echo_command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        }
+    },
+
+    "links": [
+        {
+            "source": "input connector",
+            "destination": "A",
+            "sourceProperty": "outer_in_a",
+            "destinationProperty": "param"
+        },
+        {
+            "source": "input connector",
+            "destination": "Inner",
+            "sourceProperty": "outer_in_inner",
+            "destinationProperty": "inner_in_b"
+        },
+        {
+            "source": "A",
+            "destination": "C",
+            "sourceProperty": "param",
+            "destinationProperty": "param_1"
+        },
+        {
+            "source": "Inner",
+            "destination": "C",
+            "sourceProperty": "inner_out_b",
+            "destinationProperty": "param_2"
+        },
+        {
+            "source": "C",
+            "destination": "output connector",
+            "sourceProperty": "param_1",
+            "destinationProperty": "outer_out_c_1"
+        },
+        {
+            "source": "C",
+            "destination": "output connector",
+            "sourceProperty": "param_2",
+            "destinationProperty": "outer_out_c_2"
+        }
+    ],
+
+    "inputs": {
+        "outer_in_a": "ferret",
+        "outer_in_inner": "badger"
+    }
+}

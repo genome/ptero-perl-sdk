@@ -11,6 +11,7 @@ requires "Moose";
 requires "MooseX::Aliases";
 requires "Params::Validate";
 requires "Set::Scalar";
+requires "Template";
 
 on 'test' => sub {
     requires "Test::Exception";
