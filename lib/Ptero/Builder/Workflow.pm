@@ -420,7 +420,6 @@ sub submission_data {
     my $self = shift;
     my %p = Params::Validate::validate(@_, {
         inputs => {type => HASHREF, optional => 1},
-        parallel_by => {type => SCALAR, optional => 1},
     });
 
     $self->validate;
@@ -433,10 +432,6 @@ sub submission_data {
 
     if (exists $p{inputs}) {
         $hashref->{inputs} = $p{inputs};
-    }
-
-    if (exists $p{parallel_by}) {
-        $hashref->{parallelBy} = $p{parallel_by};
     }
 
     return $hashref;
