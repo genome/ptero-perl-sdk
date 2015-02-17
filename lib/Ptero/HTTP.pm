@@ -51,8 +51,14 @@ sub make_request {
     }
 
     my $req = HTTP::Request->new(@request_args);
-    $logger->debug('Sending request: '.pp($req));
-    return $_user_agent->request($req);
+    my $response = $_user_agent->request($req);
+
+    $logger->info(sprintf("Got %d from %s  %s", $response->code,
+            uc($method), $url));
+    $logger->debug("    Headers: " . $req->{_headers}->as_string);
+    $logger->debug("    Data: " . pp($data));
+
+    return $response
 }
 
 sub get   { make_request('GET',   @_) }
