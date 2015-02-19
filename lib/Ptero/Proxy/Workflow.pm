@@ -20,6 +20,39 @@ has status_url => (
     predicate => 'has_status_url',
 );
 
+
+has resource => (
+    is => 'ro',
+    isa => 'HashRef',
+    required => 1
+);
+
+# This allows ->new($url) as well as ->new(url => $url) construction styles
+around BUILDARGS => sub {
+    my $orig  = shift;
+    my $class = shift;
+
+    if (@_ == 1 && !ref $_[0]) {
+        return $class->$orig(url => $_[0]);
+    }
+    else {
+        return $class->$orig(@_);
+    }
+};
+
+# This fetches the resource unless it was passed in at construction.
+sub BUILDARGS {
+    my ($class, %args) = @_;
+
+    unless ($args{resource}) {
+        unless ($args{url}) {
+            die "Cannot create a Ptero::Proxy::Workflow without a url";
+        }
+        $args{resource} = get_decoded_resource(url => $args{url});
+    }
+    return \%args;
+}
+
 sub wait {
     my $self = shift;
     my %p = Params::Validate::validate(@_, {
