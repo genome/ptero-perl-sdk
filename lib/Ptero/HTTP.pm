@@ -55,10 +55,15 @@ sub make_request {
 
     $logger->info(sprintf("Got %d from %s  %s", $response->code,
             uc($method), $url));
-    $logger->debug("    Headers: " . $req->{_headers}->as_string);
-    $logger->debug("    Data: " . pp($data));
+    $logger->debug("    Request \n" . indent($req->as_string, 4));
+    $logger->debug("    Response: \n" . indent($response->as_string, 4));
 
     return $response
+}
+
+sub indent {
+    my ($string, $num_spaces) = @_;
+    return join("\n", map {" "x$num_spaces . $_} split(/\n/,$string));
 }
 
 sub get   { make_request('GET',   @_) }

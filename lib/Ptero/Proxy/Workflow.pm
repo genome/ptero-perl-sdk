@@ -14,6 +14,38 @@ has url => (
     required => 1
 );
 
+has resource => (
+    is => 'ro',
+    isa => 'HashRef',
+    required => 1
+);
+
+# This allows ->new($url) as well as ->new(url => $url) construction styles
+around BUILDARGS => sub {
+    my $orig  = shift;
+    my $class = shift;
+
+    if (@_ == 1 && !ref $_[0]) {
+        return $class->$orig(url => $_[0]);
+    }
+    else {
+        return $class->$orig(@_);
+    }
+};
+
+# This fetches the resource unless it was passed in at construction.
+sub BUILDARGS {
+    my ($class, %args) = @_;
+
+    unless ($args{resource}) {
+        unless ($args{url}) {
+            die "Cannot create a Ptero::Proxy::Workflow without a url";
+        }
+        $args{resource} = get_decoded_resource(url => $args{url});
+    }
+    return \%args;
+}
+
 sub wait {
     my $self = shift;
     my %p = Params::Validate::validate(@_, {
@@ -24,23 +56,37 @@ sub wait {
         sleep $p{polling_interval};
     }
 
-    return;
+    return $self->status;
+}
+
+sub report_url {
+    my ($self, $report_name) = @_;
+    if (exists $self->resource->{reports}->{$report_name}) {
+        return $self->resource->{reports}->{$report_name};
+    } else {
+        die sprintf("No report named (%s) found on workflow (%s)",
+            $report_name, $self->url);
+    }
+}
+
+sub status {
+    my $self = shift;
+
+    my $r = get_decoded_resource(url => $self->report_url('workflow-status'));
+    return $r->{status};
 }
 
 sub is_running {
     my $self = shift;
-    my $r = get_decoded_resource(url => $self->url);
-    return !(grep {
-            defined($r->{status}) and ($r->{status} eq $_)
-        } @COMPLETE_STATUSES);
+
+    return ! defined($self->status)
 }
 
 sub outputs {
     my $self = shift;
 
-    my $workflow_detail = get_decoded_resource(url => $self->url);
     my $workflow_output_report = get_decoded_resource(
-        url => $workflow_detail->{reports}->{'workflow-outputs'});
+        url => $self->report_url('workflow-outputs'));
 
     return $workflow_output_report->{outputs};
 }
