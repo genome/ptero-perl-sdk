@@ -14,13 +14,6 @@ has url => (
     required => 1
 );
 
-has status_url => (
-    is => 'rw',
-    isa => 'Str',
-    predicate => 'has_status_url',
-);
-
-
 has resource => (
     is => 'ro',
     isa => 'HashRef',
@@ -66,21 +59,20 @@ sub wait {
     return $self->status;
 }
 
-sub get_status_url {
-    my $self = shift;
-
-    my $r = get_decoded_resource(url => $self->url);
-    $self->status_url($r->{reports}->{'workflow-status'});
-    return $self->status_url;
+sub report_url {
+    my ($self, $report_name) = @_;
+    if (exists $self->resource->{reports}->{$report_name}) {
+        return $self->resource->{reports}->{$report_name};
+    } else {
+        die sprintf("No report named (%s) found on workflow (%s)",
+            $report_name, $self->url);
+    }
 }
 
 sub status {
     my $self = shift;
-    unless ($self->has_status_url) {
-        $self->get_status_url();
-    }
 
-    my $r = get_decoded_resource(url => $self->status_url);
+    my $r = get_decoded_resource(url => $self->report_url('workflow-status'));
     return $r->{status};
 }
 
@@ -93,9 +85,8 @@ sub is_running {
 sub outputs {
     my $self = shift;
 
-    my $workflow_detail = get_decoded_resource(url => $self->url);
     my $workflow_output_report = get_decoded_resource(
-        url => $workflow_detail->{reports}->{'workflow-outputs'});
+        url => $self->report_url('workflow-outputs'));
 
     return $workflow_output_report->{outputs};
 }
