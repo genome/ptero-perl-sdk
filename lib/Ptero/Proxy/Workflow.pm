@@ -14,6 +14,12 @@ has url => (
     required => 1
 );
 
+has status_url => (
+    is => 'rw',
+    isa => 'Str',
+    predicate => 'has_status_url',
+);
+
 sub wait {
     my $self = shift;
     my %p = Params::Validate::validate(@_, {
@@ -24,15 +30,31 @@ sub wait {
         sleep $p{polling_interval};
     }
 
-    return;
+    return $self->status;
+}
+
+sub get_status_url {
+    my $self = shift;
+
+    my $r = get_decoded_resource(url => $self->url);
+    $self->status_url($r->{reports}->{'workflow-status'});
+    return $self->status_url;
+}
+
+sub status {
+    my $self = shift;
+    unless ($self->has_status_url) {
+        $self->get_status_url();
+    }
+
+    my $r = get_decoded_resource(url => $self->status_url);
+    return $r->{status};
 }
 
 sub is_running {
     my $self = shift;
-    my $r = get_decoded_resource(url => $self->url);
-    return !(grep {
-            defined($r->{status}) and ($r->{status} eq $_)
-        } @COMPLETE_STATUSES);
+
+    return ! defined($self->status)
 }
 
 sub outputs {
