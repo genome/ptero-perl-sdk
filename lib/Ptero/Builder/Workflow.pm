@@ -52,7 +52,10 @@ sub submit {
             Data::Dump::pp($submission_data), $response->content;
     }
 
-    return Ptero::Proxy::Workflow->new(url => $response->header('Location'));
+    return Ptero::Proxy::Workflow->new(
+        url => $response->header('Location'),
+        resource => Ptero::HTTP::decode_response($response),
+    );
 }
 
 sub create_task {
