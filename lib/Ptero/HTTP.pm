@@ -11,7 +11,7 @@ use Log::Log4perl qw();
 use Params::Validate qw(validate_pos :types);
 
 use Exporter 'import';
-our @EXPORT_OK = qw(get_decoded_resource);
+our @EXPORT_OK = qw(make_request_and_decode_repsonse);
 
 Log::Log4perl->easy_init($Log::Log4perl::DEBUG);
 my $logger = Log::Log4perl->get_logger();
@@ -70,18 +70,20 @@ sub get   { make_request('GET',   @_) }
 sub patch { make_request('PATCH', @_) }
 sub post  { make_request('POST',  @_) }
 
-sub get_decoded_resource {
+sub make_request_and_decode_repsonse {
     my %p = Params::Validate::validate(@_, {
+            method => { regex => qr/^(GET|PATCH|POST)$/ },
             url => { type => SCALAR },
             valid_response_codes => { type => ARRAYREF, default => [200] },
     });
 
-    my $response = get($p{'url'});
+    my $response = make_request($p{'method'}, $p{'url'});
     unless (grep {$response->code == $_} @{$p{valid_response_codes}}) {
-        die sprintf "Failed to fetch json resource from %s\n"
+        die sprintf "Failed to %s json resource %s\n"
             ."Status code (%s)\n"
             ."Valid status codes (%s)"
             ."Response:\n%s\n",
+            $p{'method'},
             $p{url}, $response->code,
             join(', ', @{$p{valid_response_codes}}),
             $response->content;
@@ -89,7 +91,6 @@ sub get_decoded_resource {
 
     return decode_response($response);
 }
-
 
 sub _random_int {
     my $magnitude = shift;
