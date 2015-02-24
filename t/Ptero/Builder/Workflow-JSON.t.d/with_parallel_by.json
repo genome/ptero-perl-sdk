@@ -2,18 +2,29 @@
    "links" : [
       {
          "destination" : "A",
-         "destinationProperty" : "A_in",
+         "destinationProperty" : "in_constant",
          "source" : "input connector",
-         "sourceProperty" : "A_in"
+         "sourceProperty" : "in_constant"
       },
       {
          "destination" : "output connector",
-         "destinationProperty" : "A_out",
+         "destinationProperty" : "out_constant",
          "source" : "A",
-         "sourceProperty" : "A_out"
+         "sourceProperty" : "out_constant"
+      },
+      {
+         "destination" : "A",
+         "destinationProperty" : "in_parallel",
+         "source" : "input connector",
+         "sourceProperty" : "in_parallel"
+      },
+      {
+         "destination" : "output connector",
+         "destinationProperty" : "out_parallel",
+         "source" : "A",
+         "sourceProperty" : "out_parallel"
       }
    ],
-   "parallelBy" : "A_in",
    "tasks" : {
       "A" : {
          "methods" : [
@@ -23,29 +34,41 @@
                   "links" : [
                      {
                         "destination" : "A",
-                        "destinationProperty" : "A_in",
+                        "destinationProperty" : "const_param",
                         "source" : "input connector",
-                        "sourceProperty" : "A_in"
+                        "sourceProperty" : "in_constant"
                      },
                      {
                         "destination" : "output connector",
-                        "destinationProperty" : "A_out",
+                        "destinationProperty" : "out_constant",
                         "source" : "A",
-                        "sourceProperty" : "A_out"
+                        "sourceProperty" : "const_param"
+                     },
+                     {
+                        "destination" : "A",
+                        "destinationProperty" : "parallel_param",
+                        "source" : "input connector",
+                        "sourceProperty" : "in_parallel"
+                     },
+                     {
+                        "destination" : "output connector",
+                        "destinationProperty" : "out_parallel",
+                        "source" : "A",
+                        "sourceProperty" : "parallel_param"
                      }
                   ],
                   "tasks" : {
                      "A" : {
                         "methods" : [
                            {
-                              "name" : "do something",
+                              "name" : "execute",
                               "parameters" : {
                                  "commandLine" : [
-                                    "echo",
-                                    "basic-workflow"
+                                    "./echo_command"
                                  ],
+                                 "environment" : {},
                                  "user" : "testuser",
-                                 "workingDirectory" : "/test/working/directory"
+                                 "workingDirectory" : "/tmp"
                               },
                               "service" : "shell-command"
                            }
@@ -55,7 +78,8 @@
                },
                "service" : "workflow"
             }
-         ]
+         ],
+         "parallelBy" : "in_parallel"
       }
    }
 }

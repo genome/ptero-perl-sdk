@@ -34,7 +34,7 @@ use_ok('Ptero::Builder::Workflow');
 {
     my $blessed_json = get_test_json('with_parallel_by');
     my $workflow = Ptero::Builder::Workflow->from_json($blessed_json, 'some-workflow');
-    is($workflow->to_json(parallel_by => "A_in"), $blessed_json, 'nested with parallelBy');
+    is($workflow->to_json, $blessed_json, 'nested with parallelBy');
 }
 
 done_testing();
