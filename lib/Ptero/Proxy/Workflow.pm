@@ -47,6 +47,13 @@ sub BUILDARGS {
     return \%args;
 }
 
+sub cancel {
+    my $self = shift;
+    make_request_and_decode_repsonse(method => 'PATCH', url => $self->url,
+        data => { is_canceled => 1 });
+    return;
+}
+
 sub wait {
     my $self = shift;
     my %p = Params::Validate::validate(@_, {

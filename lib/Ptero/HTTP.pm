@@ -75,9 +75,10 @@ sub make_request_and_decode_repsonse {
             method => { regex => qr/^(GET|PATCH|POST)$/ },
             url => { type => SCALAR },
             valid_response_codes => { type => ARRAYREF, default => [200] },
+            data => { type => HASHREF, optional => 1 },
     });
 
-    my $response = make_request($p{'method'}, $p{'url'});
+    my $response = make_request($p{'method'}, $p{'url'}, $p{'data'});
     unless (grep {$response->code == $_} @{$p{valid_response_codes}}) {
         die sprintf "Failed to %s json resource %s\n"
             ."Status code (%s)\n"
