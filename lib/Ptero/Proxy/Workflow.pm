@@ -4,7 +4,7 @@ use Moose;
 use warnings FATAL => 'all';
 
 use Params::Validate;
-use Ptero::HTTP qw(get_decoded_resource);
+use Ptero::HTTP qw(make_request_and_decode_repsonse);
 
 my @COMPLETE_STATUSES = qw(success failure error);
 
@@ -41,9 +41,17 @@ sub BUILDARGS {
         unless ($args{url}) {
             die "Cannot create a Ptero::Proxy::Workflow without a url";
         }
-        $args{resource} = get_decoded_resource(url => $args{url});
+        $args{resource} = make_request_and_decode_repsonse(method => 'GET',
+            url => $args{url});
     }
     return \%args;
+}
+
+sub cancel {
+    my $self = shift;
+    make_request_and_decode_repsonse(method => 'PATCH', url => $self->url,
+        data => { is_canceled => 1 });
+    return;
 }
 
 sub wait {
@@ -72,7 +80,8 @@ sub report_url {
 sub status {
     my $self = shift;
 
-    my $r = get_decoded_resource(url => $self->report_url('workflow-status'));
+    my $r = make_request_and_decode_repsonse(method => 'GET',
+        url => $self->report_url('workflow-status'));
     return $r->{status};
 }
 
@@ -85,8 +94,8 @@ sub is_running {
 sub outputs {
     my $self = shift;
 
-    my $workflow_output_report = get_decoded_resource(
-        url => $self->report_url('workflow-outputs'));
+    my $workflow_output_report = make_request_and_decode_repsonse(
+        method => 'GET', url => $self->report_url('workflow-outputs'));
 
     return $workflow_output_report->{outputs};
 }
