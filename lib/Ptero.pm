@@ -26,8 +26,8 @@ stub
 
 =head1 DEVELOPMENT
 
-Dependencies are managed using [Carton](https://github.com/perl-carton/carton).
-To use Carton with [plenv](https://github.com/tokuhirom/plenv) you could do
+Dependencies are managed using L<Carton|https://github.com/perl-carton/carton>.
+To use Carton with L<plenv|https://github.com/tokuhirom/plenv> you could do
 something like this, assuming you have installed plenv and cloned this repo:
 
     $ export PTERO_PERL_VERSION=5.18.2 # or whatever version you want
