@@ -1,28 +1,23 @@
-ptero-perl-sdk
-==============
-[![Build Status](https://travis-ci.org/genome/ptero-perl-sdk.svg?branch=master)](https://travis-ci.org/genome/ptero-perl-sdk)
-[![Coverage Status](https://img.shields.io/coveralls/genome/ptero-perl-sdk.svg)](https://coveralls.io/r/genome/ptero-perl-sdk)
+[![Build Status](https://travis-ci.org/genome/ptero-perl-sdk.png?branch=master)](https://travis-ci.org/genome/ptero-perl-sdk)
+# NAME
 
-Perl interface to the PTero services
+Ptero - a PERL client for the PTero services.
 
-Dependencies are managed using [Carton](https://github.com/perl-carton/carton). To use Carton with [plenv](https://github.com/tokuhirom/plenv) you could do something like this, assuming you have installed plenv and cloned this repo:
-    
-    $ export PTERO_PERL_VERSION=5.18.2 # or whatever version you want
-    $ plenv install $PTERO_PERL_VERSION
-    $ plenv install-cpanm
-    $ cd ptero-perl-sdk
-    $ plenv local $PTERO_PERL_VERSION
-    $ cpanm install Carton
-    $ plenv rehash
+# SYNOPSIS
 
-You could also setup Carton using the system Perl on Debian-based Linux:
+stub
 
-    $ sudo apt-get install carton
+# DESCRIPTION
 
-Once your have Carton:
+stub
 
-    $ carton install --deployment # from the root of this repo
+# LICENSE
 
-To run tests:
+GPLv3
 
-    $ ./run-tests
+# AUTHOR
+
+Michael Kiwala <mkiwala@genome.wustl.edu>
+Ian Furgeson <ifurgeso@genome.wustl.edu>
+David Morton <dmorton@cpan.org>
+Mark Burnett
