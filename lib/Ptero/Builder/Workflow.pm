@@ -459,3 +459,66 @@ sub validate {
 
 
 __PACKAGE__->meta->make_immutable;
+
+__END__
+
+=encoding utf-8
+
+=head1 NAME
+
+Ptero::Builder::Workflow - Class that represents a Ptero workflow prior to
+submission
+
+=head1 SYNOPSIS
+
+    use Ptero::Builder::Workflow;
+    use Ptero::Builder::ShellCommand;
+
+    my $workflow = Ptero::Builder::Workflow->new(name => 'test');
+
+    my $shortcut_method = Ptero::Builder::ShellCommand->new(
+            name => 'try to shortcut',
+            parameters => {
+                commandLine => [
+                    'ptero-perl-subroutine-wrapper',
+                    '--package' => 'Some::Perl::Module',
+                    '--subroutine => 'shortcut',
+                ],
+                environment => {PATH => <path that includes 'ptero-perl-subroutine-wrapper'>},
+                user => $ENV{USER},
+                workingDirectory => '/tmp'
+            },
+    );
+
+    my $execute_method = Ptero::Builder::ShellCommand->new(
+            name => 'try to execute',
+            parameters => {
+                commandLine => [
+                    'ptero-perl-subroutine-wrapper',
+                    '--package' => 'Some::Perl::Module',
+                    '--subroutine => 'execute',
+                ],
+                environment => {PATH => <path that includes 'ptero-perl-subroutine-wrapper'>},
+                user => $ENV{USER},
+                workingDirectory => '/tmp'
+            },
+    );
+
+    my $task = $workflow->create_task(
+        name => 'run some perl module',
+        methods => [$shortcut_method, $execute_method],
+    );
+
+    $workflow->connect_input(
+        source_property => 'workflow_input_name',
+        destination => $task,
+        destination_property => 'task_input_name',
+    );
+    $workflow->connect_output(
+        source => $task,
+        source_property => 'task_output_name',
+        destination_property => 'workflow_output_name',
+    );
+
+=head1 DESCRIPTION
+
