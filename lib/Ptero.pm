@@ -1,20 +1,33 @@
-[![Build Status](https://travis-ci.org/genome/ptero-perl-sdk.png?branch=master)](https://travis-ci.org/genome/ptero-perl-sdk)
-# NAME
+package Ptero;
+
+use strict;
+use warnings FATAL => 'all';
+
+our $VERSION = "0.01";
+
+
+1;
+
+__END__
+
+=encoding utf-8
+
+=head1 NAME
 
 Ptero - a PERL client for the PTero services.
 
-# SYNOPSIS
+=head1 SYNOPSIS
 
 stub
 
-# DESCRIPTION
+=head1 DESCRIPTION
 
 stub
 
-# DEVELOPMENT
+=head1 DEVELOPMENT
 
-Dependencies are managed using [Carton](https://github.com/perl-carton/carton).
-To use Carton with [plenv](https://github.com/tokuhirom/plenv) you could do
+Dependencies are managed using L<Carton|https://github.com/perl-carton/carton>.
+To use Carton with L<plenv|https://github.com/tokuhirom/plenv> you could do
 something like this, assuming you have installed plenv and cloned this repo:
 
     $ export PTERO_PERL_VERSION=5.18.2 # or whatever version you want
@@ -37,13 +50,15 @@ To run tests:
 
     $ ./run-tests
 
-# LICENSE
+=head1 LICENSE
 
 GPLv3
 
-# AUTHOR
+=head1 AUTHOR
 
-Michael Kiwala <mkiwala@genome.wustl.edu>
-Ian Furgeson <ifurgeso@genome.wustl.edu>
-David Morton <dmorton@cpan.org>
+Michael Kiwala E<lt>mkiwala@genome.wustl.eduE<gt>
+Ian Furgeson E<lt>ifurgeso@genome.wustl.eduE<gt>
+David Morton E<lt>dmorton@cpan.orgE<gt>
 Mark Burnett
+
+=cut
