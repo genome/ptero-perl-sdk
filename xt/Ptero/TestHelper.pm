@@ -85,7 +85,7 @@ sub _get_workflow_json {
     my $vars = {
         user => $ENV{USER},
         environment => to_json(get_environment()),
-        workingDirectory => repo_relative_path('bin'),
+        workingDirectory => repo_relative_path('scripts'),
     };
 
     my $in_fh = IO::File->new("< $submit_file");
