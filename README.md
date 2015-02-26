@@ -43,7 +43,7 @@ GPLv3
 
 # AUTHOR
 
-Michael Kiwala <mkiwala@genome.wustl.edu>
-Ian Furgeson <ifurgeso@genome.wustl.edu>
-David Morton <dmorton@cpan.org>
-Mark Burnett
+ - Michael Kiwala <[mkiwala@genome.wustl.edu](mailto:mkiwala@genome.wustl.edu)>
+ - Ian Ferguson <[iferguso@genome.wustl.edu](mailto:iferguso@genome.wustl.edu)>
+ - David Morton <[dmorton@cpan.org](mailto:dmorton@cpan.org)>
+ - Mark Burnett
