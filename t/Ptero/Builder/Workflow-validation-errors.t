@@ -3,6 +3,9 @@ use warnings FATAL => 'all';
 
 use Test::Exception;
 use Test::More;
+
+use File::Basename qw(dirname);
+use lib dirname(dirname(dirname(__FILE__)));
 use Ptero::Builder::TestHelpers qw(
     build_nested_workflow
     build_basic_workflow
