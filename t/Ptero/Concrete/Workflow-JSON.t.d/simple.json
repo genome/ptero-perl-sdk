@@ -1,0 +1,97 @@
+{
+    "links": [
+        {
+            "destination": "output connector",
+            "destinationProperty": "out_a",
+            "source": "A",
+            "sourceProperty": "result"
+        },
+        {
+            "destination": "A",
+            "destinationProperty": "param",
+            "source": "input connector",
+            "sourceProperty": "in_a"
+        }
+    ],
+    "tasks": {
+        "A": {
+            "executions": {
+                "0": {
+                    "begins": [
+                        0
+                    ],
+                    "color": 0,
+                    "inputs": {
+                        "param": "kittens"
+                    },
+                    "status": "canceled",
+                    "outputs": {},
+                    "colors": [
+                        0
+                    ],
+                    "status_history": [
+                        {
+                            "status": "new",
+                            "timestamp": "2015-03-03 20:16:18"
+                        },
+                        {
+                            "status": "canceled",
+                            "timestamp": "2015-03-03 20:16:18"
+                        }
+                    ],
+                    "parent_color": null,
+                    "data": {}
+                }
+            },
+            "methods": [
+                {
+                    "executions": {
+                        "0": {
+                            "begins": [
+                                0
+                            ],
+                            "color": 0,
+                            "inputs": {
+                                "param": "kittens"
+                            },
+                            "status": "canceled",
+                            "outputs": {},
+                            "colors": [
+                                0
+                            ],
+                            "status_history": [
+                                {
+                                    "status": "new",
+                                    "timestamp": "2015-03-03 20:16:19"
+                                },
+                                {
+                                    "status": "canceled",
+                                    "timestamp": "2015-03-03 20:16:19"
+                                }
+                            ],
+                            "parent_color": null,
+                            "data": {
+                                "petri_response_links": {
+                                    "created": "http://localhost:6000/v1/nets/1Y54bvuNRWCMXHGQS_zuuw/places/10/tokens?color=0&color_group=0"
+                                },
+                                "petri_response_links_for_shell_command": {
+                                    "success": "http://localhost:6000/v1/nets/1Y54bvuNRWCMXHGQS_zuuw/places/15/tokens?color=0&color_group=0",
+                                    "failure": "http://localhost:6000/v1/nets/1Y54bvuNRWCMXHGQS_zuuw/places/11/tokens?color=0&color_group=0"
+                                }
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "workingDirectory": "/test/working/directory",
+                        "user": "testuser",
+                        "commandLine": [
+                            "cat"
+                        ]
+                    },
+                    "name": "execute",
+                    "service": "shell-command"
+                }
+            ]
+        }
+    }
+}
