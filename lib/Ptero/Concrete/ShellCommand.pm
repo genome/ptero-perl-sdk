@@ -2,6 +2,7 @@ package Ptero::Concrete::ShellCommand;
 
 use Moose;
 use warnings FATAL => 'all';
+use Data::Dump qw(pp);
 
 use Params::Validate qw(validate_pos :types);
 
@@ -13,6 +14,23 @@ has 'executions' => (
     is => 'rw',
     isa => 'HashRef[Ptero::Concrete::Detail::Workflow::Execution]',
 );
+
+sub _write_report {
+    my $self = shift;
+    my ($handle, $indent, $color) = validate_pos(@_, 1, 1, 1);
+    return unless exists $self->executions->{$color};
+
+    my $execution = $self->executions->{$color};
+    printf $handle "%sShellCommand%12s %20s %20s %4s %s %s %s\n",
+        ' 'x$indent,
+        $execution->status,
+        $execution->time_started,
+        $execution->time_ended,
+        $color,
+        $execution->parent_color || 'undef',
+        $self->name,
+        pp($execution->inputs),
+}
 
 sub from_hashref {
     my ($class, $hashref) = validate_pos(@_, 1, {type => HASHREF});

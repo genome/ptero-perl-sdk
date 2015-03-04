@@ -6,6 +6,7 @@ use warnings FATAL => 'all';
 use Ptero::Concrete::Workflow;
 use Ptero::Concrete::ShellCommand;
 use Ptero::Concrete::Detail::Workflow::Execution;
+use Data::Dump qw(pp);
 
 use Params::Validate qw(validate_pos :types);
 
@@ -21,6 +22,46 @@ sub class_lookup {
         'shell-command' => 'Ptero::Concrete::ShellCommand',
         'workflow' => 'Ptero::Concrete::Workflow',
     };
+}
+
+sub _write_report {
+    my $self = shift;
+    my ($handle, $indent, $color) = validate_pos(@_, 1, 1, 1);
+
+    my $parallel_by_str = '';
+    if ($self->has_parallel_by) {
+        my $inputs = $self->executions->{$color}->inputs;
+        $parallel_by_str = sprintf("parallel-by: %s %s", $self->parallel_by,
+            pp($inputs->{$self->parallel_by}));
+    }
+
+    printf $handle "%sTask (%s) %s\n",
+        ' 'x$indent,
+        $self->name,
+        $parallel_by_str;
+
+    for my $method (@{$self->methods}) {
+        $method->_write_report($handle, $indent+4, $color);
+    }
+
+    for my $child_execution ($self->executions_with_parent_color($color)) {
+        for my $method (@{$self->methods}) {
+            $method->_write_report($handle, $indent+4, $child_execution->color);
+        }
+    }
+}
+
+sub executions_with_parent_color {
+    my ($self, $parent_color) = @_;
+
+    my @result;
+    for my $color (sort keys %{$self->executions}) {
+        my $execution = $self->executions->{$color};
+        if (defined $execution->parent_color && $execution->parent_color == $parent_color) {
+            push @result, $execution;
+        }
+    }
+    return @result;
 }
 
 sub from_hashref {

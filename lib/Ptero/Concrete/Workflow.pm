@@ -9,6 +9,7 @@ use Graph::Directed qw();
 
 use Ptero::Concrete::Detail::Workflow::Execution;
 use Ptero::Concrete::Detail::Workflow::Task;
+use Data::Dump qw(pp);
 
 extends 'Ptero::Builder::Workflow';
 
@@ -18,6 +19,32 @@ has 'executions' => (
     is => 'rw',
     isa => 'HashRef[Ptero::Concrete::Detail::Workflow::Execution]',
 );
+
+sub write_report {
+    my $self = shift;
+    my %p = Params::Validate::validate(@_, {
+        handle => 1,
+        indent => {default => 0},
+    });
+    my $handle = $p{handle};
+
+    $self->_write_report($p{handle}, $p{indent}, 0, 1);
+}
+
+sub _write_report {
+    my $self = shift;
+    my ($handle, $indent, $color, $force) = validate_pos(@_, 1, 1, 1, 0);
+    return unless exists $self->executions->{$color} or $force;
+
+    printf $handle "%sDAG (%s)\n",
+        ' 'x$indent,
+        $self->name;
+
+    for my $name ($self->sorted_tasks) {
+        my $task = $self->task_named($name);
+        $task->_write_report($handle, $indent+4, $color);
+    }
+}
 
 # This implements a simple, but deterministic topological sorting of the tasks,
 # excluding the 'input connector' and the 'output connector'.
