@@ -58,14 +58,19 @@ sub sorted_tasks {
 
     my @result;
     my @task_names = sort $g->successors('input connector');
+    my $task_set = Set::Scalar->new(@task_names);
     $g->delete_vertex('input connector');
-    while (scalar($g->vertices) > 1) {
+    while (scalar(@task_names) > 1) {
         my $count = 0;
         for my $name (@task_names) {
             if ($g->in_degree($name) == 0) {
                 push @result, $name;
                 splice(@task_names, $count, 1);
-                push @task_names, sort $g->successors($name);
+
+                my @new_successors = grep {!$task_set->contains($_)} $g->successors($name);
+                push @task_names, sort @new_successors;
+                $task_set->insert(@new_successors);
+
                 $g->delete_vertex($name);
                 last;
             }
