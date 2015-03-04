@@ -2,6 +2,7 @@ package Ptero::Concrete::Detail::Workflow::Execution;
 
 use Moose;
 use warnings FATAL => 'all';
+use Set::Scalar;
 
 use Params::Validate qw(validate_pos :types);
 
@@ -58,6 +59,31 @@ override 'BUILDARGS' => sub {
 
     return $params;
 };
+
+sub timestamp_for {
+    my $self = shift;
+    my $status = shift;
+
+    my %lookup = map {$_->[1] => $_->[0]} @{$self->status_history};
+    return $lookup{$status} || '';
+}
+
+sub time_started {
+    my $self = shift;
+
+    return $self->timestamp_for('running');
+}
+
+my $TERMINAL_STATUSES = Set::Scalar->new(qw(errored failed succeeded canceled));
+sub time_ended {
+    my $self = shift;
+
+    if ($TERMINAL_STATUSES->contains($self->status)) {
+        return $self->timestamp_for($self->status)
+    } else {
+        return '';
+    }
+}
 
 sub status {
     my $self = shift;
