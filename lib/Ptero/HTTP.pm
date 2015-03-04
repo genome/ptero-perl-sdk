@@ -11,7 +11,12 @@ use Log::Log4perl qw();
 use Params::Validate qw(validate_pos :types);
 
 use Exporter 'import';
-our @EXPORT_OK = qw(make_request_and_decode_repsonse);
+our @EXPORT_OK = qw(
+    get
+    patch
+    post
+    make_request_and_decode_repsonse
+);
 
 Log::Log4perl->easy_init($Log::Log4perl::DEBUG);
 my $logger = Log::Log4perl->get_logger();
