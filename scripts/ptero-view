@@ -1,0 +1,42 @@
+#! /usr/bin/env perl
+
+use strict;
+use warnings FATAL => 'all';
+
+use Ptero::Proxy::Workflow;
+use Log::Log4perl qw(:easy);
+
+if (scalar @ARGV < 1) {
+    print STDERR "Usage: $0 <workflow_url>\n";
+    print STDERR "  Prints a view of the workflow to the screen.\n";
+    exit 1;
+}
+
+my $url = shift @ARGV;
+
+setup_logging();
+
+my $workflow_proxy = Ptero::Proxy::Workflow->new($url);
+my $concrete_workflow = $workflow_proxy->concrete_workflow;
+
+write_report($concrete_workflow);
+
+
+
+sub write_report {
+    my $concrete_workflow = shift;
+
+    my $handle = new IO::Handle;
+    STDOUT->autoflush(1);
+    $handle->fdopen(fileno(STDOUT), 'w');
+
+    $concrete_workflow->write_report(
+        handle => $handle,
+        @ARGV,
+    );
+}
+
+sub setup_logging {
+    my $logging_level = $ENV{PTERO_PERL_SDK_LOGGING_LEVEL} || $INFO;
+    Log::Log4perl->easy_init($logging_level);
+}
