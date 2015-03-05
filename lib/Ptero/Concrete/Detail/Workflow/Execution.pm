@@ -3,6 +3,7 @@ package Ptero::Concrete::Detail::Workflow::Execution;
 use Moose;
 use warnings FATAL => 'all';
 use Set::Scalar;
+use Ptero::Statuses qw(is_terminal);
 
 use Params::Validate qw(validate_pos :types);
 
@@ -74,11 +75,10 @@ sub time_started {
     return $self->timestamp_for('running');
 }
 
-my $TERMINAL_STATUSES = Set::Scalar->new(qw(errored failed succeeded canceled));
 sub time_ended {
     my $self = shift;
 
-    if ($TERMINAL_STATUSES->contains($self->status)) {
+    if (is_terminal($self->status)) {
         return $self->timestamp_for($self->status)
     } else {
         return '';
