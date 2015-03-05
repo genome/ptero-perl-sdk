@@ -4,7 +4,8 @@ use Moose;
 use warnings FATAL => 'all';
 
 use Params::Validate;
-use Ptero::HTTP qw(make_request_and_decode_repsonse);
+use Ptero::HTTP qw(get make_request_and_decode_repsonse);
+use Ptero::Concrete::Workflow;
 
 my @COMPLETE_STATUSES = qw(success failure error);
 
@@ -45,6 +46,14 @@ sub BUILDARGS {
             url => $args{url});
     }
     return \%args;
+}
+
+sub concrete_workflow {
+    my $self = shift;
+
+    my $response = get($self->report_url('workflow-details'));
+    my $json = $response->decoded_content(raise_error => 1);
+    return Ptero::Concrete::Workflow->from_json($json, 'concrete-workflow');
 }
 
 sub cancel {

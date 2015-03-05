@@ -352,6 +352,8 @@ sub _cycle_errors {
     return @errors;
 }
 
+sub task_class { 'Ptero::Builder::Detail::Workflow::Task' }
+
 sub from_hashref {
     my ($class, $hashref) = validate_pos(@_, 1, {type => HASHREF});
 
@@ -364,7 +366,8 @@ sub from_hashref {
     }
 
     while (my ($task_name, $task_hashref) = each %{$hashref->{parameters}->{tasks}}) {
-        $self->_add_task(Ptero::Builder::Detail::Workflow::Task->from_hashref(
+        my $task_class = $class->task_class;
+        $self->_add_task($task_class->from_hashref(
             $task_hashref, $task_name));
     }
 

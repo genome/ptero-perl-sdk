@@ -118,7 +118,7 @@ sub from_hashref {
 
     my @methods;
     for my $method_hashref (@{$hashref->{methods}}) {
-        my $method_class = method_class_from_hashref($method_hashref);
+        my $method_class = $class->method_class_from_hashref($method_hashref);
         push @methods, $method_class->from_hashref($method_hashref);
     }
     my %params = (
@@ -133,17 +133,20 @@ sub from_hashref {
     return $class->new(%params);
 }
 
-my $lookup = {
-    'shell-command' => 'Ptero::Builder::ShellCommand',
-    'workflow' => 'Ptero::Builder::Workflow',
-};
+sub class_lookup {
+    return {
+        'shell-command' => 'Ptero::Builder::ShellCommand',
+        'workflow' => 'Ptero::Builder::Workflow',
+    };
+}
 
 sub method_class_from_hashref {
+    my $class = shift;
     my $hashref = shift;
 
     my $service = $hashref->{service};
-    if (exists $lookup->{$service}) {
-        return $lookup->{$service};
+    if (exists $class->class_lookup->{$service}) {
+        return $class->class_lookup->{$service};
     } else {
         die sprintf("Could not determine method class from hashref: %s",
             Data::Dump::pp($hashref));
