@@ -20,7 +20,7 @@ use_ok('Ptero::Builder::Detail::Workflow::Task');
         'known_input_properties from parallel_by');
 }
 
-subtest VALIDATION_ERRORS => sub {
+{
     my $sc = Ptero::Builder::ShellCommand->new(
         name => 'test-shell-command',
         parameters => {
@@ -60,6 +60,6 @@ subtest VALIDATION_ERRORS => sub {
         [
             'Task named "foo" must have at least one method',
         ], 'no methods');
-};
+}
 
 done_testing();
