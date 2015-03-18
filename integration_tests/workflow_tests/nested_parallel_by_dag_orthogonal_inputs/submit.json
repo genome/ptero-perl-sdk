@@ -96,6 +96,7 @@
                               "name": "execute",
                               "parameters": {
                                 "commandLine": [
+                                  "perl",
                                   "./ptero-test-command"
                                 ],
                                 "environment": {{ environment }},

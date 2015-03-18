@@ -26,6 +26,7 @@ sub create_echo_workflow {
             name => 'do something',
             parameters => {
                 commandLine => [
+                    'perl',
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
                     '--package' => 'Ptero::Builder::TestHelpers',
                     '--subroutine' => 'echo_test'],

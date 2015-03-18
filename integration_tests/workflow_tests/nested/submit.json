@@ -6,7 +6,7 @@
                     "name": "execute",
                     "service": "shell-command",
                     "parameters": {
-                        "commandLine": ["./ptero-test-command"],
+                        "commandLine": ["perl", "./ptero-test-command"],
                         "user": "{{ user }}",
                         "workingDirectory": "{{ workingDirectory }}",
                         "environment": {{ environment }}
@@ -26,7 +26,7 @@
                                         "name": "execute",
                                         "service": "shell-command",
                                         "parameters": {
-                                            "commandLine": ["./ptero-test-command"],
+                                            "commandLine": ["perl", "./ptero-test-command"],
                                             "user": "{{ user }}",
                                             "workingDirectory": "{{ workingDirectory }}",
                                             "environment": {{ environment }}
@@ -60,7 +60,7 @@
                     "name": "execute",
                     "service": "shell-command",
                     "parameters": {
-                        "commandLine": ["./ptero-test-command"],
+                        "commandLine": ["perl", "./ptero-test-command"],
                         "user": "{{ user }}",
                         "workingDirectory": "{{ workingDirectory }}",
                         "environment": {{ environment }}
