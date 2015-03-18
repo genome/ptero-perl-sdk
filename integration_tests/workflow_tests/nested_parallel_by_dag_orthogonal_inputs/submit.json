@@ -96,7 +96,7 @@
                               "name": "execute",
                               "parameters": {
                                 "commandLine": [
-                                  "./echo_command"
+                                  "./ptero-test-command"
                                 ],
                                 "environment": {{ environment }},
                                 "user": "{{ user }}",

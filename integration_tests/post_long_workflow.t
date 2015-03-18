@@ -52,7 +52,8 @@ sub create_sleep_echo_command {
             name => "echo succeed $count",
             parameters => {
                 commandLine => [
-                    repo_relative_path('scripts','perl_subroutine_wrapper'),
+                    repo_relative_path('bin',
+                        'ptero-perl-subroutine-wrapper'),
                     '--package' => 'Ptero::Builder::TestHelpers',
                     '--subroutine' => 'echo_test'],
                 environment => get_environment(),
@@ -68,7 +69,7 @@ sub create_sleep_fail_command {
             name => "echo fail $count",
             parameters => {
                 commandLine => [
-                    repo_relative_path('scripts','perl_subroutine_wrapper'),
+                    repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
                     '--package' => 'Ptero::Builder::TestHelpers',
                     '--subroutine' => 'echo_fail'],
                 environment => get_environment(),

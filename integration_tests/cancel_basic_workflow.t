@@ -53,7 +53,7 @@ sub get_task {
             name => 'do something',
             parameters => {
                 commandLine => [
-                    repo_relative_path('bin','perl_subroutine_wrapper'),
+                    repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
                     '--package' => 'Ptero::Builder::TestHelpers',
                     '--subroutine' => 'sleep_echo_test'],
                 environment => get_environment(),
