@@ -20,7 +20,7 @@ use_ok('Ptero::Builder::ShellCommand');
         'service automatically set to shell-command');
 }
 
-subtest VALIDATION_ERRORS => sub {
+{
     my $sc = Ptero::Builder::ShellCommand->new(
         name => 'foo',
         parameters => {
@@ -44,6 +44,6 @@ subtest VALIDATION_ERRORS => sub {
             'Method (foo) has one or more invalid parameter(s): "bar"',
         ],
         'invalid parameter errors');
-};
+}
 
 done_testing();
