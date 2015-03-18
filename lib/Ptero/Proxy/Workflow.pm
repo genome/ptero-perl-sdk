@@ -6,9 +6,7 @@ use warnings FATAL => 'all';
 use Params::Validate;
 use Ptero::HTTP qw(get make_request_and_decode_repsonse);
 use Ptero::Concrete::Workflow;
-use Ptero::Statuses qw(is_terminal);
-
-my @COMPLETE_STATUSES = qw(success failure error);
+use Ptero::Statuses qw(is_terminal is_success);
 
 has url => (
     is => 'ro',
@@ -99,6 +97,11 @@ sub is_running {
     my $self = shift;
 
     return !is_terminal($self->status);
+}
+
+sub has_succeeded {
+    my $self = shift;
+    return is_success($self->status);
 }
 
 sub outputs {
