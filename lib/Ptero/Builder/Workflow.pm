@@ -11,7 +11,6 @@ use JSON qw();
 
 use Ptero::Builder::Detail::Workflow::Link;
 use Ptero::Builder::Detail::Workflow::Task;
-use Ptero::Proxy::Workflow;
 use Ptero::HTTP;
 
 with 'Ptero::Builder::Detail::Method', 'Ptero::Builder::Detail::Submittable';
@@ -52,6 +51,7 @@ sub submit {
             Data::Dump::pp($submission_data), $response->content;
     }
 
+    require Ptero::Proxy::Workflow;  # silent, but bad news if done at compile-time
     return Ptero::Proxy::Workflow->new(
         url => $response->header('Location'),
         resource => Ptero::HTTP::decode_response($response),

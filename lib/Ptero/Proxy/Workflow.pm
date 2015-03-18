@@ -6,6 +6,7 @@ use warnings FATAL => 'all';
 use Params::Validate;
 use Ptero::HTTP qw(get make_request_and_decode_repsonse);
 use Ptero::Concrete::Workflow;
+use Ptero::Statuses qw(is_terminal);
 
 my @COMPLETE_STATUSES = qw(success failure error);
 
@@ -97,7 +98,7 @@ sub status {
 sub is_running {
     my $self = shift;
 
-    return ! defined($self->status)
+    return !is_terminal($self->status);
 }
 
 sub outputs {
