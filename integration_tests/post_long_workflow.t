@@ -23,7 +23,6 @@ isa_ok($concrete_workflow, 'Ptero::Concrete::Workflow');
 
 $wf_proxy->wait(polling_interval => 1);
 
-ok($wf_proxy->has_succeeded, 'Workflow succeeded');
 is_deeply($wf_proxy->outputs, { 'easy_out' => 'foo', 'try_out' => 'bar' }, 'Got expected outputs');
 done_testing();
 
@@ -53,7 +52,6 @@ sub create_sleep_echo_command {
             name => "echo succeed $count",
             parameters => {
                 commandLine => [
-                    'perl',
                     repo_relative_path('bin',
                         'ptero-perl-subroutine-wrapper'),
                     '--package' => 'Ptero::Builder::TestHelpers',
@@ -71,7 +69,6 @@ sub create_sleep_fail_command {
             name => "echo fail $count",
             parameters => {
                 commandLine => [
-                    'perl',
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
                     '--package' => 'Ptero::Builder::TestHelpers',
                     '--subroutine' => 'echo_fail'],
@@ -89,7 +86,6 @@ sub create_echo_workflow {
             name => 'do something',
             parameters => {
                 commandLine => [
-                    'perl',
                     repo_relative_path('scripts','perl_subroutine_wrapper'),
                     '--package' => 'Ptero::Builder::TestHelpers',
                     '--subroutine' => 'echo_test'],

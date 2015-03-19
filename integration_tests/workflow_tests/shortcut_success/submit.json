@@ -6,7 +6,7 @@
                     "name": "shortcut",
                     "service": "shell-command",
                     "parameters": {
-                        "commandLine": ["perl", "./ptero-test-command"],
+                        "commandLine": ["./ptero-test-command"],
                         "user": "{{ user }}",
                         "workingDirectory": "{{ workingDirectory }}",
                         "environment": {{ environment }}

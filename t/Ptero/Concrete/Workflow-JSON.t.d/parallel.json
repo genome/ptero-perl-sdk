@@ -641,7 +641,6 @@
                                             "workingDirectory": "/tmp",
                                             "user": "testuser",
                                             "commandLine": [
-                                                "perl",
                                                 "./ptero-test-command"
                                             ],
                                             "environment": {}
