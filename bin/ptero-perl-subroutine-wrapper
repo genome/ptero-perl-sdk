@@ -37,7 +37,7 @@ sub get_options {
             "subroutine=s" => \$subroutine_name)
         && defined($package_name) && defined($subroutine_name)
     ) {
-        print STDERR "Usage: perl_subroutine_wrapper --package <Some::Package> --subroutine <some_subroutine>\n";
+        print STDERR "Usage: ptero-perl-subroutine-wrapper --package <Some::Package> --subroutine <some_subroutine>\n";
         exit 1;
     }
 
@@ -46,7 +46,7 @@ sub get_options {
 
 sub validate_environment {
     unless (defined $ENV{PTERO_WORKFLOW_EXECUTION_URL}) {
-        print STDERR "perl_subroutine_wrapper: Environment variable PTERO_WORKFLOW_EXECUTION_URL must be set\n";
+        print STDERR "ptero-perl-subroutine-wrapper: Environment variable PTERO_WORKFLOW_EXECUTION_URL must be set\n";
         exit 1;
     }
 }

@@ -18,7 +18,7 @@ sub main {
 
 sub validate_environment {
     unless (defined $ENV{PTERO_WORKFLOW_EXECUTION_URL}) {
-        print STDERR "echo_command: Environment variable PTERO_WORKFLOW_EXECUTION_URL must be set\n";
+        print STDERR "ptero-test-command: Environment variable PTERO_WORKFLOW_EXECUTION_URL must be set\n";
         exit 1;
     }
 }

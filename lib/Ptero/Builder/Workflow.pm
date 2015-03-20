@@ -37,9 +37,12 @@ override 'BUILDARGS' => sub {
 
 sub submit {
     my $self = shift;
+    my %p = Params::Validate::validate(@_, {
+        inputs => {type => HASHREF, optional => 1},
+    });
 
     my $url = $ENV{PTERO_WORKFLOW_SUBMIT_URL};
-    my $submission_data = $self->submission_data(@_);
+    my $submission_data = $self->submission_data($p{inputs});
     my $response = Ptero::HTTP::post($url, $submission_data);
 
     unless ($response->code == 201) {
@@ -423,10 +426,7 @@ sub from_json {
 }
 
 sub submission_data {
-    my $self = shift;
-    my %p = Params::Validate::validate(@_, {
-        inputs => {type => HASHREF, optional => 1},
-    });
+    my ($self, $inputs) = @_;
 
     $self->validate;
 
@@ -436,8 +436,8 @@ sub submission_data {
         links => $self_hashref->{parameters}->{links},
     };
 
-    if (exists $p{inputs}) {
-        $hashref->{inputs} = $p{inputs};
+    if (defined $inputs) {
+        $hashref->{inputs} = $inputs;
     }
 
     return $hashref;
