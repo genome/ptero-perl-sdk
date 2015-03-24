@@ -33,11 +33,11 @@ around BUILDARGS => sub {
     }
 };
 
-# This fetches the resource unless it was passed in at construction.
+# This fetches the concrete_execution unless it was passed in at construction.
 sub BUILDARGS {
     my ($class, %args) = @_;
 
-    unless ($args{resource}) {
+    unless ($args{concrete_execution}) {
         unless ($args{url}) {
             die "Cannot create a Ptero::Proxy::Workflow::Execution without a url";
         }
