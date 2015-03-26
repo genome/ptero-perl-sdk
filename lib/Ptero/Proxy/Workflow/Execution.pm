@@ -64,6 +64,22 @@ sub data {
     return $self->concrete_execution->data;
 }
 
+sub update_data {
+    my $self = shift;
+    my %new_data = @_;
+
+    my %old_data = %{$self->data};
+    my %patch_data = (%old_data, %new_data);
+
+    my $new_execution_data = make_request_and_decode_repsonse(method => 'PATCH',
+        url => $self->url, data => {data => \%patch_data});
+
+    $self->concrete_execution(Ptero::Concrete::Detail::Workflow::Execution->from_hashref(
+        $new_execution_data));
+
+    return;
+}
+
 sub set_outputs {
     my ($self, $outputs) = validate_pos(@_, 1, {type => HASHREF});
 
