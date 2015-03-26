@@ -1,3 +1,9 @@
+libptero-perl (0.0.3-1) lucid-genome-development; urgency=low
+
+  * PTero client
+
+ -- Michael J. Kiwala <mkiwala@wustl.edu>  Thu, 26 Mar 2015 22:17:34 +0100
+
 libptero-perl (0.0.2-1) lucid-genome-development; urgency=low
 
   * PTero client
