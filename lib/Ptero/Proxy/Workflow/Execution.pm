@@ -15,7 +15,7 @@ has url => (
 );
 
 has concrete_execution => (
-    is => 'ro',
+    is => 'rw',
     isa => 'Ptero::Concrete::Detail::Workflow::Execution',
     required => 1
 );
@@ -67,11 +67,12 @@ sub data {
 sub set_outputs {
     my ($self, $outputs) = validate_pos(@_, 1, {type => HASHREF});
 
-    my $r = Ptero::HTTP::patch($self->url, {outputs => $outputs});
-    unless ($r->is_success) {
-        die sprintf("Unexpected response code (%s: %s) while patching %s: %s",
-            $r->code, $r->message, $self->url, pp($outputs));
-    }
+    my $new_execution_data = make_request_and_decode_repsonse(method => 'PATCH',
+        url => $self->url, data => {outputs => $outputs});
+
+    $self->concrete_execution(Ptero::Concrete::Detail::Workflow::Execution->from_hashref(
+        $new_execution_data));
+
     return;
 }
 
