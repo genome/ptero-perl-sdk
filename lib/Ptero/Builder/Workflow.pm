@@ -11,7 +11,6 @@ use JSON qw();
 
 use Ptero::Builder::Detail::Workflow::Link;
 use Ptero::Builder::Detail::Workflow::Task;
-use Ptero::Proxy::Workflow;
 use Ptero::HTTP;
 
 with 'Ptero::Builder::Detail::Method', 'Ptero::Builder::Detail::Submittable';
@@ -36,22 +35,33 @@ override 'BUILDARGS' => sub {
     return $params;
 };
 
+sub submit_url {
+    if (exists $ENV{PTERO_WORKFLOW_SUBMIT_URL}) {
+        return $ENV{PTERO_WORKFLOW_SUBMIT_URL};
+    } else {
+        die "environment variable PTERO_WORKFLOW_SUBMIT_URL must be set";
+    }
+}
+
 sub submit {
     my $self = shift;
+    my %p = Params::Validate::validate(@_, {
+        inputs => {type => HASHREF, optional => 1},
+    });
 
-    my $url = $ENV{PTERO_WORKFLOW_SUBMIT_URL};
-    my $submission_data = $self->submission_data(@_);
-    my $response = Ptero::HTTP::post($url, $submission_data);
+    my $submission_data = $self->submission_data($p{inputs});
+    my $response = Ptero::HTTP::post(submit_url(), $submission_data);
 
     unless ($response->code == 201) {
         die sprintf "Failed to submit workflow to '%s'.\n"
             ."Status Code (%s)\n"
             ."Request Body\n%s\n"
             ."Response Body\n%s\n",
-            $url, $response->code,
+            submit_url(), $response->code,
             Data::Dump::pp($submission_data), $response->content;
     }
 
+    require Ptero::Proxy::Workflow;  # silent, but bad news if done at compile-time
     return Ptero::Proxy::Workflow->new(
         url => $response->header('Location'),
         resource => Ptero::HTTP::decode_response($response),
@@ -423,10 +433,7 @@ sub from_json {
 }
 
 sub submission_data {
-    my $self = shift;
-    my %p = Params::Validate::validate(@_, {
-        inputs => {type => HASHREF, optional => 1},
-    });
+    my ($self, $inputs) = @_;
 
     $self->validate;
 
@@ -436,8 +443,8 @@ sub submission_data {
         links => $self_hashref->{parameters}->{links},
     };
 
-    if (exists $p{inputs}) {
-        $hashref->{inputs} = $p{inputs};
+    if (defined $inputs) {
+        $hashref->{inputs} = $inputs;
     }
 
     return $hashref;

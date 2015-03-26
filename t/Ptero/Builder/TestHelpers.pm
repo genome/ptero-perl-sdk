@@ -15,6 +15,7 @@ our @EXPORT_OK = qw(
 
 sub echo_test { shift }
 sub sleep_echo_test { sleep(2); return shift }
+sub sleep_fail_test { sleep(2); die "Bad news"; }
 
 sub build_nested_workflow {
     my $name = shift;

@@ -31,7 +31,7 @@ use_ok('Ptero::Builder::Workflow');
 {
     my $blessed_json = get_test_json('with_inputs');
     my $workflow = Ptero::Builder::Workflow->from_json($blessed_json, 'some-workflow');
-    is($workflow->to_json(inputs => {"A_in" => "foo"}), $blessed_json, 'nested with inputs');
+    is($workflow->to_json({"A_in" => "foo"}), $blessed_json, 'nested with inputs');
 }
 
 {

@@ -5,7 +5,7 @@ use warnings FATAL => 'all';
 
 use Data::Dump qw(pp);
 use Getopt::Long;
-use Ptero::HTTP qw();
+use Ptero::Proxy::Workflow::Execution qw();
 
 exit main();
 
@@ -15,17 +15,19 @@ sub main {
 
     use_package($package_name);
 
-    my $inputs = get_inputs();
+    my $execution = Ptero::Proxy::Workflow::Execution->new(
+        url => $ENV{PTERO_WORKFLOW_EXECUTION_URL},
+    );
     my $outputs = do {
         no strict 'refs';
-        &{"${package_name}::${subroutine_name}"}($inputs);
+        &{"${package_name}::${subroutine_name}"}($execution->inputs);
     };
     if (ref($outputs) ne ref({})) {
         die sprintf("Subroutine failed to return hashref: %s::%s(%s)",
-            $package_name, $subroutine_name, pp($inputs));
+            $package_name, $subroutine_name, pp($execution->inputs));
     }
 
-    set_outputs($outputs);
+    $execution->set_outputs($outputs);
     return 0;
 }
 
@@ -37,7 +39,7 @@ sub get_options {
             "subroutine=s" => \$subroutine_name)
         && defined($package_name) && defined($subroutine_name)
     ) {
-        print STDERR "Usage: perl_subroutine_wrapper --package <Some::Package> --subroutine <some_subroutine>\n";
+        print STDERR "Usage: ptero-perl-subroutine-wrapper --package <Some::Package> --subroutine <some_subroutine>\n";
         exit 1;
     }
 
@@ -46,25 +48,9 @@ sub get_options {
 
 sub validate_environment {
     unless (defined $ENV{PTERO_WORKFLOW_EXECUTION_URL}) {
-        print STDERR "perl_subroutine_wrapper: Environment variable PTERO_WORKFLOW_EXECUTION_URL must be set\n";
+        print STDERR "ptero-perl-subroutine-wrapper: Environment variable PTERO_WORKFLOW_EXECUTION_URL must be set\n";
         exit 1;
     }
-}
-
-sub get_inputs {
-    my $r = Ptero::HTTP::get($ENV{PTERO_WORKFLOW_EXECUTION_URL});
-    return Ptero::HTTP::decode_response($r)->{inputs};
-}
-
-sub set_outputs {
-    my ($outputs) = @_;
-    my $url = $ENV{PTERO_WORKFLOW_EXECUTION_URL};
-    my $r = Ptero::HTTP::patch($url, {outputs => $outputs});
-    unless ($r->is_success) {
-        die sprintf("Unexpected response code (%s: %s) whlie patching %s: %s",
-            $r->code, $r->message, $url, pp($outputs));
-    }
-    return;
 }
 
 sub use_package {

@@ -3,6 +3,18 @@ package Ptero;
 use strict;
 use warnings FATAL => 'all';
 
+our $VERSION = "0.03";
+
+use Log::Log4perl qw(:easy);
+
+my $LOG_LEVEL_NAME = $ENV{PTERO_PERL_SDK_LOG_LEVEL} || 'INFO';
+my $LOG_LEVEL = eval('$' . uc($LOG_LEVEL_NAME));
+if ($@) {
+    die "Couldn't determine logging level from PTERO_PERL_SDK_LOG_LEVEL='$LOG_LEVEL_NAME'";
+}
+Log::Log4perl->easy_init($LOG_LEVEL);
+
+
 1;
 
 __END__
