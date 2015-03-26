@@ -7,8 +7,10 @@ use Data::Dump qw(pp);
 use HTTP::Request qw();
 use JSON qw();
 use LWP::UserAgent::Determined qw();
-use Log::Log4perl qw();
 use Params::Validate qw(validate_pos :types);
+
+use Ptero;
+use Log::Log4perl qw();
 
 use Exporter 'import';
 our @EXPORT_OK = qw(
@@ -18,9 +20,7 @@ our @EXPORT_OK = qw(
     make_request_and_decode_repsonse
 );
 
-Log::Log4perl->easy_init($Log::Log4perl::DEBUG);
 my $logger = Log::Log4perl->get_logger();
-
 
 my @RAW_DELAYS = (5, 5, 10, 20, 40, 80, 160);
 for (1..20) {
