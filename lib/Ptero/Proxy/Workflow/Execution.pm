@@ -43,10 +43,15 @@ sub BUILDARGS {
         }
         my $execution_data = make_request_and_decode_repsonse(method => 'GET',
             url => $args{url});
-       $args{concrete_execution} = Ptero::Concrete::Detail::Workflow::Execution->from_hashref(
-           $execution_data);
+        $args{concrete_execution} = Ptero::Concrete::Detail::Workflow::Execution->from_hashref(
+            $execution_data);
     }
     return \%args;
+}
+
+sub name {
+    my $self = shift;
+    return $self->concrete_execution->name;
 }
 
 sub inputs {
