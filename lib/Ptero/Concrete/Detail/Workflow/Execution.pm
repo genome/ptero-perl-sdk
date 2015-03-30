@@ -7,6 +7,11 @@ use Ptero::Statuses qw(is_terminal);
 
 use Params::Validate qw(validate_pos :types);
 
+has 'name' => (
+    is => 'ro',
+    isa => 'Str',
+);
+
 has 'color' => (
     is => 'ro',
     isa => 'Int',
