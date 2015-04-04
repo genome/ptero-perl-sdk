@@ -20,6 +20,11 @@ has 'executions' => (
     isa => 'HashRef[Ptero::Concrete::Detail::Workflow::Execution]',
 );
 
+has 'status' => (
+    is => 'rw',
+    isa => 'Maybe[Str]',
+);
+
 sub write_report {
     my $self = shift;
     my %p = Params::Validate::validate(@_, {
@@ -96,6 +101,7 @@ sub from_hashref {
     }
 
     $self->executions(\%executions);
+    $self->status($hashref->{status});
 
     return $self;
 }
