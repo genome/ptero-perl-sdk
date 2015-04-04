@@ -12,6 +12,8 @@ requires "MooseX::Aliases";
 requires "Params::Validate";
 requires "Set::Scalar";
 requires "Template";
+requires "DateTime::Format::Strptime";
+requires "Date::Calc";
 
 on 'test' => sub {
     requires "Test::Exception";
