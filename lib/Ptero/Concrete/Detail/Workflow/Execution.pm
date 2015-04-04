@@ -6,6 +6,15 @@ use Set::Scalar;
 use Ptero::Statuses qw(is_terminal);
 
 use Params::Validate qw(validate_pos :types);
+use DateTime::Format::Strptime qw();
+use DateTime qw();
+use Date::Calc "Delta_DHMS";
+
+my $DATETIME_PARSER = DateTime::Format::Strptime->new(
+    pattern => '%Y-%m-%d %H:%M:%S',
+    on_error => 'croak'
+);
+
 
 has 'name' => (
     is => 'ro',
@@ -77,17 +86,48 @@ sub timestamp_for {
 sub time_started {
     my $self = shift;
 
-    return $self->timestamp_for('running');
+    my $start_time = $self->timestamp_for('running');
+    $start_time = $self->timestamp_for('errored') unless $start_time;
+    $start_time = $self->timestamp_for('new') unless $start_time;
+
+    return $start_time;
 }
 
-sub time_ended {
+sub datetime_started {
+    my $self = shift;
+
+    return $DATETIME_PARSER->parse_datetime($self->time_started);
+}
+
+sub datetime_ended {
     my $self = shift;
 
     if (is_terminal($self->status)) {
-        return $self->timestamp_for($self->status)
+        my $end_time = $self->timestamp_for($self->status);
+        my $end_datetime = $DATETIME_PARSER->parse_datetime($end_time);
+        return $end_datetime;
     } else {
-        return '';
+        return DateTime->now(time_zone => 'local');
     }
+}
+
+sub duration {
+    my $self = shift;
+
+    return '' unless $self->time_started;
+    return _resolve_duration($self->datetime_started, $self->datetime_ended);
+}
+
+sub _resolve_duration {
+    my ($d1, $d2) = @_;
+
+    my ($days, $hours, $minutes, $seconds) = Delta_DHMS(
+        $d1->year, $d1->month, $d1->day, $d1->hour, $d1->minute, $d1->second,
+        $d2->year, $d2->month, $d2->day, $d2->hour, $d2->minute, $d2->second);
+
+    my $day_string = sprintf("%4s", $days   ? $days."d":"");
+
+    return sprintf("$day_string %02d:%02d:%02d", $hours, $minutes, $seconds);
 }
 
 sub status {
