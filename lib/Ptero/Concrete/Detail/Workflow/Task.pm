@@ -31,22 +31,26 @@ sub _write_report {
     my $parallel_by_str = '';
     if ($self->has_parallel_by) {
         my $inputs = $self->executions->{$color}->inputs;
-        $parallel_by_str = sprintf("parallel-by: %s %s", $self->parallel_by,
-            pp($inputs->{$self->parallel_by}));
+        $parallel_by_str = sprintf("parallel-by: %s", $self->parallel_by);
     }
 
-    printf $handle "%sTask (%s) %s\n",
-        ' 'x$indent,
-        $self->name,
-        $parallel_by_str;
+    my $execution = $self->executions->{$color};
+    printf $handle "%15s %10s %20s %13s %5s  %s%s\n",
+        'Task',
+        $execution->status,
+        $execution->datetime_started,
+        $execution->duration,
+        $color,
+        '. 'x$indent,
+        $self->name . ' ' . $parallel_by_str;
 
     for my $method (@{$self->methods}) {
-        $method->_write_report($handle, $indent+4, $color);
+        $method->_write_report($handle, $indent+1, $color);
     }
 
     for my $child_execution ($self->executions_with_parent_color($color)) {
         for my $method (@{$self->methods}) {
-            $method->_write_report($handle, $indent+4, $child_execution->color);
+            $method->_write_report($handle, $indent+1, $child_execution->color);
         }
     }
 }

@@ -21,15 +21,14 @@ sub _write_report {
     return unless exists $self->executions->{$color};
 
     my $execution = $self->executions->{$color};
-    printf $handle "%sShellCommand%12s %20s %20s %4s %s %s %s\n",
-        ' 'x$indent,
+    printf $handle "%15s %10s %20s %13s %5s  %s%s\n",
+        'ShellCommand',
         $execution->status,
-        $execution->time_started,
-        $execution->time_ended,
+        $execution->datetime_started,
+        $execution->duration,
         $color,
-        $execution->parent_color || 'undef',
-        $self->name,
-        pp($execution->inputs),
+        '. 'x$indent,
+        $self->name;
 }
 
 sub from_hashref {

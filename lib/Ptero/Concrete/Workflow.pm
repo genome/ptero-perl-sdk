@@ -41,13 +41,30 @@ sub _write_report {
     my ($handle, $indent, $color, $force) = validate_pos(@_, 1, 1, 1, 0);
     return unless exists $self->executions->{$color} or $force;
 
-    printf $handle "%sDAG (%s)\n",
-        ' 'x$indent,
-        $self->name;
+    if ($force) {
+        printf $handle "%15s %10s %20s %13s %5s  %s%s\n",
+            'DAG',
+            $self->status || '',
+            '',
+            '',
+            '',
+            '. 'x$indent,
+            $self->name;
+    } else {
+        my $execution = $self->executions->{$color};
+        printf $handle "%15s %10s %20s %13s %5s  %s%s\n",
+            'DAG',
+            $execution->status,
+            $execution->datetime_started,
+            $execution->duration,
+            $color,
+            '. 'x$indent,
+            $self->name;
+    }
 
     for my $name ($self->sorted_tasks) {
         my $task = $self->task_named($name);
-        $task->_write_report($handle, $indent+4, $color);
+        $task->_write_report($handle, $indent+1, $color);
     }
 }
 
