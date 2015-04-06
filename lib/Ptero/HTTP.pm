@@ -62,6 +62,7 @@ sub make_request {
             uc($method), $url));
     $logger->debug("    Request \n" . indent($req->as_string, 4));
     $logger->debug("    Response: \n" . indent($response->as_string, 4));
+    $logger->debug("    Response Content:\n" . indent(pp(decode_response($response)), 4));
 
     return $response
 }
