@@ -11,6 +11,7 @@ use Data::Dump qw(pp);
 use Params::Validate qw(validate_pos :types);
 
 extends 'Ptero::Builder::Detail::Workflow::Task';
+with 'Ptero::Concrete::Detail::Roles::CanWriteReport';
 
 has 'executions' => (
     is => 'rw',
@@ -26,7 +27,7 @@ sub class_lookup {
 
 sub _write_report {
     my $self = shift;
-    my ($handle, $indent, $color) = validate_pos(@_, 1, 1, 1);
+    my ($handle, $indent, $color, $force) = $self->params_validator(@_);
 
     my $parallel_by_str = '';
     if ($self->has_parallel_by) {
@@ -35,13 +36,13 @@ sub _write_report {
     }
 
     my $execution = $self->executions->{$color};
-    printf $handle "%15s %10s %20s %13s %5s  %s%s\n",
+    printf $handle $self->format_line,
         'Task',
         $execution->status,
         $execution->datetime_started,
         $execution->duration,
         $color,
-        '. 'x$indent,
+        $self->indentation_str x $indent,
         $self->name . ' ' . $parallel_by_str;
 
     for my $method (@{$self->methods}) {

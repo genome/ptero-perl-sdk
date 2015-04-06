@@ -12,6 +12,7 @@ use Ptero::Concrete::Detail::Workflow::Task;
 use Data::Dump qw(pp);
 
 extends 'Ptero::Builder::Workflow';
+with 'Ptero::Concrete::Detail::Roles::CanWriteReport';
 
 my $codec = JSON->new()->canonical([1]);
 
@@ -38,27 +39,27 @@ sub write_report {
 
 sub _write_report {
     my $self = shift;
-    my ($handle, $indent, $color, $force) = validate_pos(@_, 1, 1, 1, 0);
+    my ($handle, $indent, $color, $force) = $self->params_validator(@_);
     return unless exists $self->executions->{$color} or $force;
 
     if ($force) {
-        printf $handle "%15s %10s %20s %13s %5s  %s%s\n",
+        printf $handle $self->format_line,
             'DAG',
             $self->status || '',
             '',
             '',
             '',
-            '. 'x$indent,
+            $self->indentation_str x $indent,
             $self->name;
     } else {
         my $execution = $self->executions->{$color};
-        printf $handle "%15s %10s %20s %13s %5s  %s%s\n",
+        printf $handle $self->format_line,
             'DAG',
             $execution->status,
             $execution->datetime_started,
             $execution->duration,
             $color,
-            '. 'x$indent,
+            $self->indentation_str x $indent,
             $self->name;
     }
 
