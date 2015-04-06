@@ -9,6 +9,7 @@ use Params::Validate qw(validate_pos :types);
 use Ptero::Concrete::Detail::Workflow::Execution;
 
 extends 'Ptero::Builder::ShellCommand';
+with 'Ptero::Concrete::Detail::Roles::CanWriteReport';
 
 has 'executions' => (
     is => 'rw',
@@ -17,19 +18,18 @@ has 'executions' => (
 
 sub _write_report {
     my $self = shift;
-    my ($handle, $indent, $color) = validate_pos(@_, 1, 1, 1);
+    my ($handle, $indent, $color, $force) = $self->params_validator(@_);
     return unless exists $self->executions->{$color};
 
     my $execution = $self->executions->{$color};
-    printf $handle "%sShellCommand%12s %20s %20s %4s %s %s %s\n",
-        ' 'x$indent,
+    printf $handle $self->format_line,
+        'ShellCommand',
         $execution->status,
-        $execution->time_started,
-        $execution->time_ended,
+        $execution->datetime_started,
+        $execution->duration,
         $color,
-        $execution->parent_color || 'undef',
-        $self->name,
-        pp($execution->inputs),
+        $self->indentation_str x $indent,
+        $self->name;
 }
 
 sub from_hashref {

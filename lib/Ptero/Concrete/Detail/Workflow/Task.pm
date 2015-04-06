@@ -11,6 +11,7 @@ use Data::Dump qw(pp);
 use Params::Validate qw(validate_pos :types);
 
 extends 'Ptero::Builder::Detail::Workflow::Task';
+with 'Ptero::Concrete::Detail::Roles::CanWriteReport';
 
 has 'executions' => (
     is => 'rw',
@@ -26,27 +27,31 @@ sub class_lookup {
 
 sub _write_report {
     my $self = shift;
-    my ($handle, $indent, $color) = validate_pos(@_, 1, 1, 1);
+    my ($handle, $indent, $color, $force) = $self->params_validator(@_);
 
     my $parallel_by_str = '';
     if ($self->has_parallel_by) {
         my $inputs = $self->executions->{$color}->inputs;
-        $parallel_by_str = sprintf("parallel-by: %s %s", $self->parallel_by,
-            pp($inputs->{$self->parallel_by}));
+        $parallel_by_str = sprintf("parallel-by: %s", $self->parallel_by);
     }
 
-    printf $handle "%sTask (%s) %s\n",
-        ' 'x$indent,
-        $self->name,
-        $parallel_by_str;
+    my $execution = $self->executions->{$color};
+    printf $handle $self->format_line,
+        'Task',
+        $execution->status,
+        $execution->datetime_started,
+        $execution->duration,
+        $color,
+        $self->indentation_str x $indent,
+        $self->name . ' ' . $parallel_by_str;
 
     for my $method (@{$self->methods}) {
-        $method->_write_report($handle, $indent+4, $color);
+        $method->_write_report($handle, $indent+1, $color);
     }
 
     for my $child_execution ($self->executions_with_parent_color($color)) {
         for my $method (@{$self->methods}) {
-            $method->_write_report($handle, $indent+4, $child_execution->color);
+            $method->_write_report($handle, $indent+1, $child_execution->color);
         }
     }
 }

@@ -52,7 +52,7 @@ sub concrete_workflow {
 
     my $response = get($self->report_url('workflow-details'));
     my $json = $response->decoded_content(raise_error => 1);
-    return Ptero::Concrete::Workflow->from_json($json, 'concrete-workflow');
+    return Ptero::Concrete::Workflow->from_json($json, $self->url);
 }
 
 sub cancel {

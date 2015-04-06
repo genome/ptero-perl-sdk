@@ -14,8 +14,6 @@ if (scalar @ARGV < 1) {
 
 my $url = shift @ARGV;
 
-setup_logging();
-
 my $workflow_proxy = Ptero::Proxy::Workflow->new($url);
 my $concrete_workflow = $workflow_proxy->concrete_workflow;
 
@@ -34,9 +32,4 @@ sub write_report {
         handle => $handle,
         @ARGV,
     );
-}
-
-sub setup_logging {
-    my $logging_level = $ENV{PTERO_PERL_SDK_LOGGING_LEVEL} || $INFO;
-    Log::Log4perl->easy_init($logging_level);
 }

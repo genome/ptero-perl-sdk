@@ -12,12 +12,18 @@ use Ptero::Concrete::Detail::Workflow::Task;
 use Data::Dump qw(pp);
 
 extends 'Ptero::Builder::Workflow';
+with 'Ptero::Concrete::Detail::Roles::CanWriteReport';
 
 my $codec = JSON->new()->canonical([1]);
 
 has 'executions' => (
     is => 'rw',
     isa => 'HashRef[Ptero::Concrete::Detail::Workflow::Execution]',
+);
+
+has 'status' => (
+    is => 'rw',
+    isa => 'Maybe[Str]',
 );
 
 sub write_report {
@@ -33,16 +39,33 @@ sub write_report {
 
 sub _write_report {
     my $self = shift;
-    my ($handle, $indent, $color, $force) = validate_pos(@_, 1, 1, 1, 0);
+    my ($handle, $indent, $color, $force) = $self->params_validator(@_);
     return unless exists $self->executions->{$color} or $force;
 
-    printf $handle "%sDAG (%s)\n",
-        ' 'x$indent,
-        $self->name;
+    if ($force) {
+        printf $handle $self->format_line,
+            'DAG',
+            $self->status || '',
+            '',
+            '',
+            '',
+            $self->indentation_str x $indent,
+            $self->name;
+    } else {
+        my $execution = $self->executions->{$color};
+        printf $handle $self->format_line,
+            'DAG',
+            $execution->status,
+            $execution->datetime_started,
+            $execution->duration,
+            $color,
+            $self->indentation_str x $indent,
+            $self->name;
+    }
 
     for my $name ($self->sorted_tasks) {
         my $task = $self->task_named($name);
-        $task->_write_report($handle, $indent+4, $color);
+        $task->_write_report($handle, $indent+1, $color);
     }
 }
 
@@ -60,11 +83,13 @@ sub sorted_tasks {
     my @task_names = sort $g->successors('input connector');
     my $task_set = Set::Scalar->new(@task_names);
     $g->delete_vertex('input connector');
-    while (scalar(@task_names) > 1) {
+    while (scalar(@task_names) > 0) {
         my $count = 0;
         for my $name (@task_names) {
             if ($g->in_degree($name) == 0) {
-                push @result, $name;
+                unless ($name eq 'output connector') {
+                    push @result, $name;
+                }
                 splice(@task_names, $count, 1);
 
                 my @new_successors = grep {!$task_set->contains($_)} $g->successors($name);
@@ -94,6 +119,7 @@ sub from_hashref {
     }
 
     $self->executions(\%executions);
+    $self->status($hashref->{status});
 
     return $self;
 }
