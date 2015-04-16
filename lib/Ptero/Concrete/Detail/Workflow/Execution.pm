@@ -75,6 +75,14 @@ override 'BUILDARGS' => sub {
     return $params;
 };
 
+sub parallel_indexes {
+    my $self = shift;
+    # Here, we explicitly neglect the 0th index because
+    # top level dags cannot be made parallel-by
+    return map {$self->colors->[$_] - $self->begins->[$_]}
+        (1..scalar(@{$self->colors})-1);
+}
+
 sub timestamp_for {
     my $self = shift;
     my $status = shift;

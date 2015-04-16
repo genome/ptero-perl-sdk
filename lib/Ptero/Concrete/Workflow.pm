@@ -58,7 +58,7 @@ sub _write_report {
             $execution->status,
             $execution->datetime_started,
             $execution->duration,
-            $color,
+            join(', ', $execution->parallel_indexes),
             $self->indentation_str x $indent,
             $self->name;
     }
