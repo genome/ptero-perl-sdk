@@ -44,6 +44,15 @@ sub _write_report {
 
     if ($force) {
         printf $handle $self->format_line,
+            'TYPE',
+            'STATUS',
+            'STARTED',
+            'DURATION',
+            'P-INDEX',
+            '',
+            'NAME';
+
+        printf $handle $self->format_line,
             'DAG',
             $self->status || '',
             '',
