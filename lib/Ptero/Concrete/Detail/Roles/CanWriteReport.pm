@@ -9,7 +9,7 @@ sub indentation_str {
 }
 
 sub format_line {
-    return "%15s %10s %20s %13s %5s  %s%s\n";
+    return "%15s %10s %20s %13s  %-7s  %s%s\n";
 }
 
 sub params_validator {

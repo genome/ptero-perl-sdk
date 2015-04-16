@@ -22,11 +22,11 @@ plenv install 5.10.1; plenv rehash
 
 
 echo "Set this shell to use perl 5.10.1"
-plenv local 5.10.1
+plenv local 5.10.1; plenv rehash
 
 
 echo "Install cpanm"
-plenv install-cpanm
+plenv install-cpanm; plenv rehash
 
 
 echo "Install Carton"

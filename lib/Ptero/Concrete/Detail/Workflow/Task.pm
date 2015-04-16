@@ -36,14 +36,16 @@ sub _write_report {
     }
 
     my $execution = $self->executions->{$color};
-    printf $handle $self->format_line,
-        'Task',
-        $execution->status,
-        $execution->datetime_started,
-        $execution->duration,
-        $color,
-        $self->indentation_str x $indent,
-        $self->name . ' ' . $parallel_by_str;
+    if ($execution) {
+        printf $handle $self->format_line,
+            'Task',
+            $execution->status,
+            $execution->datetime_started,
+            $execution->duration,
+            join(', ', $execution->parallel_indexes),
+            $self->indentation_str x $indent,
+            $self->name . ' ' . $parallel_by_str;
+    }
 
     for my $method (@{$self->methods}) {
         $method->_write_report($handle, $indent+1, $color);
