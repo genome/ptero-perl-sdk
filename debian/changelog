@@ -1,3 +1,15 @@
+libptero-perl (0.1.0-1) lucid-genome-development; urgency=low
+
+  * PTero client
+
+ -- David L. Morton <dmorton@genome.wustl.edu>  Sat, 18 Apr 2015 00:31:59 +0200
+
+libptero-perl (0.1.0-1) lucid-genome-development; urgency=low
+
+  * PTero client
+
+ -- David L. Morton <dmorton@genome.wustl.edu>  Sat, 18 Apr 2015 00:28:24 +0200
+
 libptero-perl (0.0.5-1) lucid-genome-development; urgency=low
 
   * PTero client
