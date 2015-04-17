@@ -44,6 +44,15 @@ sub _write_report {
 
     if ($force) {
         printf $handle $self->format_line,
+            'TYPE',
+            'STATUS',
+            'STARTED',
+            'DURATION',
+            'P-INDEX',
+            '',
+            'NAME';
+
+        printf $handle $self->format_line,
             'DAG',
             $self->status || '',
             '',
@@ -58,7 +67,7 @@ sub _write_report {
             $execution->status,
             $execution->datetime_started,
             $execution->duration,
-            $color,
+            join(', ', $execution->parallel_indexes),
             $self->indentation_str x $indent,
             $self->name;
     }
