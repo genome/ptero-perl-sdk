@@ -9,6 +9,8 @@ use Set::Scalar qw();
 use Params::Validate qw(validate_pos :types);
 
 use Ptero::Builder::Detail::Method;
+use Ptero::Builder::Detail::Workflow::Block;
+use Ptero::Builder::Detail::Workflow::Converge;
 
 with 'Ptero::Builder::Detail::HasValidationErrors', 'Ptero::Builder::Detail::ConvertsToHashref';
 
@@ -137,6 +139,8 @@ sub class_lookup {
     return {
         'shell-command' => 'Ptero::Builder::ShellCommand',
         'workflow' => 'Ptero::Builder::Workflow',
+        'workflow-block' => 'Ptero::Builder::Detail::Workflow::Block',
+        'workflow-converge' => 'Ptero::Builder::Detail::Workflow::Converge',
     };
 }
 

@@ -1,0 +1,613 @@
+{
+   "links" : [
+      {
+         "destination" : "C",
+         "destinationProperty" : "param",
+         "source" : "A",
+         "sourceProperty" : "param_1"
+      },
+      {
+         "destination" : "D",
+         "destinationProperty" : "param_1",
+         "source" : "A",
+         "sourceProperty" : "param_2"
+      },
+      {
+         "destination" : "D",
+         "destinationProperty" : "param_2",
+         "source" : "B",
+         "sourceProperty" : "param"
+      },
+      {
+         "destination" : "output connector",
+         "destinationProperty" : "block_result",
+         "source" : "Block",
+         "sourceProperty" : "result"
+      },
+      {
+         "destination" : "output connector",
+         "destinationProperty" : "out_c",
+         "source" : "C",
+         "sourceProperty" : "param"
+      },
+      {
+         "destination" : "Block",
+         "destinationProperty" : "param_2",
+         "source" : "D",
+         "sourceProperty" : "param_2"
+      },
+      {
+         "destination" : "output connector",
+         "destinationProperty" : "out_d_1",
+         "source" : "D",
+         "sourceProperty" : "param_1"
+      },
+      {
+         "destination" : "output connector",
+         "destinationProperty" : "out_d_2",
+         "source" : "D",
+         "sourceProperty" : "param_2"
+      },
+      {
+         "destination" : "A",
+         "destinationProperty" : "param_1",
+         "source" : "input connector",
+         "sourceProperty" : "in_a_1"
+      },
+      {
+         "destination" : "A",
+         "destinationProperty" : "param_2",
+         "source" : "input connector",
+         "sourceProperty" : "in_a_2"
+      },
+      {
+         "destination" : "B",
+         "destinationProperty" : "param",
+         "source" : "input connector",
+         "sourceProperty" : "in_b"
+      }
+   ],
+   "tasks" : {
+      "A" : {
+         "executions" : {
+            "0" : {
+               "begins" : [
+                  0
+               ],
+               "color" : 0,
+               "colors" : [
+                  0
+               ],
+               "data" : {
+                  "petri_response_links" : {
+                     "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/51/tokens?color=0&color_group=0"
+                  }
+               },
+               "inputs" : {
+                  "param_1" : "foo",
+                  "param_2" : "bar"
+               },
+               "outputs" : {
+                  "param_1" : "foo",
+                  "param_2" : "bar"
+               },
+               "parent_color" : null,
+               "status" : "succeeded",
+               "status_history" : [
+                  {
+                     "status" : "new",
+                     "timestamp" : "2015-04-21 03:36:53"
+                  },
+                  {
+                     "status" : "scheduled",
+                     "timestamp" : "2015-04-21 03:36:53"
+                  },
+                  {
+                     "status" : "running",
+                     "timestamp" : "2015-04-21 03:36:53"
+                  },
+                  {
+                     "status" : "succeeded",
+                     "timestamp" : "2015-04-21 03:36:54"
+                  }
+               ]
+            }
+         },
+         "methods" : [
+            {
+               "executions" : {
+                  "0" : {
+                     "begins" : [
+                        0
+                     ],
+                     "color" : 0,
+                     "colors" : [
+                        0
+                     ],
+                     "data" : {
+                        "exitCode" : 0,
+                        "jobId" : "7eb4ce51-6a78-4b3b-9c53-d53ed853e67b",
+                        "job_id" : "7eb4ce51-6a78-4b3b-9c53-d53ed853e67b",
+                        "petri_response_links" : {
+                           "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/61/tokens?color=0&color_group=0"
+                        },
+                        "petri_response_links_for_shell_command" : {
+                           "failure" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/81/tokens?color=0&color_group=0",
+                           "success" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/111/tokens?color=0&color_group=0"
+                        },
+                        "status" : "succeeded",
+                        "stderr" : "",
+                        "stdout" : "Found PTERO_WORKFLOW_EXECUTION_URL = http://localhost:7000/v1/executions/616\nFound execution_data from GET request = {u'begins': [0], u'color': 0, u'inputs': {u'param_1': u'foo', u'param_2': u'bar'}, u'data': {u'job_id': u'7eb4ce51-6a78-4b3b-9c53-d53ed853e67b', u'petri_response_links_for_shell_command': {u'failure': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/81/tokens?color=0&color_group=0', u'success': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/111/tokens?color=0&color_group=0'}, u'petri_response_links': {u'created': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/61/tokens?color=0&color_group=0'}}, u'status': u'running', u'status_history': [{u'timestamp': u'2015-04-21 03:36:53', u'status': u'new'}, {u'timestamp': u'2015-04-21 03:36:54', u'status': u'scheduled'}, {u'timestamp': u'2015-04-21 03:36:54', u'status': u'running'}], u'colors': [0], u'parent_color': None, u'outputs': {}, u'name': u'A.execute.616'}\nSending PATCH to http://localhost:7000/v1/executions/616 with body: {'outputs': {u'param_1': u'foo', u'param_2': u'bar'}}\n"
+                     },
+                     "inputs" : {
+                        "param_1" : "foo",
+                        "param_2" : "bar"
+                     },
+                     "outputs" : {
+                        "param_1" : "foo",
+                        "param_2" : "bar"
+                     },
+                     "parent_color" : null,
+                     "status" : "succeeded",
+                     "status_history" : [
+                        {
+                           "status" : "new",
+                           "timestamp" : "2015-04-21 03:36:53"
+                        },
+                        {
+                           "status" : "scheduled",
+                           "timestamp" : "2015-04-21 03:36:54"
+                        },
+                        {
+                           "status" : "running",
+                           "timestamp" : "2015-04-21 03:36:54"
+                        },
+                        {
+                           "status" : "succeeded",
+                           "timestamp" : "2015-04-21 03:36:54"
+                        }
+                     ]
+                  }
+               },
+               "name" : "execute",
+               "parameters" : {
+                  "commandLine" : [
+                     "./echo_command"
+                  ],
+                  "environment" : {},
+                  "user" : "testuser",
+                  "workingDirectory" : "/tmp"
+               },
+               "service" : "shell-command"
+            }
+         ]
+      },
+      "B" : {
+         "executions" : {
+            "0" : {
+               "begins" : [
+                  0
+               ],
+               "color" : 0,
+               "colors" : [
+                  0
+               ],
+               "data" : {
+                  "petri_response_links" : {
+                     "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/70/tokens?color=0&color_group=0"
+                  }
+               },
+               "inputs" : {
+                  "param" : "baz"
+               },
+               "outputs" : {
+                  "param" : "baz"
+               },
+               "parent_color" : null,
+               "status" : "succeeded",
+               "status_history" : [
+                  {
+                     "status" : "new",
+                     "timestamp" : "2015-04-21 03:36:53"
+                  },
+                  {
+                     "status" : "scheduled",
+                     "timestamp" : "2015-04-21 03:36:53"
+                  },
+                  {
+                     "status" : "running",
+                     "timestamp" : "2015-04-21 03:36:53"
+                  },
+                  {
+                     "status" : "succeeded",
+                     "timestamp" : "2015-04-21 03:36:54"
+                  }
+               ]
+            }
+         },
+         "methods" : [
+            {
+               "executions" : {
+                  "0" : {
+                     "begins" : [
+                        0
+                     ],
+                     "color" : 0,
+                     "colors" : [
+                        0
+                     ],
+                     "data" : {
+                        "exitCode" : 0,
+                        "jobId" : "5006c0f0-053f-4c3a-84df-15d16ade58cc",
+                        "job_id" : "5006c0f0-053f-4c3a-84df-15d16ade58cc",
+                        "petri_response_links" : {
+                           "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/112/tokens?color=0&color_group=0"
+                        },
+                        "petri_response_links_for_shell_command" : {
+                           "failure" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/110/tokens?color=0&color_group=0",
+                           "success" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/113/tokens?color=0&color_group=0"
+                        },
+                        "status" : "succeeded",
+                        "stderr" : "",
+                        "stdout" : "Found PTERO_WORKFLOW_EXECUTION_URL = http://localhost:7000/v1/executions/615\nFound execution_data from GET request = {u'begins': [0], u'color': 0, u'inputs': {u'param': u'baz'}, u'data': {u'job_id': u'5006c0f0-053f-4c3a-84df-15d16ade58cc', u'petri_response_links_for_shell_command': {u'failure': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/110/tokens?color=0&color_group=0', u'success': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/113/tokens?color=0&color_group=0'}, u'petri_response_links': {u'created': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/112/tokens?color=0&color_group=0'}}, u'status': u'running', u'status_history': [{u'timestamp': u'2015-04-21 03:36:53', u'status': u'new'}, {u'timestamp': u'2015-04-21 03:36:53', u'status': u'scheduled'}, {u'timestamp': u'2015-04-21 03:36:54', u'status': u'running'}], u'colors': [0], u'parent_color': None, u'outputs': {}, u'name': u'B.execute.615'}\nSending PATCH to http://localhost:7000/v1/executions/615 with body: {'outputs': {u'param': u'baz'}}\n"
+                     },
+                     "inputs" : {
+                        "param" : "baz"
+                     },
+                     "outputs" : {
+                        "param" : "baz"
+                     },
+                     "parent_color" : null,
+                     "status" : "succeeded",
+                     "status_history" : [
+                        {
+                           "status" : "new",
+                           "timestamp" : "2015-04-21 03:36:53"
+                        },
+                        {
+                           "status" : "scheduled",
+                           "timestamp" : "2015-04-21 03:36:53"
+                        },
+                        {
+                           "status" : "running",
+                           "timestamp" : "2015-04-21 03:36:54"
+                        },
+                        {
+                           "status" : "succeeded",
+                           "timestamp" : "2015-04-21 03:36:54"
+                        }
+                     ]
+                  }
+               },
+               "name" : "execute",
+               "parameters" : {
+                  "commandLine" : [
+                     "./echo_command"
+                  ],
+                  "environment" : {},
+                  "user" : "testuser",
+                  "workingDirectory" : "/tmp"
+               },
+               "service" : "shell-command"
+            }
+         ]
+      },
+      "Block" : {
+         "executions" : {
+            "0" : {
+               "begins" : [
+                  0
+               ],
+               "color" : 0,
+               "colors" : [
+                  0
+               ],
+               "data" : {
+                  "petri_response_links" : {
+                     "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/62/tokens?color=0&color_group=0"
+                  }
+               },
+               "inputs" : {
+                  "param_2" : "baz"
+               },
+               "outputs" : {
+                  "result" : 1
+               },
+               "parent_color" : null,
+               "status" : "succeeded",
+               "status_history" : [
+                  {
+                     "status" : "new",
+                     "timestamp" : "2015-04-21 03:36:56"
+                  },
+                  {
+                     "status" : "scheduled",
+                     "timestamp" : "2015-04-21 03:36:56"
+                  },
+                  {
+                     "status" : "running",
+                     "timestamp" : "2015-04-21 03:36:56"
+                  },
+                  {
+                     "status" : "succeeded",
+                     "timestamp" : "2015-04-21 03:36:57"
+                  }
+               ]
+            }
+         },
+         "methods" : [
+            {
+               "executions" : {
+                  "0" : {
+                     "begins" : [
+                        0
+                     ],
+                     "color" : 0,
+                     "colors" : [
+                        0
+                     ],
+                     "data" : {
+                        "petri_response_links" : {
+                           "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/100/tokens?color=0&color_group=0"
+                        }
+                     },
+                     "inputs" : {
+                        "param_2" : "baz"
+                     },
+                     "outputs" : {
+                        "result" : 1
+                     },
+                     "parent_color" : null,
+                     "status" : "succeeded",
+                     "status_history" : [
+                        {
+                           "status" : "new",
+                           "timestamp" : "2015-04-21 03:36:56"
+                        },
+                        {
+                           "status" : "scheduled",
+                           "timestamp" : "2015-04-21 03:36:57"
+                        },
+                        {
+                           "status" : "running",
+                           "timestamp" : "2015-04-21 03:36:57"
+                        },
+                        {
+                           "status" : "succeeded",
+                           "timestamp" : "2015-04-21 03:36:57"
+                        }
+                     ]
+                  }
+               },
+               "name" : "blocker",
+               "parameters" : {},
+               "service" : "workflow-block"
+            }
+         ]
+      },
+      "C" : {
+         "executions" : {
+            "0" : {
+               "begins" : [
+                  0
+               ],
+               "color" : 0,
+               "colors" : [
+                  0
+               ],
+               "data" : {
+                  "petri_response_links" : {
+                     "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/54/tokens?color=0&color_group=0"
+                  }
+               },
+               "inputs" : {
+                  "param" : "foo"
+               },
+               "outputs" : {
+                  "param" : "foo"
+               },
+               "parent_color" : null,
+               "status" : "succeeded",
+               "status_history" : [
+                  {
+                     "status" : "new",
+                     "timestamp" : "2015-04-21 03:36:55"
+                  },
+                  {
+                     "status" : "scheduled",
+                     "timestamp" : "2015-04-21 03:36:55"
+                  },
+                  {
+                     "status" : "running",
+                     "timestamp" : "2015-04-21 03:36:55"
+                  },
+                  {
+                     "status" : "succeeded",
+                     "timestamp" : "2015-04-21 03:36:56"
+                  }
+               ]
+            }
+         },
+         "methods" : [
+            {
+               "executions" : {
+                  "0" : {
+                     "begins" : [
+                        0
+                     ],
+                     "color" : 0,
+                     "colors" : [
+                        0
+                     ],
+                     "data" : {
+                        "exitCode" : 0,
+                        "jobId" : "844c9b6a-70e1-41f9-b015-fd8f622a8613",
+                        "job_id" : "844c9b6a-70e1-41f9-b015-fd8f622a8613",
+                        "petri_response_links" : {
+                           "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/69/tokens?color=0&color_group=0"
+                        },
+                        "petri_response_links_for_shell_command" : {
+                           "failure" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/90/tokens?color=0&color_group=0",
+                           "success" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/25/tokens?color=0&color_group=0"
+                        },
+                        "status" : "succeeded",
+                        "stderr" : "",
+                        "stdout" : "Found PTERO_WORKFLOW_EXECUTION_URL = http://localhost:7000/v1/executions/620\nFound execution_data from GET request = {u'begins': [0], u'color': 0, u'inputs': {u'param': u'foo'}, u'data': {u'job_id': u'844c9b6a-70e1-41f9-b015-fd8f622a8613', u'petri_response_links_for_shell_command': {u'failure': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/90/tokens?color=0&color_group=0', u'success': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/25/tokens?color=0&color_group=0'}, u'petri_response_links': {u'created': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/69/tokens?color=0&color_group=0'}}, u'status': u'running', u'status_history': [{u'timestamp': u'2015-04-21 03:36:55', u'status': u'new'}, {u'timestamp': u'2015-04-21 03:36:56', u'status': u'scheduled'}, {u'timestamp': u'2015-04-21 03:36:56', u'status': u'running'}], u'colors': [0], u'parent_color': None, u'outputs': {}, u'name': u'C.execute.620'}\nSending PATCH to http://localhost:7000/v1/executions/620 with body: {'outputs': {u'param': u'foo'}}\n"
+                     },
+                     "inputs" : {
+                        "param" : "foo"
+                     },
+                     "outputs" : {
+                        "param" : "foo"
+                     },
+                     "parent_color" : null,
+                     "status" : "succeeded",
+                     "status_history" : [
+                        {
+                           "status" : "new",
+                           "timestamp" : "2015-04-21 03:36:55"
+                        },
+                        {
+                           "status" : "scheduled",
+                           "timestamp" : "2015-04-21 03:36:56"
+                        },
+                        {
+                           "status" : "running",
+                           "timestamp" : "2015-04-21 03:36:56"
+                        },
+                        {
+                           "status" : "succeeded",
+                           "timestamp" : "2015-04-21 03:36:56"
+                        }
+                     ]
+                  }
+               },
+               "name" : "execute",
+               "parameters" : {
+                  "commandLine" : [
+                     "./echo_command"
+                  ],
+                  "environment" : {},
+                  "user" : "testuser",
+                  "workingDirectory" : "/tmp"
+               },
+               "service" : "shell-command"
+            }
+         ]
+      },
+      "D" : {
+         "executions" : {
+            "0" : {
+               "begins" : [
+                  0
+               ],
+               "color" : 0,
+               "colors" : [
+                  0
+               ],
+               "data" : {
+                  "petri_response_links" : {
+                     "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/91/tokens?color=0&color_group=0"
+                  }
+               },
+               "inputs" : {
+                  "param_1" : "bar",
+                  "param_2" : "baz"
+               },
+               "outputs" : {
+                  "param_1" : "bar",
+                  "param_2" : "baz"
+               },
+               "parent_color" : null,
+               "status" : "succeeded",
+               "status_history" : [
+                  {
+                     "status" : "new",
+                     "timestamp" : "2015-04-21 03:36:55"
+                  },
+                  {
+                     "status" : "scheduled",
+                     "timestamp" : "2015-04-21 03:36:55"
+                  },
+                  {
+                     "status" : "running",
+                     "timestamp" : "2015-04-21 03:36:55"
+                  },
+                  {
+                     "status" : "succeeded",
+                     "timestamp" : "2015-04-21 03:36:56"
+                  }
+               ]
+            }
+         },
+         "methods" : [
+            {
+               "executions" : {
+                  "0" : {
+                     "begins" : [
+                        0
+                     ],
+                     "color" : 0,
+                     "colors" : [
+                        0
+                     ],
+                     "data" : {
+                        "exitCode" : 0,
+                        "jobId" : "6ada0774-ce43-44f7-8765-88a3993419ff",
+                        "job_id" : "6ada0774-ce43-44f7-8765-88a3993419ff",
+                        "petri_response_links" : {
+                           "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/36/tokens?color=0&color_group=0"
+                        },
+                        "petri_response_links_for_shell_command" : {
+                           "failure" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/118/tokens?color=0&color_group=0",
+                           "success" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/55/tokens?color=0&color_group=0"
+                        },
+                        "status" : "succeeded",
+                        "stderr" : "",
+                        "stdout" : "Found PTERO_WORKFLOW_EXECUTION_URL = http://localhost:7000/v1/executions/619\nFound execution_data from GET request = {u'begins': [0], u'color': 0, u'inputs': {u'param_1': u'bar', u'param_2': u'baz'}, u'data': {u'job_id': u'6ada0774-ce43-44f7-8765-88a3993419ff', u'petri_response_links_for_shell_command': {u'failure': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/118/tokens?color=0&color_group=0', u'success': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/55/tokens?color=0&color_group=0'}, u'petri_response_links': {u'created': u'http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/36/tokens?color=0&color_group=0'}}, u'status': u'running', u'status_history': [{u'timestamp': u'2015-04-21 03:36:55', u'status': u'new'}, {u'timestamp': u'2015-04-21 03:36:55', u'status': u'scheduled'}, {u'timestamp': u'2015-04-21 03:36:56', u'status': u'running'}], u'colors': [0], u'parent_color': None, u'outputs': {}, u'name': u'D.execute.619'}\nSending PATCH to http://localhost:7000/v1/executions/619 with body: {'outputs': {u'param_1': u'bar', u'param_2': u'baz'}}\n"
+                     },
+                     "inputs" : {
+                        "param_1" : "bar",
+                        "param_2" : "baz"
+                     },
+                     "outputs" : {
+                        "param_1" : "bar",
+                        "param_2" : "baz"
+                     },
+                     "parent_color" : null,
+                     "status" : "succeeded",
+                     "status_history" : [
+                        {
+                           "status" : "new",
+                           "timestamp" : "2015-04-21 03:36:55"
+                        },
+                        {
+                           "status" : "scheduled",
+                           "timestamp" : "2015-04-21 03:36:55"
+                        },
+                        {
+                           "status" : "running",
+                           "timestamp" : "2015-04-21 03:36:56"
+                        },
+                        {
+                           "status" : "succeeded",
+                           "timestamp" : "2015-04-21 03:36:56"
+                        }
+                     ]
+                  }
+               },
+               "name" : "execute",
+               "parameters" : {
+                  "commandLine" : [
+                     "./echo_command"
+                  ],
+                  "environment" : {},
+                  "user" : "testuser",
+                  "workingDirectory" : "/tmp"
+               },
+               "service" : "shell-command"
+            }
+         ]
+      }
+   }
+}
