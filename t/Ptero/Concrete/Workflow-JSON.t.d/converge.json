@@ -1,0 +1,133 @@
+{
+   "links" : [
+      {
+         "destination" : "output connector",
+         "destinationProperty" : "out_c",
+         "source" : "A",
+         "sourceProperty" : "c"
+      },
+      {
+         "destination" : "A",
+         "destinationProperty" : "a",
+         "source" : "input connector",
+         "sourceProperty" : "in_a"
+      },
+      {
+         "destination" : "A",
+         "destinationProperty" : "b",
+         "source" : "input connector",
+         "sourceProperty" : "in_b"
+      }
+   ],
+   "tasks" : {
+      "A" : {
+         "executions" : {
+            "0" : {
+               "begins" : [
+                  0
+               ],
+               "color" : 0,
+               "colors" : [
+                  0
+               ],
+               "data" : {
+                  "petri_response_links" : {
+                     "created" : "http://localhost:6000/v1/nets/JmZkEpNQSuCEn0oKhDuxPg/places/16/tokens?color=0&color_group=0"
+                  }
+               },
+               "inputs" : {
+                  "a" : "kittens",
+                  "b" : "puppies"
+               },
+               "outputs" : {
+                  "c" : [
+                     "puppies",
+                     "kittens"
+                  ],
+                  "result" : 1
+               },
+               "parent_color" : null,
+               "status" : "succeeded",
+               "status_history" : [
+                  {
+                     "status" : "new",
+                     "timestamp" : "2015-04-21 03:40:49"
+                  },
+                  {
+                     "status" : "scheduled",
+                     "timestamp" : "2015-04-21 03:40:49"
+                  },
+                  {
+                     "status" : "running",
+                     "timestamp" : "2015-04-21 03:40:49"
+                  },
+                  {
+                     "status" : "succeeded",
+                     "timestamp" : "2015-04-21 03:40:50"
+                  }
+               ]
+            }
+         },
+         "methods" : [
+            {
+               "executions" : {
+                  "0" : {
+                     "begins" : [
+                        0
+                     ],
+                     "color" : 0,
+                     "colors" : [
+                        0
+                     ],
+                     "data" : {
+                        "petri_response_links" : {
+                           "created" : "http://localhost:6000/v1/nets/JmZkEpNQSuCEn0oKhDuxPg/places/33/tokens?color=0&color_group=0"
+                        }
+                     },
+                     "inputs" : {
+                        "a" : "kittens",
+                        "b" : "puppies"
+                     },
+                     "outputs" : {
+                        "c" : [
+                           "puppies",
+                           "kittens"
+                        ],
+                        "result" : 1
+                     },
+                     "parent_color" : null,
+                     "status" : "succeeded",
+                     "status_history" : [
+                        {
+                           "status" : "new",
+                           "timestamp" : "2015-04-21 03:40:49"
+                        },
+                        {
+                           "status" : "scheduled",
+                           "timestamp" : "2015-04-21 03:40:49"
+                        },
+                        {
+                           "status" : "running",
+                           "timestamp" : "2015-04-21 03:40:50"
+                        },
+                        {
+                           "status" : "succeeded",
+                           "timestamp" : "2015-04-21 03:40:50"
+                        }
+                     ]
+                  }
+               },
+               "name" : "convergence",
+               "parameters" : {
+                  "input_names" : [
+                     "b",
+                     "a"
+                  ],
+                  "output_name" : "c"
+               },
+               "service" : "workflow-converge"
+            }
+         ]
+      }
+   }
+}

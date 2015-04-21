@@ -1,0 +1,48 @@
+{
+   "links" : [
+      {
+         "destination" : "A",
+         "destinationProperty" : "in",
+         "source" : "input connector",
+         "sourceProperty" : "in_a"
+      },
+      {
+         "destination" : "B",
+         "destinationProperty" : "in",
+         "source" : "A",
+         "sourceProperty" : "result"
+      },
+      {
+         "destination" : "output connector",
+         "destinationProperty" : "out_b",
+         "source" : "B",
+         "sourceProperty" : "out"
+      }
+   ],
+   "tasks" : {
+      "A" : {
+         "methods" : [
+            {
+               "name" : "block",
+               "parameters" : {},
+               "service" : "workflow-block"
+            }
+         ]
+      },
+      "B" : {
+         "methods" : [
+            {
+               "name" : "converge",
+               "parameters" : {
+                  "input_names" : [
+                     "in"
+                  ],
+                  "output_name" : "out"
+               },
+               "service" : "workflow-converge"
+            }
+         ]
+      }
+   }
+}
+

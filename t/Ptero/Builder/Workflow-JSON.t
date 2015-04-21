@@ -40,6 +40,12 @@ use_ok('Ptero::Builder::Workflow');
     is($workflow->to_json, $blessed_json, 'nested with parallelBy');
 }
 
+{
+    my $blessed_json = get_test_json('block_and_converge');
+    my $workflow = Ptero::Builder::Workflow->from_json($blessed_json, 'some-workflow');
+    is($workflow->to_json, $blessed_json, 'block and converge');
+}
+
 done_testing();
 
 sub get_test_json {

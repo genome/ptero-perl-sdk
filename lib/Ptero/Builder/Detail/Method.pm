@@ -78,5 +78,22 @@ sub validate_hashref {
     }
 }
 
+sub from_hashref {
+    my ($class, $hashref) = validate_pos(@_, 1, {type => HASHREF});
+
+    $class->validate_hashref($hashref);
+    return $class->new(%$hashref);
+}
+
+sub to_hashref {
+    my $self = shift;
+
+    return {
+        name => $self->name,
+        service => $self->service,
+        parameters => $self->parameters,
+    };
+}
+
 
 1;
