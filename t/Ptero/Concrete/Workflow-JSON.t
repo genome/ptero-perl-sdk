@@ -12,6 +12,8 @@ use_ok('Ptero::Concrete::Workflow');
 
 test_json_roundtrip('simple');
 test_json_roundtrip('parallel');
+test_json_roundtrip('converge');
+test_json_roundtrip('block');
 
 
 done_testing();
@@ -34,13 +36,4 @@ sub get_test_json {
     chomp($blessed_json);
 
     return $blessed_json;
-}
-
-sub regenerate_test_data {
-    my $workflow = shift;
-    my $name = shift;
-    my $json_filename = File::Spec->join($test_dir, $name . '.json');
-    if ($ENV{REGENERATE_TEST_DATA}) {
-        File::Slurp::write_file($json_filename, $workflow->to_json() . "\n");
-    }
 }

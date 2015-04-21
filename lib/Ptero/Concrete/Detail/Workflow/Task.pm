@@ -10,6 +10,9 @@ use Data::Dump qw(pp);
 
 use Params::Validate qw(validate_pos :types);
 
+use Ptero::Concrete::Detail::Workflow::Block;
+use Ptero::Concrete::Detail::Workflow::Converge;
+
 extends 'Ptero::Builder::Detail::Workflow::Task';
 with 'Ptero::Concrete::Detail::Roles::CanWriteReport';
 
@@ -22,6 +25,8 @@ sub class_lookup {
     return {
         'shell-command' => 'Ptero::Concrete::ShellCommand',
         'workflow' => 'Ptero::Concrete::Workflow',
+        'workflow-block' => 'Ptero::Concrete::Detail::Workflow::Block',
+        'workflow-converge' => 'Ptero::Concrete::Detail::Workflow::Converge',
     };
 }
 

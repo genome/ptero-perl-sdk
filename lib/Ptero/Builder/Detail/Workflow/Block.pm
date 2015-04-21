@@ -1,4 +1,4 @@
-package Ptero::Builder::ShellCommand;
+package Ptero::Builder::Detail::Workflow::Block;
 
 use Moose;
 use warnings FATAL => 'all';
@@ -8,7 +8,7 @@ with 'Ptero::Builder::Detail::Method';
 
 override 'BUILDARGS' => sub {
     my $params = super();
-    $params->{service} = 'shell-command';
+    $params->{service} = 'workflow-block';
     return $params;
 };
 
@@ -17,22 +17,16 @@ sub known_input_properties {
 }
 
 sub has_possible_output_property {
-    return 1;
+    my ($self, $name) = validate_pos(@_, 1, {type => SCALAR});
+    return $name eq 'result';
 }
 
 sub required_parameters {
-    return qw(
-        commandLine
-        user
-        workingDirectory
-    );
+    return qw();
 }
 
 sub optional_parameters {
-    return qw(
-        environment
-        umask
-    );
+    return qw();
 }
 
 __PACKAGE__->meta->make_immutable;
