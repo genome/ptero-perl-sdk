@@ -29,6 +29,14 @@ for (1..20) {
 # This will spread out the distribution of requests over time.
 my @RETRY_DELAYS = map {$_ + _random_int(4)} @RAW_DELAYS;
 
+my @CODES_TO_RETRY = (
+    408,  # Request Timeout
+    500,  # Internal Server Error
+    502,  # Bad Gateway
+    503,  # Service Unavailable
+    504,  # Gateway Timeout
+);
+
 my $_json_codec = JSON->new;
 my $_user_agent = _get_user_agent();
 
@@ -110,6 +118,7 @@ sub _get_user_agent {
 
     my $agent = LWP::UserAgent::Determined->new;
     $agent->timing($_timing);
+    $agent->codes_to_determinate({map {$_=>1} (@CODES_TO_RETRY)});
     $agent->after_determined_callback(\&__after_determined_callback);
 
     return $agent;
