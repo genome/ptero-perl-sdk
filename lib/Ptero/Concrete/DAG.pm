@@ -1,10 +1,9 @@
-package Ptero::Concrete::Workflow;
+package Ptero::Concrete::DAG;
 
 use Moose;
 use warnings FATAL => 'all';
 
 use Params::Validate qw(validate_pos :types);
-use JSON qw();
 use Graph::Directed qw();
 
 use Ptero::Concrete::Detail::Workflow::Execution;
@@ -14,63 +13,25 @@ use Data::Dump qw(pp);
 extends 'Ptero::Builder::Workflow';
 with 'Ptero::Concrete::Detail::Roles::CanWriteReport';
 
-my $codec = JSON->new()->canonical([1]);
-
 has 'executions' => (
     is => 'rw',
     isa => 'HashRef[Ptero::Concrete::Detail::Workflow::Execution]',
 );
 
-has 'status' => (
-    is => 'rw',
-    isa => 'Maybe[Str]',
-);
-
-sub write_report {
-    my $self = shift;
-    my %p = Params::Validate::validate(@_, {
-        handle => 1,
-        indent => {default => 0},
-    });
-    my $handle = $p{handle};
-
-    $self->_write_report($p{handle}, $p{indent}, 0, 1);
-}
-
 sub _write_report {
     my $self = shift;
-    my ($handle, $indent, $color, $force) = $self->params_validator(@_);
-    return unless exists $self->executions->{$color} or $force;
+    my ($handle, $indent, $color) = $self->params_validator(@_);
+    return unless exists $self->executions->{$color};
 
-    if ($force) {
-        printf $handle $self->format_line,
-            'TYPE',
-            'STATUS',
-            'STARTED',
-            'DURATION',
-            'P-INDEX',
-            '',
-            'NAME';
-
-        printf $handle $self->format_line,
-            'DAG',
-            $self->status || '',
-            '',
-            '',
-            '',
-            $self->indentation_str x $indent,
-            $self->name;
-    } else {
-        my $execution = $self->executions->{$color};
-        printf $handle $self->format_line,
-            'DAG',
-            $execution->status,
-            $execution->datetime_started,
-            $execution->duration,
-            join(', ', $execution->parallel_indexes),
-            $self->indentation_str x $indent,
-            $self->name;
-    }
+    my $execution = $self->executions->{$color};
+    printf $handle $self->format_line,
+        'DAG',
+        $execution->status,
+        $execution->datetime_started,
+        $execution->duration,
+        join(', ', $execution->parallel_indexes),
+        $self->indentation_str x $indent,
+        $self->name;
 
     for my $name ($self->sorted_tasks) {
         my $task = $self->task_named($name);
@@ -128,7 +89,6 @@ sub from_hashref {
     }
 
     $self->executions(\%executions);
-    $self->status($hashref->{status});
 
     return $self;
 }
@@ -140,11 +100,6 @@ sub to_hashref {
         map {$_->color, $_->to_hashref} values %{$self->executions}};
 
     return $hashref;
-}
-
-sub to_json {
-    my $self = shift;
-    return $codec->pretty->encode($self->submission_data(@_));
 }
 
 __PACKAGE__->meta->make_immutable;
