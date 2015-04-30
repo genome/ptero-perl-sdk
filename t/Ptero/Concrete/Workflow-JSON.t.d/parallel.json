@@ -657,5 +657,10 @@
                 }
             ]
         }
-    }
+    },
+    "inputs": {
+        "marmot": "gregarious rodent"
+    },
+    "name": "nice marmot",
+    "status": "succeeded"
 }

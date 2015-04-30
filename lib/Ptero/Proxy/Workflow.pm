@@ -75,6 +75,11 @@ sub wait {
     return $self->status;
 }
 
+sub name {
+    my ($self) = @_;
+    return $self->resource->{name};
+}
+
 sub report_url {
     my ($self, $report_name) = @_;
     if (exists $self->resource->{reports}->{$report_name}) {
