@@ -13,7 +13,8 @@ use Ptero::Builder::Detail::Workflow::Link;
 use Ptero::Builder::Detail::Workflow::Task;
 use Ptero::HTTP;
 
-with 'Ptero::Builder::Detail::Method', 'Ptero::Builder::Detail::Submittable';
+with 'Ptero::Builder::Detail::Method';
+with 'Ptero::Builder::Detail::Submittable';
 
 my $codec = JSON->new()->canonical([1]);
 
@@ -404,7 +405,7 @@ after 'validate_hashref' => sub {
     my %parameters = %{$hashref->{parameters}};
     for my $key (qw(tasks links)) {
         unless (exists $parameters{$key}) {
-            die sprintf("Workflow dashref missing required parameter (%s): %s",
+            die sprintf("Workflow hashref missing required parameter (%s): %s",
                 $key, Data::Dump::pp($hashref));
         }
     }
