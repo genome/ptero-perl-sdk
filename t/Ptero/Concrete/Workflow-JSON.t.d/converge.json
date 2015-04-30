@@ -129,5 +129,10 @@
             }
          ]
       }
-   }
+   },
+   "inputs": {
+       "mouse": "Ralph"
+   },
+   "name": "work today?",
+   "status": "succeeded"
 }

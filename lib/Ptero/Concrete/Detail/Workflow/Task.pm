@@ -3,7 +3,7 @@ package Ptero::Concrete::Detail::Workflow::Task;
 use Moose;
 use warnings FATAL => 'all';
 
-use Ptero::Concrete::Workflow;
+use Ptero::Concrete::DAG;
 use Ptero::Concrete::ShellCommand;
 use Ptero::Concrete::Detail::Workflow::Execution;
 use Data::Dump qw(pp);
@@ -24,7 +24,7 @@ has 'executions' => (
 sub class_lookup {
     return {
         'shell-command' => 'Ptero::Concrete::ShellCommand',
-        'workflow' => 'Ptero::Concrete::Workflow',
+        'workflow' => 'Ptero::Concrete::DAG',
         'workflow-block' => 'Ptero::Concrete::Detail::Workflow::Block',
         'workflow-converge' => 'Ptero::Concrete::Detail::Workflow::Converge',
     };

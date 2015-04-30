@@ -47,9 +47,10 @@ sub submit {
     my $self = shift;
     my %p = Params::Validate::validate(@_, {
         inputs => {type => HASHREF, optional => 1},
+        name => {type => SCALAR, optional => 1},
     });
 
-    my $submission_data = $self->submission_data($p{inputs});
+    my $submission_data = $self->submission_data($p{inputs}, $p{name});
     my $response = Ptero::HTTP::post(submit_url(), $submission_data);
 
     unless ($response->code == 201) {
@@ -433,7 +434,7 @@ sub from_json {
 }
 
 sub submission_data {
-    my ($self, $inputs) = @_;
+    my ($self, $inputs, $name) = @_;
 
     $self->validate;
 
@@ -445,6 +446,10 @@ sub submission_data {
 
     if (defined $inputs) {
         $hashref->{inputs} = $inputs;
+    }
+
+    if (defined $name) {
+        $hashref->{name} = $name;
     }
 
     return $hashref;

@@ -93,5 +93,10 @@
                 }
             ]
         }
-    }
+    },
+    "inputs": {
+        "cat": "Halley"
+    },
+    "name": "good work today!",
+    "status": "succeeded"
 }
