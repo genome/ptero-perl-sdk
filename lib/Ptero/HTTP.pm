@@ -58,6 +58,7 @@ sub make_request {
 
     my @headers = (
         'Accept' => 'application/json',
+        'Accept-Encoding' => 'gzip',
         'Content-Type' => 'application/json',
     );
 
