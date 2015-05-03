@@ -2,9 +2,7 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Test::Exception;
 use Test::More;
-use File::Spec;
 use Ptero::TestHelper qw(
     repo_relative_path
     get_environment
