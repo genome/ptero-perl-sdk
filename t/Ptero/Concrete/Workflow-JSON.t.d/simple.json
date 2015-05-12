@@ -86,7 +86,12 @@
                         "user": "testuser",
                         "commandLine": [
                             "cat"
-                        ]
+                        ],
+                        "webhooks": {
+                            "scheduled": "http://localhost:8080/example/method/shell-command/scheduled",
+                            "failed": "http://localhost:8080/example/method/shell-command/failed",
+                            "succeeded": ["http://localhost:8080/example/method/shell-command/succeeded", "http://localhost:8080/celebrate"]
+                        }
                     },
                     "name": "execute",
                     "service": "shell-command"
