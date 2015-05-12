@@ -56,13 +56,29 @@
                               },
                               "service" : "shell-command"
                            }
-                        ]
+                        ],
+                        "webhooks" : {
+                           "failed" : "http://localhost:8080/example/task/failed",
+                           "scheduled" : "http://localhost:8080/example/task/scheduled",
+                           "succeeded" : [
+                              "http://localhost:8080/example/task/succeeded",
+                              "http://localhost:8080/congrats"
+                           ]
+                        }
                      }
                   }
                },
                "service" : "workflow"
             }
-         ]
+         ],
+         "webhooks" : {
+            "failed" : "http://localhost:8080/example/task/failed",
+            "scheduled" : "http://localhost:8080/example/task/scheduled",
+            "succeeded" : [
+               "http://localhost:8080/example/task/succeeded",
+               "http://localhost:8080/congrats"
+            ]
+         }
       }
    }
 }

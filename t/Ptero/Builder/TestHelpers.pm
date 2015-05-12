@@ -26,6 +26,11 @@ sub build_nested_workflow {
         methods => [
             build_basic_workflow('inner'),
         ],
+        webhooks => {
+            scheduled => 'http://localhost:8080/example/task/scheduled',
+            failed => 'http://localhost:8080/example/task/failed',
+            succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+        },
     );
     $workflow->connect_input(
         source_property => 'A_in',
@@ -61,6 +66,11 @@ sub build_basic_workflow {
                 },
             ),
         ],
+        webhooks => {
+            scheduled => 'http://localhost:8080/example/task/scheduled',
+            failed => 'http://localhost:8080/example/task/failed',
+            succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+        },
     );
     $workflow->connect_input(
         source_property => 'A_in',

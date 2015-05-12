@@ -12,6 +12,7 @@ use Ptero::Builder::Detail::Method;
 use Ptero::Builder::Detail::Workflow::Block;
 use Ptero::Builder::Detail::Workflow::Converge;
 
+with 'Ptero::Builder::Detail::HasWebhooks';
 with 'Ptero::Builder::Detail::ConvertsToHashref';
 with 'Ptero::Builder::Detail::HasValidationErrors';
 

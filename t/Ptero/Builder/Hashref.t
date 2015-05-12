@@ -47,6 +47,11 @@ use Ptero::Builder::TestHelpers qw(
                             service => "shell-command",
                         },
                     ],
+                    webhooks => {
+                        scheduled => 'http://localhost:8080/example/task/scheduled',
+                        failed => 'http://localhost:8080/example/task/failed',
+                        succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+                    },
                 },
             },
         },
@@ -96,6 +101,11 @@ use Ptero::Builder::TestHelpers qw(
                         },
                     ],
                     parallelBy => "A_in",
+                    webhooks => {
+                        scheduled => 'http://localhost:8080/example/task/scheduled',
+                        failed => 'http://localhost:8080/example/task/failed',
+                        succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+                    },
                 },
             },
         },
@@ -166,12 +176,22 @@ use Ptero::Builder::TestHelpers qw(
                                                 service => "shell-command",
                                             },
                                         ],
+                                        webhooks => {
+                                            scheduled => 'http://localhost:8080/example/task/scheduled',
+                                            failed => 'http://localhost:8080/example/task/failed',
+                                            succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+                                        },
                                     },
                                 },
                             },
                             service => "workflow",
                         },
                     ],
+                    webhooks => {
+                        scheduled => 'http://localhost:8080/example/task/scheduled',
+                        failed => 'http://localhost:8080/example/task/failed',
+                        succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+                    },
                 },
             },
         },
