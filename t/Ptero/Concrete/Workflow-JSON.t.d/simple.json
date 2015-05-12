@@ -108,5 +108,10 @@
         "cat": "Halley"
     },
     "name": "good work today!",
-    "status": "succeeded"
+    "status": "succeeded",
+    "webhooks": {
+        "scheduled": "http://localhost:8080/example/method/workflow/scheduled",
+        "failed": "http://localhost:8080/example/method/workflow/failed",
+        "succeeded": ["http://localhost:8080/example/method/workflow/succeeded", "http://localhost:8080/celebrate"]
+    }
 }
