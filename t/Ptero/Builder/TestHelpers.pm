@@ -42,6 +42,11 @@ sub build_nested_workflow {
         source_property => 'A_out',
         destination_property => 'A_out',
     );
+    $workflow->webhooks( {
+        scheduled => 'http://localhost:8080/example/outer/scheduled',
+        failed => 'http://localhost:8080/example/outer/failed',
+        succeeded => ['http://localhost:8080/example/outer/succeeded', 'http://localhost:8080/congrats']
+    } );
     return $workflow;
 }
 
@@ -82,6 +87,11 @@ sub build_basic_workflow {
         source_property => 'A_out',
         destination_property => 'A_out',
     );
+    $workflow->webhooks( {
+        scheduled => 'http://localhost:8080/example/workflow/scheduled',
+        failed => 'http://localhost:8080/example/workflow/failed',
+        succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
+    } );
     return $workflow;
 }
 

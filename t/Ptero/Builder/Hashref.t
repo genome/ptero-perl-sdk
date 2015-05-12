@@ -54,6 +54,11 @@ use Ptero::Builder::TestHelpers qw(
                     },
                 },
             },
+            webhooks => {
+                scheduled => 'http://localhost:8080/example/workflow/scheduled',
+                failed => 'http://localhost:8080/example/workflow/failed',
+                succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
+            },
         },
         service => "workflow",
     };
@@ -107,6 +112,11 @@ use Ptero::Builder::TestHelpers qw(
                         succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
                     },
                 },
+            },
+            webhooks => {
+                scheduled => 'http://localhost:8080/example/workflow/scheduled',
+                failed => 'http://localhost:8080/example/workflow/failed',
+                succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
             },
         },
         service => "workflow",
@@ -183,6 +193,11 @@ use Ptero::Builder::TestHelpers qw(
                                         },
                                     },
                                 },
+                                webhooks => {
+                                    scheduled => 'http://localhost:8080/example/workflow/scheduled',
+                                    failed => 'http://localhost:8080/example/workflow/failed',
+                                    succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
+                                },
                             },
                             service => "workflow",
                         },
@@ -193,6 +208,11 @@ use Ptero::Builder::TestHelpers qw(
                         succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
                     },
                 },
+            },
+            webhooks => {
+                scheduled => 'http://localhost:8080/example/outer/scheduled',
+                failed => 'http://localhost:8080/example/outer/failed',
+                succeeded => ['http://localhost:8080/example/outer/succeeded', 'http://localhost:8080/congrats']
             },
         },
         service => "workflow",

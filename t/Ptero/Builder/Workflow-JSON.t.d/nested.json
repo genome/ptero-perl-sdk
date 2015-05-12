@@ -66,6 +66,14 @@
                            ]
                         }
                      }
+                  },
+                  "webhooks" : {
+                     "failed" : "http://localhost:8080/example/workflow/failed",
+                     "scheduled" : "http://localhost:8080/example/workflow/scheduled",
+                     "succeeded" : [
+                        "http://localhost:8080/example/workflow/succeeded",
+                        "http://localhost:8080/congrats"
+                     ]
                   }
                },
                "service" : "workflow"
@@ -80,6 +88,14 @@
             ]
          }
       }
+   },
+   "webhooks" : {
+      "failed" : "http://localhost:8080/example/outer/failed",
+      "scheduled" : "http://localhost:8080/example/outer/scheduled",
+      "succeeded" : [
+         "http://localhost:8080/example/outer/succeeded",
+         "http://localhost:8080/congrats"
+      ]
    }
 }
 

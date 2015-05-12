@@ -13,6 +13,7 @@ use Ptero::Builder::Detail::Workflow::Link;
 use Ptero::Builder::Detail::Workflow::Task;
 use Ptero::HTTP;
 
+with 'Ptero::Builder::Detail::HasWebhooksInParameters';
 with 'Ptero::Builder::Detail::Method';
 with 'Ptero::Builder::Detail::Submittable';
 
@@ -429,6 +430,10 @@ sub from_json {
     $hashref->{name} = $name;
     $hashref->{parameters}->{tasks} = delete $hashref->{tasks};
     $hashref->{parameters}->{links} = delete $hashref->{links};
+
+    if (exists $hashref->{webhooks}) {
+        $hashref->{parameters}->{webhooks} = delete $hashref->{webhooks};
+    }
     $hashref->{service} = 'workflow';
 
     return $class->from_hashref($hashref);
@@ -444,6 +449,10 @@ sub submission_data {
         tasks => $self_hashref->{parameters}->{tasks},
         links => $self_hashref->{parameters}->{links},
     };
+
+    if (exists $self_hashref->{parameters}->{webhooks}) {
+        $hashref->{webhooks} = $self_hashref->{parameters}->{webhooks};
+    }
 
     if (defined $inputs) {
         $hashref->{inputs} = $inputs;
