@@ -30,6 +30,7 @@ sub required_parameters {
 
 sub optional_parameters {
     return qw(
+        webhooks
         environment
         umask
     );
