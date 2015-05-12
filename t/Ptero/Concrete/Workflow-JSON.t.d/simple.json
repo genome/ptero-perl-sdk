@@ -96,7 +96,12 @@
                     "name": "execute",
                     "service": "shell-command"
                 }
-            ]
+            ],
+            "webhooks": {
+                "scheduled": "http://localhost:8080/example/method/task/scheduled",
+                "failed": "http://localhost:8080/example/method/task/failed",
+                "succeeded": ["http://localhost:8080/example/method/task/succeeded", "http://localhost:8080/poof"]
+            }
         }
     },
     "inputs": {

@@ -653,14 +653,29 @@
                                         "name": "execute",
                                         "service": "shell-command"
                                     }
-                                ]
+                                ],
+                                "webhooks": {
+                                    "scheduled": "http://localhost:8080/example/method/task/scheduled",
+                                    "failed": "http://localhost:8080/example/method/task/failed",
+                                    "succeeded": ["http://localhost:8080/example/method/task/succeeded", "http://localhost:8080/celebrate"]
+                                }
                             }
+                        },
+                        "webhooks": {
+                            "scheduled": "http://localhost:8080/example/method/inner/scheduled",
+                            "failed": "http://localhost:8080/example/method/inner/failed",
+                            "succeeded": ["http://localhost:8080/example/method/inner/succeeded", "http://localhost:8080/celebrate"]
                         }
                     },
                     "name": "inner",
                     "service": "workflow"
                 }
-            ]
+            ],
+            "webhooks": {
+                "scheduled": "http://localhost:8080/example/method/task/scheduled",
+                "failed": "http://localhost:8080/example/method/task/failed",
+                "succeeded": ["http://localhost:8080/example/method/task/succeeded", "http://localhost:8080/celebrate"]
+            }
         }
     },
     "inputs": {
