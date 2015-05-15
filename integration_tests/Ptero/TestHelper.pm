@@ -86,6 +86,7 @@ sub _get_workflow_json {
         user => $ENV{USER},
         environment => to_json(get_environment()),
         workingDirectory => repo_relative_path('bin'),
+        webhook => '"'.$ENV{PTERO_WORKFLOW_SUBMIT_URL}.'"',
     };
 
     my $in_fh = IO::File->new("< $submit_file");

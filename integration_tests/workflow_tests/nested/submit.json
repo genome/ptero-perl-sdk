@@ -12,7 +12,15 @@
                         "environment": {{ environment }}
                     }
                 }
-            ]
+            ],
+            "webhooks" : {
+                "failed" : {{ webhook }},
+                "scheduled" : {{ webhook }},
+                "succeeded" : [
+                    {{ webhook }},
+                    {{ webhook }}
+                ]
+            }
         },
         "Inner": {
             "methods": [
@@ -29,7 +37,15 @@
                                             "commandLine": ["./ptero-test-command"],
                                             "user": "{{ user }}",
                                             "workingDirectory": "{{ workingDirectory }}",
-                                            "environment": {{ environment }}
+                                            "environment": {{ environment }},
+                                            "webhooks" : {
+                                                "failed" : {{ webhook }},
+                                                    "scheduled" : {{ webhook }},
+                                                    "succeeded" : [
+                                                    {{ webhook }},
+                                                    {{ webhook }}
+                                                ]
+                                            }
                                         }
                                     }
                                 ]
@@ -48,7 +64,15 @@
                                 "sourceProperty": "param",
                                 "destinationProperty": "inner_out_b"
                             }
-                        ]
+                        ],
+                        "webhooks" : {
+                            "failed" : {{ webhook }},
+                            "scheduled" : {{ webhook }},
+                            "succeeded" : [
+                            {{ webhook }},
+                            {{ webhook }}
+                            ]
+                        }
                     },
                     "service": "workflow"
                 }
@@ -108,6 +132,15 @@
             "destinationProperty": "outer_out_c_2"
         }
     ],
+
+    "webhooks" : {
+        "failed" : {{ webhook }},
+        "scheduled" : {{ webhook }},
+        "succeeded" : [
+        {{ webhook }},
+        {{ webhook }}
+        ]
+    },
 
     "inputs": {
         "outer_in_a": "ferret",
