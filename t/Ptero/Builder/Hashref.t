@@ -38,11 +38,26 @@ use Ptero::Builder::TestHelpers qw(
                                 commandLine => ["echo", "basic-workflow"],
                                 user => 'testuser',
                                 workingDirectory => '/test/working/directory',
+                                webhooks => {
+                                    scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
+                                    failed => 'http://localhost:8080/example/shellcmd/failed',
+                                    succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
+                                },
                             },
                             service => "shell-command",
                         },
                     ],
+                    webhooks => {
+                        scheduled => 'http://localhost:8080/example/task/scheduled',
+                        failed => 'http://localhost:8080/example/task/failed',
+                        succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+                    },
                 },
+            },
+            webhooks => {
+                scheduled => 'http://localhost:8080/example/workflow/scheduled',
+                failed => 'http://localhost:8080/example/workflow/failed',
+                succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
             },
         },
         service => "workflow",
@@ -81,12 +96,27 @@ use Ptero::Builder::TestHelpers qw(
                                 commandLine => ["echo", "basic-workflow"],
                                 user => 'testuser',
                                 workingDirectory => '/test/working/directory',
+                                webhooks => {
+                                    scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
+                                    failed => 'http://localhost:8080/example/shellcmd/failed',
+                                    succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
+                                },
                             },
                             service => "shell-command",
                         },
                     ],
                     parallelBy => "A_in",
+                    webhooks => {
+                        scheduled => 'http://localhost:8080/example/task/scheduled',
+                        failed => 'http://localhost:8080/example/task/failed',
+                        succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+                    },
                 },
+            },
+            webhooks => {
+                scheduled => 'http://localhost:8080/example/workflow/scheduled',
+                failed => 'http://localhost:8080/example/workflow/failed',
+                succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
             },
         },
         service => "workflow",
@@ -147,17 +177,42 @@ use Ptero::Builder::TestHelpers qw(
                                                     commandLine => ["echo", "basic-workflow"],
                                                     user => 'testuser',
                                                     workingDirectory => '/test/working/directory',
+                                                    webhooks => {
+                                                        scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
+                                                        failed => 'http://localhost:8080/example/shellcmd/failed',
+                                                        succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
+                                                    },
                                                 },
                                                 service => "shell-command",
                                             },
                                         ],
+                                        webhooks => {
+                                            scheduled => 'http://localhost:8080/example/task/scheduled',
+                                            failed => 'http://localhost:8080/example/task/failed',
+                                            succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+                                        },
                                     },
+                                },
+                                webhooks => {
+                                    scheduled => 'http://localhost:8080/example/workflow/scheduled',
+                                    failed => 'http://localhost:8080/example/workflow/failed',
+                                    succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
                                 },
                             },
                             service => "workflow",
                         },
                     ],
+                    webhooks => {
+                        scheduled => 'http://localhost:8080/example/task/scheduled',
+                        failed => 'http://localhost:8080/example/task/failed',
+                        succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+                    },
                 },
+            },
+            webhooks => {
+                scheduled => 'http://localhost:8080/example/outer/scheduled',
+                failed => 'http://localhost:8080/example/outer/failed',
+                succeeded => ['http://localhost:8080/example/outer/succeeded', 'http://localhost:8080/congrats']
             },
         },
         service => "workflow",

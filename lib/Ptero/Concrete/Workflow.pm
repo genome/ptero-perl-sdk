@@ -8,6 +8,7 @@ use Params::Validate qw(validate_pos :types);
 
 use Ptero::Concrete::DAG;
 
+with 'Ptero::Builder::Detail::HasWebhooks';
 with 'Ptero::Concrete::Detail::Roles::CanWriteReport';
 
 my $codec = JSON->new()->canonical([1]);
@@ -106,6 +107,10 @@ sub from_json {
         name => 'root',
     };
 
+    if (exists $hashref->{webhooks}) {
+        $dag_hashref->{parameters}->{webhooks} = $hashref->{webhooks};
+    }
+
     my $dag = Ptero::Concrete::DAG->from_hashref($dag_hashref);
 
     my $workflow_hashref = {
@@ -131,6 +136,10 @@ sub to_json {
         name => $self->name,
         status => $self->status,
     };
+
+    if ($self->dag->has_webhooks) {
+        $hashref->{webhooks} = $self->dag->webhooks
+    }
 
     return $codec->pretty->encode($hashref);
 }

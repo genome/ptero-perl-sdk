@@ -12,7 +12,9 @@ use Ptero::Builder::Detail::Method;
 use Ptero::Builder::Detail::Workflow::Block;
 use Ptero::Builder::Detail::Workflow::Converge;
 
-with 'Ptero::Builder::Detail::HasValidationErrors', 'Ptero::Builder::Detail::ConvertsToHashref';
+with 'Ptero::Builder::Detail::HasWebhooks';
+with 'Ptero::Builder::Detail::ConvertsToHashref';
+with 'Ptero::Builder::Detail::HasValidationErrors';
 
 has name => (
     is => 'rw',
@@ -163,6 +165,7 @@ sub to_hashref {
     my $hashref = {
         methods => [map {$_->to_hashref} @{$self->methods}],
     };
+
     if ($self->has_parallel_by) {
         $hashref->{parallelBy} = $self->parallel_by;
     }
