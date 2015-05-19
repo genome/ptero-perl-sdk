@@ -63,10 +63,10 @@ sub make_request {
     );
 
     my @request_args = ($method, $url);
-    if (defined $data ) {
+    if (defined $data) {
         my $content;
         if ($ENV{PTERO_PERL_SDK_PLAINTEXT_REQUESTS}) {
-            my $content = $_json_codec->encode($data);
+            $content = $_json_codec->encode($data);
         } else {
             gzip(\$_json_codec->encode($data), \$content);
             push @headers, 'Content-Encoding' => 'gzip';
