@@ -3,9 +3,11 @@ package Ptero::Concrete::Workflow;
 use strict;
 use warnings FATAL => 'all';
 use Params::Validate qw(validate validate_pos :types);
+use IO::String;
 
 use Ptero::Concrete::Workflow::Task;
 use Ptero::Concrete::Workflow::Execution;
+use Ptero::Concrete::Workflow::ReportWriter;
 
 sub new {
     my ($class, $hashref) = @_;
@@ -45,6 +47,29 @@ sub create_executions {
         my $parent = $self->{$parent_index}{$execution->{parent_id}};
         $parent->{executions}->{$execution->{color}} = $execution;
     }
+}
+
+sub view_as_string {
+    my $self = shift;
+
+    my $result;
+    my $handle = new IO::String($result);
+
+    my $report_writer = Ptero::Concrete::Workflow::ReportWriter->new($handle);
+    $report_writer->write_report($self);
+    return $result;
+}
+
+sub print_view {
+    my $self = shift;
+
+    my $handle = new IO::Handle;
+    STDOUT->autoflush(1);
+    $handle->fdopen(fileno(STDOUT), 'w');
+
+    my $report_writer = Ptero::Concrete::Workflow::ReportWriter->new($handle);
+    $report_writer->write_report($self);
+    return;
 }
 
 1;

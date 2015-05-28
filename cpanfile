@@ -14,6 +14,7 @@ requires "Set::Scalar";
 requires "Template";
 requires "DateTime::Format::Strptime";
 requires "Date::Calc";
+requires "IO::String";
 
 on 'test' => sub {
     requires "Test::Exception";
