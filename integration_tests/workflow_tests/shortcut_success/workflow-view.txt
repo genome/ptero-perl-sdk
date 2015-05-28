@@ -1,0 +1,4 @@
+           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
+       Workflow  succeeded                                              7jFfutcARLigHBJDerXQmA
+           Task  succeeded  2015-05-28T20:39:53      00:00:01           A 
+   ShellCommand  succeeded  2015-05-28T20:39:54      00:00:00           . shortcut

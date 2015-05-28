@@ -15,6 +15,7 @@ requires "Template";
 requires "DateTime::Format::Strptime";
 requires "Date::Calc";
 requires "IO::String";
+requires "Test::Files";
 
 on 'test' => sub {
     requires "Test::Exception";

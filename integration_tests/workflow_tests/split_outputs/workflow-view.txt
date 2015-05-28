@@ -1,0 +1,8 @@
+           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
+       Workflow  succeeded                                              gm2J3SCPTXGsS2_9j5GJuA
+           Task  succeeded  2015-05-28T20:40:00      00:00:01           A 
+   ShellCommand  succeeded  2015-05-28T20:40:00      00:00:00           . execute
+           Task  succeeded  2015-05-28T20:40:01      00:00:01           B 
+   ShellCommand  succeeded  2015-05-28T20:40:02      00:00:00           . execute
+           Task  succeeded  2015-05-28T20:40:01      00:00:01           C 
+   ShellCommand  succeeded  2015-05-28T20:40:02      00:00:00           . execute

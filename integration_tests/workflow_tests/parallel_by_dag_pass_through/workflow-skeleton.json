@@ -1,0 +1,46 @@
+{
+   "id" : 51,
+   "name" : "iXDuo3dET6SlLMMQlCvJ7A",
+   "rootTaskId" : 417,
+   "status" : "succeeded",
+   "tasks" : {
+      "A" : {
+         "id" : 419,
+         "methods" : [
+            {
+               "id" : 247,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 1
+      },
+      "Inner" : {
+         "id" : 421,
+         "methods" : [
+            {
+               "id" : 248,
+               "name" : "some_workflow",
+               "parameters" : {
+                  "tasks" : {
+                     "michael" : {
+                        "id" : 424,
+                        "methods" : [
+                           {
+                              "id" : 249,
+                              "name" : "execute",
+                              "service" : "shell-command"
+                           }
+                        ],
+                        "topologicalIndex" : 0
+                     }
+                  }
+               },
+               "service" : "workflow"
+            }
+         ],
+         "parallelBy" : "parallel_param_in",
+         "topologicalIndex" : 0
+      }
+   }
+}

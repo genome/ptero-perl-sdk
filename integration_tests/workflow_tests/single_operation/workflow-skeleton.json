@@ -1,0 +1,19 @@
+{
+   "id" : 58,
+   "name" : "dzp2a3EIQMmjO3R5jzvY-w",
+   "rootTaskId" : 469,
+   "status" : "succeeded",
+   "tasks" : {
+      "A" : {
+         "id" : 471,
+         "methods" : [
+            {
+               "id" : 269,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 0
+      }
+   }
+}

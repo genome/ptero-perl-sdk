@@ -1,0 +1,13 @@
+           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
+       Workflow  succeeded                                              1wN1h4AtTwyUryBum6Zqrg
+           Task  succeeded  2015-05-28T20:39:00      00:00:07           A parallel-by: in_outer_parallel
+            DAG  succeeded  2015-05-28T20:39:01      00:00:06  0        . inner
+           Task  succeeded  2015-05-28T20:39:01      00:00:05  0        . . A parallel-by: kitten_name
+   ShellCommand  succeeded  2015-05-28T20:39:02      00:00:03  0, 1     . . . execute
+   ShellCommand  succeeded  2015-05-28T20:39:05      00:00:01  0, 0     . . . execute
+   ShellCommand  succeeded  2015-05-28T20:39:05      00:00:00  0, 2     . . . execute
+            DAG  succeeded  2015-05-28T20:39:01      00:00:06  1        . inner
+           Task  succeeded  2015-05-28T20:39:01      00:00:05  1        . . A parallel-by: kitten_name
+   ShellCommand  succeeded  2015-05-28T20:39:06      00:00:00  1, 2     . . . execute
+   ShellCommand  succeeded  2015-05-28T20:39:06      00:00:00  1, 0     . . . execute
+   ShellCommand  succeeded  2015-05-28T20:39:05      00:00:00  1, 1     . . . execute

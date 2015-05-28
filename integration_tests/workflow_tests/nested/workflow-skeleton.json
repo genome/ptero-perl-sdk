@@ -1,0 +1,56 @@
+{
+   "id" : 46,
+   "name" : "G1KjUvUsTHuMie3CT1W2sw",
+   "rootTaskId" : 367,
+   "status" : "succeeded",
+   "tasks" : {
+      "A" : {
+         "id" : 369,
+         "methods" : [
+            {
+               "id" : 229,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 0
+      },
+      "C" : {
+         "id" : 370,
+         "methods" : [
+            {
+               "id" : 230,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 2
+      },
+      "Inner" : {
+         "id" : 373,
+         "methods" : [
+            {
+               "id" : 231,
+               "name" : "some_workflow",
+               "parameters" : {
+                  "tasks" : {
+                     "B" : {
+                        "id" : 375,
+                        "methods" : [
+                           {
+                              "id" : 232,
+                              "name" : "execute",
+                              "service" : "shell-command"
+                           }
+                        ],
+                        "topologicalIndex" : 0
+                     }
+                  }
+               },
+               "service" : "workflow"
+            }
+         ],
+         "topologicalIndex" : 1
+      }
+   }
+}

@@ -1,0 +1,35 @@
+{
+   "id" : 52,
+   "name" : "EM1n0seaR36F_IdqgiDhIQ",
+   "rootTaskId" : 427,
+   "status" : "succeeded",
+   "tasks" : {
+      "Inner" : {
+         "id" : 430,
+         "methods" : [
+            {
+               "id" : 251,
+               "name" : "some_workflow",
+               "parameters" : {
+                  "tasks" : {
+                     "A" : {
+                        "id" : 432,
+                        "methods" : [
+                           {
+                              "id" : 252,
+                              "name" : "execute",
+                              "service" : "shell-command"
+                           }
+                        ],
+                        "topologicalIndex" : 0
+                     }
+                  }
+               },
+               "service" : "workflow"
+            }
+         ],
+         "parallelBy" : "parallel_param_in",
+         "topologicalIndex" : 0
+      }
+   }
+}
