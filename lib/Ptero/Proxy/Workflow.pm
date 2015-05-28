@@ -50,9 +50,17 @@ sub BUILDARGS {
 sub concrete_workflow {
     my $self = shift;
 
-    my $response = get($self->report_url('workflow-details'));
-    my $json = $response->decoded_content(raise_error => 1);
-    return Ptero::Concrete::Workflow->from_json($json, $self->url);
+    my $hashref = make_request_and_decode_repsonse(method => 'GET',
+        url => $self->report_url('workflow-skeleton'));
+
+    my $concrete_workflow = Ptero::Concrete::Workflow->new($hashref);
+    $concrete_workflow->register_components();
+
+    my $data = make_request_and_decode_repsonse(method => 'GET',
+        url => $self->report_url('workflow-executions'));
+    $concrete_workflow->create_executions($data->{executions});
+
+    return $concrete_workflow;
 }
 
 sub cancel {
