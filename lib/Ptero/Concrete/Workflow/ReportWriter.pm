@@ -22,6 +22,7 @@ sub write_report {
     my $self = shift;
     my $workflow = shift;
 
+    $self->write_header;
     $self->report_on_workflow($workflow);
 
     my @sorted_tasks = sort {
@@ -32,10 +33,8 @@ sub write_report {
     }
 }
 
-sub report_on_workflow {
+sub write_header {
     my $self = shift;
-    my $workflow = shift;
-
     my $handle = $self->{handle};
 
     printf $handle $FORMAT_LINE,
@@ -46,6 +45,16 @@ sub report_on_workflow {
         'P-INDEX',
         '',
         'NAME';
+
+    return
+}
+
+
+sub report_on_workflow {
+    my $self = shift;
+    my $workflow = shift;
+
+    my $handle = $self->{handle};
 
     printf $handle $FORMAT_LINE,
         'Workflow',
