@@ -1,5 +1,5 @@
            TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded                                              HIYRPvKwQyKhRcO_metlQA
+       Workflow  succeeded  2015-05-28T20:39:48      00:00:03           HIYRPvKwQyKhRcO_metlQA
            Task  succeeded  2015-05-28T20:39:49      00:00:01           A 
    ShellCommand     failed  2015-05-28T20:39:50      00:00:00           . shortcut
    ShellCommand  succeeded  2015-05-28T20:39:50      00:00:00           . execute

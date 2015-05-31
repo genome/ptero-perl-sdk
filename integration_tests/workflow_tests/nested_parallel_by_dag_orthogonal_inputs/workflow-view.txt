@@ -1,5 +1,5 @@
            TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded                                              wzzqRbAtQpe77mRJQrtJzg
+       Workflow  succeeded  2015-05-28T20:38:37      00:00:12           wzzqRbAtQpe77mRJQrtJzg
            Task  succeeded  2015-05-28T20:38:39      00:00:09           A parallel-by: in_outer_parallel
             DAG  succeeded  2015-05-28T20:38:40      00:00:08  0        . inner
            Task  succeeded  2015-05-28T20:38:40      00:00:08  0        . . Inner parallel-by: kitten_name_in

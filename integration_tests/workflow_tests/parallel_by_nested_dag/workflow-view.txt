@@ -1,5 +1,5 @@
            TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded                                              EM1n0seaR36F_IdqgiDhIQ
+       Workflow  succeeded  2015-05-28T20:39:23      00:00:06           EM1n0seaR36F_IdqgiDhIQ
            Task  succeeded  2015-05-28T20:39:24      00:00:04           Inner parallel-by: parallel_param_in
             DAG  succeeded  2015-05-28T20:39:25      00:00:03  0        . some_workflow
            Task  succeeded  2015-05-28T20:39:25      00:00:02  0        . . A 

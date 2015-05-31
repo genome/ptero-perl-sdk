@@ -1,5 +1,5 @@
            TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded                                              ECsuTiLYTdGd1ZLB5EkbsQ
+       Workflow  succeeded  2015-05-28T20:38:25      00:00:05           ECsuTiLYTdGd1ZLB5EkbsQ
            Task  succeeded  2015-05-28T20:38:26      00:00:02           A 
    ShellCommand  succeeded  2015-05-28T20:38:27      00:00:01           . execute
            Task  succeeded  2015-05-28T20:38:26      00:00:02           B 
