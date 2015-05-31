@@ -23,7 +23,7 @@ sub write_report {
     my $workflow = shift;
 
     $self->write_header;
-    $self->report_on_workflow($workflow);
+    $self->report_on_workflow($workflow, 0, 0);
 }
 
 sub write_header {
@@ -42,21 +42,31 @@ sub write_header {
     return
 }
 
-
 sub report_on_workflow {
-    my $self = shift;
-    my $workflow = shift;
-
+    my ($self, $workflow, $indent, $color) = @_;
     my $handle = $self->{handle};
 
-    printf $handle $FORMAT_LINE,
-        'Workflow',
-        $workflow->{status},
-        '',
-        '',
-        '',
-        '',
-        $workflow->{name};
+    my $execution = $workflow->{executions}->{$color};
+    if ($execution) {
+        printf $handle $FORMAT_LINE,
+            'Workflow',
+            $execution->{status},
+            $execution->datetime_started,
+            $execution->duration,
+            join(', ', $execution->parallel_indexes),
+            $INDENTATION_STR x $indent,
+            $workflow->{name};
+    } elsif (scalar(keys %{$workflow->{executions}}) == 0) {
+        printf $handle $FORMAT_LINE,
+            'Workflow',
+            $workflow->{status},
+            '',
+            '',
+            '',
+            $INDENTATION_STR x $indent,
+            $workflow->{name};
+    }
+
     my @sorted_tasks = sort {
         $a->{topological_index} <=> $b->{topological_index}}
         (values %{$workflow->{tasks}});
