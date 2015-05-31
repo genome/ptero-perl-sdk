@@ -24,13 +24,6 @@ sub write_report {
 
     $self->write_header;
     $self->report_on_workflow($workflow);
-
-    my @sorted_tasks = sort {
-        $a->{topological_index} <=> $b->{topological_index}}
-        (values %{$workflow->{tasks}});
-    for my $task (@sorted_tasks) {
-        $self->report_on_task($task->{name}, $task, 0, 0);
-    }
 }
 
 sub write_header {
@@ -64,6 +57,12 @@ sub report_on_workflow {
         '',
         '',
         $workflow->{name};
+    my @sorted_tasks = sort {
+        $a->{topological_index} <=> $b->{topological_index}}
+        (values %{$workflow->{tasks}});
+    for my $task (@sorted_tasks) {
+        $self->report_on_task($task->{name}, $task, 0, 0);
+    }
 
     return;
 }
