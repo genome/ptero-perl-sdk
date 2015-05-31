@@ -97,6 +97,15 @@ sub report_on_task {
             join(', ', $execution->parallel_indexes),
             $INDENTATION_STR x $indent,
             $task_name . ' ' . $parallel_by_str;
+    } elsif (scalar(keys %{$task->{executions}}) == 0) {
+        printf $handle $FORMAT_LINE,
+            'Task',
+            '',
+            '',
+            '',
+            '',
+            $INDENTATION_STR x $indent,
+            $task_name . ' ' . $parallel_by_str;
     }
 
     for my $method (@{$task->{methods}}) {
@@ -120,17 +129,28 @@ sub report_on_method {
     my ($self, $method, $indent, $color) = @_;
     my $handle = $self->{handle};
 
-    return unless exists $method->{executions}->{$color};
-
-    my $execution = $method->{executions}->{$color};
-    printf $handle $FORMAT_LINE,
-        $DISPLAY_NAMES->{$method->{service}},
-        $execution->{status},
-        $execution->datetime_started,
-        $execution->duration,
-        join(', ', $execution->parallel_indexes),
-        $INDENTATION_STR x $indent,
-        $method->{name};
+    if ($method->{executions}->{$color}) {
+        my $execution = $method->{executions}->{$color};
+        printf $handle $FORMAT_LINE,
+            $DISPLAY_NAMES->{$method->{service}},
+            $execution->{status},
+            $execution->datetime_started,
+            $execution->duration,
+            join(', ', $execution->parallel_indexes),
+            $INDENTATION_STR x $indent,
+            $method->{name};
+    } elsif (scalar(keys %{$method->{executions}}) == 0) {
+        printf $handle $FORMAT_LINE,
+            $DISPLAY_NAMES->{$method->{service}},
+            '',
+            '',
+            '',
+            '',
+            $INDENTATION_STR x $indent,
+            $method->{name};
+    } else {
+        return;
+    }
 
     my @sorted_tasks = sort {
         $a->{topological_index} <=> $b->{topological_index}}
