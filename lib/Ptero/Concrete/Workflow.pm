@@ -20,10 +20,9 @@ sub new {
     $self->{method_index} = {};
     $self->{task_index} = {};
 
-    my $task_data = $hashref->{tasks};
-    for my $task_name (keys %$task_data) {
-        $self->{tasks}{$task_name} = Ptero::Concrete::Workflow::Task->new(
-            $task_data->{$task_name}, $task_name);
+    while (my ($key, $val) = each %{$hashref->{tasks}}) {
+        $self->{tasks}{$key} = Ptero::Concrete::Workflow::Task->new(
+            $val, $key);
     }
 
     return bless $self, $class;
