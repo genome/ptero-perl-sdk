@@ -42,9 +42,16 @@ sub create_executions {
 
     for my $hashref (@{$execution_hashrefs}) {
         my $execution = Ptero::Concrete::Workflow::Execution->new($hashref);
-        my $parent_index = sprintf("%s_index", $execution->{parent_type});
-        my $parent = $self->{$parent_index}{$execution->{parent_id}};
-        $parent->{executions}->{$execution->{color}} = $execution;
+
+        if ($execution->{parent_id} == $self->{root_task_id} && $execution->{parent_type} eq 'task') {
+            $self->{executions}{$execution->{color}} = $execution
+        } else {
+            my $parent_index = sprintf("%s_index", $execution->{parent_type});
+            my $parent = $self->{$parent_index}{$execution->{parent_id}};
+            next unless $parent;
+            $parent->{executions}->{$execution->{color}} = $execution;
+        }
+
     }
 }
 
