@@ -1,0 +1,14 @@
+           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
+       Workflow  succeeded  2015-05-28T20:39:15      00:00:07           iXDuo3dET6SlLMMQlCvJ7A
+           Task  succeeded  2015-05-28T20:39:16      00:00:04           Inner parallel-by: parallel_param_in
+            DAG  succeeded  2015-05-28T20:39:17      00:00:03  0        . some_workflow
+           Task  succeeded  2015-05-28T20:39:17      00:00:03  0        . . michael 
+   ShellCommand  succeeded  2015-05-28T20:39:19      00:00:00  0        . . . execute
+            DAG  succeeded  2015-05-28T20:39:17      00:00:03  2        . some_workflow
+           Task  succeeded  2015-05-28T20:39:17      00:00:03  2        . . michael 
+   ShellCommand  succeeded  2015-05-28T20:39:19      00:00:00  2        . . . execute
+            DAG  succeeded  2015-05-28T20:39:17      00:00:03  1        . some_workflow
+           Task  succeeded  2015-05-28T20:39:17      00:00:03  1        . . michael 
+   ShellCommand  succeeded  2015-05-28T20:39:19      00:00:01  1        . . . execute
+           Task  succeeded  2015-05-28T20:39:20      00:00:01           A 
+   ShellCommand  succeeded  2015-05-28T20:39:21      00:00:00           . execute

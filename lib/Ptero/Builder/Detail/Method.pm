@@ -7,8 +7,8 @@ use Data::Dump qw();
 use Set::Scalar;
 use Params::Validate qw(validate_pos :types);
 
-with 'Ptero::Builder::Detail::HasValidationErrors';
 with 'Ptero::Builder::Detail::ConvertsToHashref';
+with 'Ptero::Builder::Detail::HasValidationErrors';
 
 requires 'known_input_properties';
 requires 'has_possible_output_property';

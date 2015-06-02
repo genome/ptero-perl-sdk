@@ -5,7 +5,7 @@ use warnings FATAL => 'all';
 
 use Params::Validate qw(validate_pos :types);
 use Ptero::HTTP qw(get make_request_and_decode_repsonse);
-use Ptero::Concrete::Detail::Workflow::Execution;
+use Ptero::Concrete::Workflow::Execution;
 use Ptero::Statuses qw(is_terminal is_success);
 
 has url => (
@@ -16,7 +16,7 @@ has url => (
 
 has concrete_execution => (
     is => 'rw',
-    isa => 'Ptero::Concrete::Detail::Workflow::Execution',
+    isa => 'Ptero::Concrete::Workflow::Execution',
     required => 1
 );
 
@@ -43,7 +43,7 @@ sub BUILDARGS {
         }
         my $execution_data = make_request_and_decode_repsonse(method => 'GET',
             url => $args{url});
-        $args{concrete_execution} = Ptero::Concrete::Detail::Workflow::Execution->from_hashref(
+        $args{concrete_execution} = Ptero::Concrete::Workflow::Execution->new(
             $execution_data);
     }
     return \%args;
@@ -51,17 +51,17 @@ sub BUILDARGS {
 
 sub name {
     my $self = shift;
-    return $self->concrete_execution->name;
+    return $self->concrete_execution->{name};
 }
 
 sub inputs {
     my $self = shift;
-    return $self->concrete_execution->inputs;
+    return $self->concrete_execution->{inputs};
 }
 
 sub data {
     my $self = shift;
-    return $self->concrete_execution->data;
+    return $self->concrete_execution->{data};
 }
 
 sub update_data {
@@ -74,7 +74,7 @@ sub update_data {
     my $new_execution_data = make_request_and_decode_repsonse(method => 'PATCH',
         url => $self->url, data => {data => \%patch_data});
 
-    $self->concrete_execution(Ptero::Concrete::Detail::Workflow::Execution->from_hashref(
+    $self->concrete_execution(Ptero::Concrete::Workflow::Execution->new(
         $new_execution_data));
 
     return;
@@ -86,7 +86,7 @@ sub set_outputs {
     my $new_execution_data = make_request_and_decode_repsonse(method => 'PATCH',
         url => $self->url, data => {outputs => $outputs});
 
-    $self->concrete_execution(Ptero::Concrete::Detail::Workflow::Execution->from_hashref(
+    $self->concrete_execution(Ptero::Concrete::Workflow::Execution->new(
         $new_execution_data));
 
     return;

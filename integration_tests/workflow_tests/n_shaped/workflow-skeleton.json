@@ -1,0 +1,52 @@
+{
+   "id" : 45,
+   "name" : "ECsuTiLYTdGd1ZLB5EkbsQ",
+   "rootTaskId" : 358,
+   "status" : "succeeded",
+   "tasks" : {
+      "A" : {
+         "id" : 361,
+         "methods" : [
+            {
+               "id" : 224,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 0
+      },
+      "B" : {
+         "id" : 363,
+         "methods" : [
+            {
+               "id" : 226,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 1
+      },
+      "C" : {
+         "id" : 362,
+         "methods" : [
+            {
+               "id" : 225,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 2
+      },
+      "D" : {
+         "id" : 364,
+         "methods" : [
+            {
+               "id" : 227,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 3
+      }
+   }
+}

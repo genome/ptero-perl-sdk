@@ -4,6 +4,8 @@ use strict;
 use warnings FATAL => 'all';
 
 use Ptero::Proxy::Workflow;
+use Ptero::Concrete::Workflow::ReportWriter;
+
 use Log::Log4perl qw(:easy);
 
 if (scalar @ARGV < 1) {
@@ -14,22 +16,5 @@ if (scalar @ARGV < 1) {
 
 my $url = shift @ARGV;
 
-my $workflow_proxy = Ptero::Proxy::Workflow->new($url);
-my $concrete_workflow = $workflow_proxy->concrete_workflow;
-
-write_report($concrete_workflow);
-
-
-
-sub write_report {
-    my $concrete_workflow = shift;
-
-    my $handle = new IO::Handle;
-    STDOUT->autoflush(1);
-    $handle->fdopen(fileno(STDOUT), 'w');
-
-    $concrete_workflow->write_report(
-        handle => $handle,
-        @ARGV,
-    );
-}
+my $wf_proxy = Ptero::Proxy::Workflow->new($url);
+$wf_proxy->concrete_workflow->print_view;

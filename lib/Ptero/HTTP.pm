@@ -8,6 +8,7 @@ use HTTP::Request qw();
 use JSON qw();
 use LWP::UserAgent::Determined qw();
 use Params::Validate qw(validate_pos :types);
+use IO::Compress::Gzip qw(gzip);
 
 use Ptero;
 use Log::Log4perl qw();
@@ -55,12 +56,25 @@ sub decode_response {
 sub make_request {
     my ($method, $url, $data) = validate_pos(@_, 1, 1, 0);
 
-    my @request_args = ($method, $url,[
+    my @headers = (
         'Accept' => 'application/json',
+        'Accept-Encoding' => 'gzip',
         'Content-Type' => 'application/json',
-    ]);
+    );
+
+    my @request_args = ($method, $url);
     if (defined $data) {
-        push @request_args, $_json_codec->encode($data);
+        my $content;
+        if ($ENV{PTERO_PERL_SDK_PLAINTEXT_REQUESTS}) {
+            $content = $_json_codec->encode($data);
+        } else {
+            gzip(\$_json_codec->encode($data), \$content);
+            push @headers, 'Content-Encoding' => 'gzip';
+        }
+        push @headers, 'Content-Length' => length $content;
+        push @request_args, \@headers, $content;
+    } else {
+        push @request_args, \@headers;
     }
 
     my $req = HTTP::Request->new(@request_args);

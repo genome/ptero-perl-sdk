@@ -49,10 +49,29 @@ sub BUILDARGS {
 
 sub concrete_workflow {
     my $self = shift;
+    return $self->_concrete_workflow($self->workflow_skeleton, $self->workflow_executions);
+}
 
-    my $response = get($self->report_url('workflow-details'));
-    my $json = $response->decoded_content(raise_error => 1);
-    return Ptero::Concrete::Workflow->from_json($json, $self->url);
+sub _concrete_workflow {
+    my ($self, $skeleton_hashref, $executions_hashref) = @_;
+
+    my $concrete_workflow = Ptero::Concrete::Workflow->new($skeleton_hashref);
+
+    $concrete_workflow->create_executions($executions_hashref->{executions});
+
+    return $concrete_workflow;
+}
+
+sub workflow_skeleton {
+    my $self = shift;
+    return make_request_and_decode_repsonse(method => 'GET',
+        url => $self->report_url('workflow-skeleton'));
+}
+
+sub workflow_executions {
+    my $self = shift;
+    return make_request_and_decode_repsonse(method => 'GET',
+        url => $self->report_url('workflow-executions'));
 }
 
 sub cancel {

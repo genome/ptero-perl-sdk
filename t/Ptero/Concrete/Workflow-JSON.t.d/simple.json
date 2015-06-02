@@ -86,17 +86,32 @@
                         "user": "testuser",
                         "commandLine": [
                             "cat"
-                        ]
+                        ],
+                        "webhooks": {
+                            "scheduled": "http://localhost:8080/example/method/shell-command/scheduled",
+                            "failed": "http://localhost:8080/example/method/shell-command/failed",
+                            "succeeded": ["http://localhost:8080/example/method/shell-command/succeeded", "http://localhost:8080/celebrate"]
+                        }
                     },
                     "name": "execute",
                     "service": "shell-command"
                 }
-            ]
+            ],
+            "webhooks": {
+                "scheduled": "http://localhost:8080/example/method/task/scheduled",
+                "failed": "http://localhost:8080/example/method/task/failed",
+                "succeeded": ["http://localhost:8080/example/method/task/succeeded", "http://localhost:8080/poof"]
+            }
         }
     },
     "inputs": {
         "cat": "Halley"
     },
     "name": "good work today!",
-    "status": "succeeded"
+    "status": "succeeded",
+    "webhooks": {
+        "scheduled": "http://localhost:8080/example/method/workflow/scheduled",
+        "failed": "http://localhost:8080/example/method/workflow/failed",
+        "succeeded": ["http://localhost:8080/example/method/workflow/succeeded", "http://localhost:8080/celebrate"]
+    }
 }

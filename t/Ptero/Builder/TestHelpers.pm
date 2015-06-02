@@ -14,6 +14,7 @@ our @EXPORT_OK = qw(
 );
 
 sub echo_test { shift }
+sub fail_test { die "on purpose"; }
 sub sleep_echo_test { sleep(2); return shift }
 sub sleep_fail_test { sleep(2); die "Bad news"; }
 
@@ -26,6 +27,11 @@ sub build_nested_workflow {
         methods => [
             build_basic_workflow('inner'),
         ],
+        webhooks => {
+            scheduled => 'http://localhost:8080/example/task/scheduled',
+            failed => 'http://localhost:8080/example/task/failed',
+            succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+        },
     );
     $workflow->connect_input(
         source_property => 'A_in',
@@ -37,6 +43,11 @@ sub build_nested_workflow {
         source_property => 'A_out',
         destination_property => 'A_out',
     );
+    $workflow->webhooks( {
+        scheduled => 'http://localhost:8080/example/outer/scheduled',
+        failed => 'http://localhost:8080/example/outer/failed',
+        succeeded => ['http://localhost:8080/example/outer/succeeded', 'http://localhost:8080/congrats']
+    } );
     return $workflow;
 }
 
@@ -53,9 +64,19 @@ sub build_basic_workflow {
                     commandLine => ['echo', 'basic-workflow'],
                     user => 'testuser',
                     workingDirectory => '/test/working/directory',
+                    webhooks => {
+                        scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
+                        failed => 'http://localhost:8080/example/shellcmd/failed',
+                        succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
+                    }
                 },
             ),
         ],
+        webhooks => {
+            scheduled => 'http://localhost:8080/example/task/scheduled',
+            failed => 'http://localhost:8080/example/task/failed',
+            succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
+        },
     );
     $workflow->connect_input(
         source_property => 'A_in',
@@ -67,6 +88,11 @@ sub build_basic_workflow {
         source_property => 'A_out',
         destination_property => 'A_out',
     );
+    $workflow->webhooks( {
+        scheduled => 'http://localhost:8080/example/workflow/scheduled',
+        failed => 'http://localhost:8080/example/workflow/failed',
+        succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
+    } );
     return $workflow;
 }
 

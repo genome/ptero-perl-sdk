@@ -13,7 +13,9 @@ use Ptero::Builder::Detail::Workflow::Link;
 use Ptero::Builder::Detail::Workflow::Task;
 use Ptero::HTTP;
 
-with 'Ptero::Builder::Detail::Method', 'Ptero::Builder::Detail::Submittable';
+with 'Ptero::Builder::Detail::HasWebhooksInParameters';
+with 'Ptero::Builder::Detail::Method';
+with 'Ptero::Builder::Detail::Submittable';
 
 my $codec = JSON->new()->canonical([1]);
 
@@ -328,8 +330,8 @@ sub _multiple_link_target_errors {
         push @{$destinations{$destination}}, $link;
     }
 
-    for my $destination (keys %destinations) {
-        my @links = @{$destinations{$destination}};
+    while (my ($key, $links) = each %destinations) {
+        my @links = @$links;
 
         if (@links > 1) {
             push @errors, sprintf(
@@ -404,7 +406,7 @@ after 'validate_hashref' => sub {
     my %parameters = %{$hashref->{parameters}};
     for my $key (qw(tasks links)) {
         unless (exists $parameters{$key}) {
-            die sprintf("Workflow dashref missing required parameter (%s): %s",
+            die sprintf("Workflow hashref missing required parameter (%s): %s",
                 $key, Data::Dump::pp($hashref));
         }
     }
@@ -428,6 +430,10 @@ sub from_json {
     $hashref->{name} = $name;
     $hashref->{parameters}->{tasks} = delete $hashref->{tasks};
     $hashref->{parameters}->{links} = delete $hashref->{links};
+
+    if (exists $hashref->{webhooks}) {
+        $hashref->{parameters}->{webhooks} = delete $hashref->{webhooks};
+    }
     $hashref->{service} = 'workflow';
 
     return $class->from_hashref($hashref);
@@ -443,6 +449,10 @@ sub submission_data {
         tasks => $self_hashref->{parameters}->{tasks},
         links => $self_hashref->{parameters}->{links},
     };
+
+    if (exists $self_hashref->{parameters}->{webhooks}) {
+        $hashref->{webhooks} = $self_hashref->{parameters}->{webhooks};
+    }
 
     if (defined $inputs) {
         $hashref->{inputs} = $inputs;

@@ -68,6 +68,14 @@
                                  ],
                                  "environment" : {},
                                  "user" : "testuser",
+                                 "webhooks" : {
+                                    "failed" : "http://localhost:8080/example/shellcmd/failed",
+                                    "scheduled" : "http://localhost:8080/example/shellcmd/scheduled",
+                                    "succeeded" : [
+                                       "http://localhost:8080/example/shellcmd/succeeded",
+                                       "http://localhost:8080/yay"
+                                    ]
+                                 },
                                  "workingDirectory" : "/tmp"
                               },
                               "service" : "shell-command"
