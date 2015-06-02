@@ -3,7 +3,7 @@ package Ptero::TestHelper;
 use strict;
 use warnings FATAL => 'all';
 use Test::More;
-use Test::Files;
+use Text::Diff;
 use JSON qw(to_json from_json);
 use File::Slurp qw(read_file write_file);
 use IO::File;
@@ -57,7 +57,9 @@ sub compare_workflow_view {
     if ($ENV{PTERO_REGENERATE_TEST_DATA_OUTPUTS}) {
         write_file($expected_file, $view);
     }
-    file_ok($expected_file, $view, "View looks as expected");
+
+    my $diff = diff($expected_file, \$view, { STYLE => "Context" });
+    ok(!$diff, 'View looks as expected') || printf "Found differences:\n%s", $diff;
 }
 
 sub get_workflow_skeleton {
