@@ -1,0 +1,10 @@
+           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
+       Workflow  succeeded  2015-05-28T20:39:35      00:00:07           sxu_SGVmQbGzvVnVbJwoNw
+           Task  succeeded  2015-05-28T20:39:36      00:00:03           A parallel-by: parallel_param
+   ShellCommand  succeeded  2015-05-28T20:39:37      00:00:01  0        . execute
+   ShellCommand  succeeded  2015-05-28T20:39:38      00:00:00  2        . execute
+   ShellCommand  succeeded  2015-05-28T20:39:38      00:00:01  1        . execute
+           Task  succeeded  2015-05-28T20:39:39      00:00:03           B parallel-by: parallel_param
+   ShellCommand  succeeded  2015-05-28T20:39:41      00:00:00  2        . execute
+   ShellCommand  succeeded  2015-05-28T20:39:41      00:00:00  0        . execute
+   ShellCommand  succeeded  2015-05-28T20:39:41      00:00:00  1        . execute

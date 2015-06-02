@@ -1,0 +1,36 @@
+{
+   "id" : 48,
+   "name" : "kUprIXsmRoqD8m6FtKerWA",
+   "rootTaskId" : 390,
+   "status" : "succeeded",
+   "tasks" : {
+      "A" : {
+         "id" : 392,
+         "methods" : [
+            {
+               "id" : 238,
+               "name" : "inner",
+               "parameters" : {
+                  "tasks" : {
+                     "A" : {
+                        "id" : 395,
+                        "methods" : [
+                           {
+                              "id" : 239,
+                              "name" : "execute",
+                              "service" : "shell-command"
+                           }
+                        ],
+                        "parallelBy" : "name",
+                        "topologicalIndex" : 0
+                     }
+                  }
+               },
+               "service" : "workflow"
+            }
+         ],
+         "parallelBy" : "in_matrix",
+         "topologicalIndex" : 0
+      }
+   }
+}

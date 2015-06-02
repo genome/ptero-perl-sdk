@@ -1,0 +1,20 @@
+{
+   "id" : 53,
+   "name" : "YciZKHM1SC6gkZXLddQ8pA",
+   "rootTaskId" : 436,
+   "status" : "succeeded",
+   "tasks" : {
+      "A" : {
+         "id" : 438,
+         "methods" : [
+            {
+               "id" : 254,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "parallelBy" : "parallel_param",
+         "topologicalIndex" : 0
+      }
+   }
+}

@@ -1,149 +1,83 @@
 package Ptero::Concrete::Workflow;
 
-use Moose;
+use strict;
 use warnings FATAL => 'all';
+use Params::Validate qw(validate validate_pos :types);
+use IO::String;
 
-use JSON qw();
-use Params::Validate qw(validate_pos :types);
+use Ptero::Concrete::Workflow::Task;
+use Ptero::Concrete::Workflow::Execution;
+use Ptero::Concrete::Workflow::ReportWriter;
 
-use Ptero::Concrete::DAG;
+sub new {
+    my ($class, $hashref) = @_;
 
-with 'Ptero::Builder::Detail::HasWebhooks';
-with 'Ptero::Concrete::Detail::Roles::CanWriteReport';
+    my $self = bless {}, $class;
+    $self->{id} = $hashref->{id};
+    $self->{root_task_id} = $hashref->{rootTaskId};
+    $self->{name} = $hashref->{name};
+    $self->{status} = $hashref->{status};
+    $self->{method_index} = {};
+    $self->{task_index} = {};
 
-my $codec = JSON->new()->canonical([1]);
+    while (my ($key, $val) = each %{$hashref->{tasks}}) {
+        $self->{tasks}{$key} = Ptero::Concrete::Workflow::Task->new(
+            $val, $key);
+    }
 
-has 'dag' => (
-    is => 'ro',
-    isa => 'Ptero::Concrete::DAG',
-);
+    $self->register_components();
 
-has 'inputs' => (
-    is => 'ro',
-    isa => 'HashRef',
-);
-
-has 'name' => (
-    is => 'ro',
-    isa => 'Str',
-);
-
-has 'status' => (
-    is => 'ro',
-    isa => 'Str',
-);
-
-has 'url' => (
-    is => 'ro',
-    isa => 'Str',
-);
-
-sub write_report {
-    my $self = shift;
-    my %p = Params::Validate::validate(@_, {
-        handle => 1,
-        indent => {default => 0},
-    });
-
-    $self->_write_report($p{handle}, $p{indent}, 0);
+    return $self;
 }
 
-sub _write_report {
+sub register_components {
     my $self = shift;
-    my ($handle, $indent, $color) = $self->params_validator(@_);
 
-    printf $handle $self->format_line,
-        'TYPE',
-        'STATUS',
-        'STARTED',
-        'DURATION',
-        'P-INDEX',
-        '',
-        'NAME';
+    for my $task (values %{$self->{tasks}}) {
+        $task->register_with_workflow($self);
+    }
+    return;
+}
 
-    printf $handle $self->format_line,
-        'Workflow',
-        $self->status,
-        '',
-        '',
-        '',
-        $self->indentation_str x $indent,
-        $self->name;
+sub create_executions {
+    my ($self, $execution_hashrefs) = @_;
 
-    for my $name ($self->dag->sorted_tasks) {
-        my $task = $self->dag->task_named($name);
-        $task->_write_report($handle, $indent+1, $color);
+    for my $hashref (@{$execution_hashrefs}) {
+        my $execution = Ptero::Concrete::Workflow::Execution->new($hashref);
+
+        if ($execution->{parent_id} == $self->{root_task_id} && $execution->{parent_type} eq 'task') {
+            $self->{executions}{$execution->{color}} = $execution
+        } else {
+            my $parent_index = sprintf("%s_index", $execution->{parent_type});
+            my $parent = $self->{$parent_index}{$execution->{parent_id}};
+            next unless $parent;
+            $parent->{executions}->{$execution->{color}} = $execution;
+        }
+
     }
 }
 
-sub from_hashref {
-    my ($class, $hashref) = validate_pos(@_, 1, {type => HASHREF});
-    return $class->new(%$hashref);
-}
-
-sub to_hashref {
+sub view_as_string {
     my $self = shift;
 
-    return {
-        dag => $self->dag,
-        inputs => $self->inputs,
-        name => $self->name,
-        status => $self->status,
-        url => $self->url,
-    };
+    my $result;
+    my $handle = new IO::String($result);
+
+    my $report_writer = Ptero::Concrete::Workflow::ReportWriter->new($handle);
+    $report_writer->write_report($self);
+    return $result;
 }
 
-sub from_json {
-    my ($class, $json_string, $url) = validate_pos(@_, 1,
-        {type => SCALAR}, {type => SCALAR});
-    my $hashref = $codec->decode($json_string);
-
-    my $dag_hashref = {
-        parameters => {
-            tasks => $hashref->{tasks},
-            links => $hashref->{links},
-        },
-        service => 'workflow',
-        name => 'root',
-    };
-
-    if (exists $hashref->{webhooks}) {
-        $dag_hashref->{parameters}->{webhooks} = $hashref->{webhooks};
-    }
-
-    my $dag = Ptero::Concrete::DAG->from_hashref($dag_hashref);
-
-    my $workflow_hashref = {
-        dag => $dag,
-        inputs => $hashref->{inputs},
-        name => $hashref->{name},
-        status => $hashref->{status},
-        url => $url,
-    };
-
-    return $class->from_hashref($workflow_hashref);
-}
-
-sub to_json {
+sub print_view {
     my $self = shift;
 
-    my $dag_hashref = $self->dag->to_hashref;
+    my $handle = new IO::Handle;
+    STDOUT->autoflush(1);
+    $handle->fdopen(fileno(STDOUT), 'w');
 
-    my $hashref = {
-        tasks => $dag_hashref->{parameters}->{tasks},
-        links => $dag_hashref->{parameters}->{links},
-        inputs => $self->inputs,
-        name => $self->name,
-        status => $self->status,
-    };
-
-    if ($self->dag->has_webhooks) {
-        $hashref->{webhooks} = $self->dag->webhooks
-    }
-
-    return $codec->pretty->encode($hashref);
+    my $report_writer = Ptero::Concrete::Workflow::ReportWriter->new($handle);
+    $report_writer->write_report($self);
+    return;
 }
 
-__PACKAGE__->meta->make_immutable;
-
-__END__
+1;

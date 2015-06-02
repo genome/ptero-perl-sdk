@@ -330,8 +330,8 @@ sub _multiple_link_target_errors {
         push @{$destinations{$destination}}, $link;
     }
 
-    for my $destination (keys %destinations) {
-        my @links = @{$destinations{$destination}};
+    while (my ($key, $links) = each %destinations) {
+        my @links = @$links;
 
         if (@links > 1) {
             push @errors, sprintf(

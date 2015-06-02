@@ -3,8 +3,9 @@ package Ptero::TestHelper;
 use strict;
 use warnings FATAL => 'all';
 use Test::More;
+use Test::Files;
 use JSON qw(to_json from_json);
-use File::Slurp qw(read_file);
+use File::Slurp qw(read_file write_file);
 use IO::File;
 use File::Temp qw(tempfile);
 use File::Basename qw(dirname);
@@ -37,7 +38,56 @@ sub run_test {
     my $result_file = File::Spec->join($dir, 'result.json');
     is_deeply($wf_proxy->outputs, get_expected_outputs($result_file), 'Got expected outputs');
 
+    compare_workflow_view($dir, $wf_proxy);
+
     done_testing();
+}
+
+sub compare_workflow_view {
+    my ($dir, $wf_proxy) = @_;
+
+    my $concrete_workflow = $wf_proxy->_concrete_workflow(
+        get_workflow_skeleton($dir, $wf_proxy),
+        get_workflow_executions($dir, $wf_proxy),
+    );
+
+    my $expected_file = File::Spec->join($dir, 'workflow-view.txt');
+    my $view = $concrete_workflow->view_as_string;
+
+    if ($ENV{PTERO_REGENERATE_TEST_DATA_OUTPUTS}) {
+        write_file($expected_file, $view);
+    }
+    file_ok($expected_file, $view, "View looks as expected");
+}
+
+sub get_workflow_skeleton {
+    my ($dir, $wf_proxy) = @_;
+
+    my $expected_file = File::Spec->join($dir, 'workflow-skeleton.json');
+
+    if ($ENV{PTERO_REGENERATE_TEST_DATA_INPUTS}) {
+        my $hashref = $wf_proxy->workflow_skeleton;
+        my $json = to_json($hashref, {pretty=>1, canonical=>1});
+        write_file($expected_file, $json);
+    }
+
+    my $json_text = read_file($expected_file);
+    return from_json($json_text);
+}
+
+sub get_workflow_executions {
+    my ($dir, $wf_proxy) = @_;
+
+    my $expected_file = File::Spec->join($dir, 'workflow-executions.json');
+
+    if ($ENV{PTERO_REGENERATE_TEST_DATA_INPUTS}) {
+        my $hashref = $wf_proxy->workflow_executions;
+        my $json = to_json($hashref, {pretty=>1, canonical=>1});
+        write_file($expected_file, $json);
+    }
+
+    my $json_text = read_file($expected_file);
+    return from_json($json_text);
 }
 
 sub validate_environment {
