@@ -56,7 +56,6 @@ sub _concrete_workflow {
     my ($self, $skeleton_hashref, $executions_hashref) = @_;
 
     my $concrete_workflow = Ptero::Concrete::Workflow->new($skeleton_hashref);
-    $concrete_workflow->register_components();
 
     $concrete_workflow->create_executions($executions_hashref->{executions});
 

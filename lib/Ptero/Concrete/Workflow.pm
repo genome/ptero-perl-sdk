@@ -12,7 +12,7 @@ use Ptero::Concrete::Workflow::ReportWriter;
 sub new {
     my ($class, $hashref) = @_;
 
-    my $self = {};
+    my $self = bless {}, $class;
     $self->{id} = $hashref->{id};
     $self->{root_task_id} = $hashref->{rootTaskId};
     $self->{name} = $hashref->{name};
@@ -25,7 +25,9 @@ sub new {
             $val, $key);
     }
 
-    return bless $self, $class;
+    $self->register_components();
+
+    return $self;
 }
 
 sub register_components {
