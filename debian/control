@@ -2,10 +2,10 @@ Source: libptero-perl
 Section: perl
 Priority: extra
 Maintainer: Michael Kiwala <mkiwala@wustl.edu>
-Build-Depends: debhelper (>= 7.4), libdevel-cover-perl, libtest-exception-perl, libdata-dump-perl, libdate-calc-perl, libdatetime-format-strptime-perl, libfile-slurp-perl, libgraph-perl, libjson-perl, liblog-log4perl-perl, liblwp-useragent-determined-perl, libmoose-perl, libmoosex-aliases-perl, libparams-validate-perl, libset-scalar-perl, libtemplate-perl, libwww-perl
+Build-Depends: debhelper (>= 7.4), libdevel-cover-perl, libtest-exception-perl, libdata-dump-perl, libdate-calc-perl, libdatetime-format-strptime-perl, libfile-slurp-perl, libgraph-perl, libjson-perl, liblog-log4perl-perl, liblwp-useragent-determined-perl, libmoose-perl, libmoosex-aliases-perl, libparams-validate-perl, libset-scalar-perl, libtemplate-perl, libwww-perl, libio-string-perl
 
 Package: libptero-perl
 Architecture: all
-Depends: libdata-dump-perl, libdate-calc-perl, libdatetime-format-strptime-perl, libfile-slurp-perl, libgraph-perl, libjson-perl, liblog-log4perl-perl, liblwp-useragent-determined-perl, libmoose-perl, libmoosex-aliases-perl, libparams-validate-perl, libset-scalar-perl, libtemplate-perl, libwww-perl
+Depends: libdevel-cover-perl, libtest-exception-perl, libdata-dump-perl, libdate-calc-perl, libdatetime-format-strptime-perl, libfile-slurp-perl, libgraph-perl, libjson-perl, liblog-log4perl-perl, liblwp-useragent-determined-perl, libmoose-perl, libmoosex-aliases-perl, libparams-validate-perl, libset-scalar-perl, libtemplate-perl, libwww-perl, libio-string-perl
 Description: a Perl client for the PTero services
  A Perl client for the PTero services
