@@ -3,7 +3,6 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Ptero::HTTP qw(get make_request_and_decode_repsonse);
 use Ptero::Proxy::Workflow;
 use Ptero::Concrete::Workflow::ReportWriter;
 
