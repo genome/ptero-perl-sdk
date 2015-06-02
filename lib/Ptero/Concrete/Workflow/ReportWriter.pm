@@ -18,6 +18,11 @@ sub new {
     return bless $self, $class;
 }
 
+sub printf {
+    my $self = shift;
+    return $self->{handle}->printf(@_);
+}
+
 sub write_report {
     my $self = shift;
     my $workflow = shift;
@@ -28,43 +33,41 @@ sub write_report {
 
 sub write_header {
     my $self = shift;
-    my $handle = $self->{handle};
 
-    printf $handle $FORMAT_LINE,
+    $self->printf($FORMAT_LINE,
         'TYPE',
         'STATUS',
         'STARTED',
         'DURATION',
         'P-INDEX',
         '',
-        'NAME';
+        'NAME');
 
     return
 }
 
 sub report_on_workflow {
     my ($self, $workflow, $indent, $color) = @_;
-    my $handle = $self->{handle};
 
     my $execution = $workflow->{executions}->{$color};
     if ($execution) {
-        printf $handle $FORMAT_LINE,
+        $self->printf($FORMAT_LINE,
             'Workflow',
             $execution->{status},
             $execution->datetime_started,
             $execution->duration,
             join(', ', $execution->parallel_indexes),
             $INDENTATION_STR x $indent,
-            $workflow->{name};
+            $workflow->{name});
     } elsif (scalar(keys %{$workflow->{executions}}) == 0) {
-        printf $handle $FORMAT_LINE,
+        $self->printf($FORMAT_LINE,
             'Workflow',
             $workflow->{status},
             '',
             '',
             '',
             $INDENTATION_STR x $indent,
-            $workflow->{name};
+            $workflow->{name});
     }
 
     my @sorted_tasks = sort {
@@ -79,7 +82,6 @@ sub report_on_workflow {
 
 sub report_on_task {
     my ($self, $task_name, $task, $indent, $color) = @_;
-    my $handle = $self->{handle};
 
     my $parallel_by_str = '';
     if ($task->{parallel_by}) {
@@ -89,23 +91,23 @@ sub report_on_task {
 
     my $execution = $task->{executions}->{$color};
     if ($execution) {
-        printf $handle $FORMAT_LINE,
+        $self->printf($FORMAT_LINE,
             'Task',
             $execution->{status},
             $execution->datetime_started,
             $execution->duration,
             join(', ', $execution->parallel_indexes),
             $INDENTATION_STR x $indent,
-            $task_name . ' ' . $parallel_by_str;
+            $task_name . ' ' . $parallel_by_str);
     } elsif (scalar(keys %{$task->{executions}}) == 0) {
-        printf $handle $FORMAT_LINE,
+        $self->printf($FORMAT_LINE,
             'Task',
             '',
             '',
             '',
             '',
             $INDENTATION_STR x $indent,
-            $task_name . ' ' . $parallel_by_str;
+            $task_name . ' ' . $parallel_by_str);
     }
 
     for my $method (@{$task->{methods}}) {
@@ -127,27 +129,26 @@ my $DISPLAY_NAMES = {
 
 sub report_on_method {
     my ($self, $method, $indent, $color) = @_;
-    my $handle = $self->{handle};
 
     if ($method->{executions}->{$color}) {
         my $execution = $method->{executions}->{$color};
-        printf $handle $FORMAT_LINE,
+        $self->printf($FORMAT_LINE,
             $DISPLAY_NAMES->{$method->{service}},
             $execution->{status},
             $execution->datetime_started,
             $execution->duration,
             join(', ', $execution->parallel_indexes),
             $INDENTATION_STR x $indent,
-            $method->{name};
+            $method->{name});
     } elsif (scalar(keys %{$method->{executions}}) == 0) {
-        printf $handle $FORMAT_LINE,
+        $self->printf($FORMAT_LINE,
             $DISPLAY_NAMES->{$method->{service}},
             '',
             '',
             '',
             '',
             $INDENTATION_STR x $indent,
-            $method->{name};
+            $method->{name});
     } else {
         return;
     }
