@@ -83,7 +83,7 @@ sub datetime_ended {
         my $end_datetime = $DATETIME_PARSER->parse_datetime($end_time);
         return $end_datetime;
     } else {
-        return DateTime->now(time_zone => 'local');
+        return DateTime->now(time_zone => 'UTC');
     }
 }
 
