@@ -18,7 +18,8 @@ sub known_input_properties {
 
 sub has_possible_output_property {
     my ($self, $name) = validate_pos(@_, 1, {type => SCALAR});
-    return $name eq 'result';
+    # inputs appear as outputs as well, both are defined via links.
+    return 1;
 }
 
 sub required_parameters {
