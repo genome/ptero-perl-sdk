@@ -1,22 +1,25 @@
 {
    "links" : [
       {
+         "dataFlow" : {
+            "in_a" : "destinationProperty"
+         },
          "destination" : "A",
-         "destinationProperty" : "in",
-         "source" : "input connector",
-         "sourceProperty" : "in_a"
+         "source" : "input connector"
       },
       {
+         "dataFlow" : {
+            "result" : "destinationProperty"
+         },
          "destination" : "B",
-         "destinationProperty" : "in",
-         "source" : "A",
-         "sourceProperty" : "result"
+         "source" : "A"
       },
       {
+         "dataFlow" : {
+            "out" : "out_b"
+         },
          "destination" : "output connector",
-         "destinationProperty" : "out_b",
-         "source" : "B",
-         "sourceProperty" : "out"
+         "source" : "B"
       }
    ],
    "tasks" : {
@@ -45,4 +48,3 @@
       }
    }
 }
-
