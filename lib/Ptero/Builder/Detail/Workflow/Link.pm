@@ -6,6 +6,8 @@ use Moose::Util::TypeConstraints;
 use Ptero::Builder::Detail::Workflow::Task;
 use warnings FATAL => 'all';
 use Params::Validate qw(validate_pos :types);
+use List::MoreUtils qw(uniq);
+use Set::Scalar;
 
 with 'Ptero::Builder::Detail::HasValidationErrors';
 
@@ -31,17 +33,30 @@ has destination => (
     coerce => 1,
 );
 
-has source_property => (
+has data_flow => (
     is => 'rw',
-    isa => 'Str',
-    alias => 'sourceProperty',
+    isa => 'HashRef[ArrayRef[Str]]',
+    predicate => 'has_data_flow',
 );
 
-has destination_property => (
-    is => 'rw',
-    isa => 'Str',
-    alias => 'destinationProperty',
-);
+sub BUILDARGS {
+    my ($class, %args) = @_;
+
+    if ($args{dataFlow}) {
+        $args{data_flow} = delete $args{dataFlow};
+    }
+
+    if ($args{data_flow}) {
+        my %data_flow = %{$args{data_flow}};
+        for my $source_property (keys %data_flow) {
+            unless (ref($data_flow{$source_property})) {
+                $data_flow{$source_property} = [$data_flow{$source_property}];
+            }
+        }
+        $args{data_flow} = \%data_flow;
+    }
+    return \%args;
+}
 
 sub is_external_input {
     my $self = shift;
@@ -51,6 +66,43 @@ sub is_external_input {
 sub is_external_output {
     my $self = shift;
     return $self->destination eq 'output connector';
+}
+
+sub add_data_flow {
+    my ($self, $source_property, $destination_property) = @_;
+
+    my $new_data_flow = $self->has_data_flow ? $self->data_flow : {};
+
+    my $destinations = $new_data_flow->{$source_property} || [];
+    push @$destinations, $destination_property;
+    $new_data_flow->{$source_property} = [uniq @$destinations];
+
+    $self->data_flow($new_data_flow);
+    return $self->data_flow;
+}
+
+sub source_properties {
+    my $self = shift;
+
+    if ($self->has_data_flow) {
+        return keys %{$self->data_flow};
+    } else {
+        return ();
+    }
+}
+
+sub destination_properties {
+    my $self = shift;
+
+    my $property_names = Set::Scalar->new();
+    if ($self->has_data_flow) {
+        for my $destination_arrayref (values %{$self->data_flow}) {
+            $property_names->insert(@$destination_arrayref);
+        }
+        return $property_names->members();
+    } else {
+        return ();
+    }
 }
 
 sub validation_errors {
@@ -98,23 +150,39 @@ sub _destination_is_input_connector_errors {
 
 sub to_string {
     my $self = shift;
-    return sprintf('Ptero::Builder::Detail::Workflow::Link(source => %s, source_property => %s, destination => %s, destination_property => %s)',
+    return sprintf('Ptero::Builder::Detail::Workflow::Link(source => %s, destination => %s, data_flow => %s)',
         Data::Dump::pp($self->source),
-        Data::Dump::pp($self->source_property),
         Data::Dump::pp($self->destination),
-        Data::Dump::pp($self->destination_property),
+        Data::Dump::pp($self->data_flow),
     );
 }
 
 sub to_hashref {
     my $self = shift;
 
-    return {
+    my $result = {
         source => $self->source,
-        sourceProperty => $self->source_property,
         destination => $self->destination,
-        destinationProperty => $self->destination_property,
     };
+    if ($self->has_data_flow) {
+        $result->{dataFlow} = $self->formatted_data_flow;
+    }
+    return $result;
+}
+
+sub formatted_data_flow {
+    my $self = shift;
+
+    my $result = {};
+    for my $source_property (keys(%{$self->data_flow})) {
+        my $destination_arrayref = $self->data_flow->{$source_property};
+        if (scalar(@$destination_arrayref) > 1) {
+            $result->{$source_property} = $destination_arrayref;
+        } else {
+            $result->{$source_property} = $destination_arrayref->[0];
+        }
+    }
+    return $result;
 }
 
 __PACKAGE__->meta->make_immutable;

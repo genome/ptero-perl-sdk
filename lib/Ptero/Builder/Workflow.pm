@@ -85,17 +85,84 @@ sub _add_task {
 
 sub link_tasks {
     my $self = shift;
-    my $link = Ptero::Builder::Detail::Workflow::Link->new(@_);
+    my %p = Params::Validate::validate(@_, {
+            source => {
+                type => SCALAR|OBJECT,
+                default => 'input connector',
+            },
+            destination => {
+                type => SCALAR|OBJECT,
+                default => 'output connector',
+            },
+            source_property => {
+                type => SCALAR,
+                optional => 1,
+                callbacks => {
+                    'destination_property set' => \&validate_source_property,
+                },
+            },
+            destination_property => {
+                type => SCALAR,
+                optional => 1,
+                callbacks => {
+                    'source_property set' => \&validate_destination_property,
+                },
+            },
+    });
+
+    my $link = Ptero::Builder::Detail::Workflow::Link->new(
+        source => $p{source},
+        destination => $p{destination},
+    );
     $self->links([@{$self->links}, $link]);
+
+    if (exists $p{source_property} and exists $p{destination_property}) {
+        $link->add_data_flow($p{source_property}, $p{destination_property});
+    }
+
     return $link;
+}
+
+sub validate_source_property {
+    my ($value, $params) = @_;
+
+    if (exists($params->{destination_property})) {
+        return 1;
+    } else {
+        die "You must specify 'destination_property' if 'source_property' ".
+            "is given.";
+    }
+}
+
+sub validate_destination_property {
+    my ($value, $params) = @_;
+
+    if (exists($params->{source_property})) {
+        return 1;
+    } else {
+        die "You must specify 'source_property' if 'destination_property' ".
+            "is given.";
+    }
 }
 
 sub connect_input {
     my $self = shift;
     my %args = Params::Validate::validate(@_, {
-            source_property => { type => SCALAR },
             destination => { type => SCALAR|OBJECT },
-            destination_property => { type => SCALAR },
+            source_property => {
+                type => SCALAR,
+                optional => 1,
+                callbacks => {
+                    'destination_property set' => \&validate_source_property,
+                },
+            },
+            destination_property => {
+                type => SCALAR,
+                optional => 1,
+                callbacks => {
+                    'source_property set' => \&validate_destination_property,
+                },
+            },
     });
 
     $self->link_tasks(%args);
@@ -106,8 +173,20 @@ sub connect_output {
     my $self = shift;
     my %args = Params::Validate::validate(@_, {
             source => { type => SCALAR|OBJECT },
-            source_property => { type => SCALAR },
-            destination_property => { type => SCALAR },
+            source_property => {
+                type => SCALAR,
+                optional => 1,
+                callbacks => {
+                    'destination_property set' => \&validate_source_property,
+                },
+            },
+            destination_property => {
+                type => SCALAR,
+                optional => 1,
+                callbacks => {
+                    'source_property set' => \&validate_destination_property,
+                },
+            },
     });
 
     $self->link_tasks(%args);
@@ -127,33 +206,37 @@ sub task_named {
         $self->name, Data::Dump::pp($name));
 }
 
+sub external_input_links {
+    my $self = shift;
+    return grep {$_->is_external_input} @{$self->links};
+}
+
 sub known_input_properties {
     my $self = shift;
-    my $properties = $self->_property_names_from_links('is_external_input',
-            'source_property');
-    return sort $properties->members();
+
+    my $property_names = Set::Scalar->new();
+    for my $link ($self->external_input_links) {
+        $property_names->insert($link->source_properties)
+    }
+
+    return sort $property_names->members();
 };
 
+sub external_output_links {
+    my $self = shift;
+    return grep {$_->is_external_output} @{$self->links};
+}
+
 sub has_possible_output_property {
-    my ($self, $name) = validate_pos(@_, 1, {type => SCALAR});
-    my $output_properties = $self->_property_names_from_links('is_external_output',
-        'destination_property');
-    return $output_properties->contains($name);
-}
+    my ($self, $name) = @_;
 
-sub _property_names_from_links {
-    my ($self, $query_name, $property_holder) = @_;
-
-    my $property_names = new Set::Scalar;
-
-    for my $link (@{$self->links}) {
-        if ($link->$query_name) {
-            $property_names->insert($link->$property_holder);
-        }
+    my $property_names = Set::Scalar->new();
+    for my $link ($self->external_output_links) {
+        $property_names->insert($link->destination_properties)
     }
-    return $property_names;
-}
 
+    return $property_names->contains($name);
+}
 
 sub validation_errors {
     my $self = shift;
@@ -261,10 +344,7 @@ sub _task_input_errors {
     my $self = shift;
     my @errors;
 
-    my $existing_inputs = Set::Scalar->new(
-        map {_encode_target($_->destination, $_->destination_property)} @{$self->links}
-    );
-    my $missing_inputs = $self->_mandatory_inputs - $existing_inputs;
+    my $missing_inputs = $self->_mandatory_inputs - $self->_existing_inputs;
 
     unless ($missing_inputs->is_empty) {
         push @errors, sprintf(
@@ -275,6 +355,24 @@ sub _task_input_errors {
     }
 
     return @errors;
+}
+
+sub _existing_inputs {
+    my $self = shift;
+
+    my $existing_inputs = Set::Scalar->new();
+    for my $link (@{$self->links}) {
+        my $destination = $link->destination;
+        if ($link->has_data_flow) {
+            for my $properties_arrayref (values %{$link->data_flow}) {
+                for my $property (@$properties_arrayref) {
+                    $existing_inputs->insert(_encode_target(
+                            $destination, $property));
+                }
+            }
+        }
+    }
+    return $existing_inputs
 }
 
 sub _mandatory_inputs {
@@ -305,13 +403,17 @@ sub _task_output_errors {
 
         my $task = $self->task_named($link->source);
 
-        unless ($task->has_possible_output_property($link->source_property)) {
-            push @errors, sprintf(
-                'Task %s in Workflow (%s) has no output named %s',
-                Data::Dump::pp($link->source),
-                $self->name,
-                Data::Dump::pp($link->source_property)
-            );
+        if ($link->has_data_flow) {
+            for my $source_property (keys %{$link->data_flow}) {
+                unless ($task->has_possible_output_property($source_property)) {
+                    push @errors, sprintf(
+                        'Task %s in Workflow (%s) has no output named %s',
+                        Data::Dump::pp($link->source),
+                        $self->name,
+                        Data::Dump::pp($source_property)
+                    );
+                }
+            }
         }
     }
 
@@ -325,9 +427,10 @@ sub _multiple_link_target_errors {
     my %destinations;
 
     for my $link (@{$self->links}) {
-        my $destination = _encode_target($link->destination,
-            $link->destination_property);
-        push @{$destinations{$destination}}, $link;
+        for my $destination_property ($link->destination_properties) {
+            my $key = _encode_target($link->destination, $destination_property);
+            push @{$destinations{$key}}, $link;
+        }
     }
 
     while (my ($key, $links) = each %destinations) {
@@ -375,7 +478,8 @@ sub from_hashref {
     my $self = $class->new(name => $hashref->{name});
 
     for my $link_hashref (@{$hashref->{parameters}->{links}}) {
-        $self->link_tasks(%$link_hashref);
+        my $link = Ptero::Builder::Detail::Workflow::Link->new(%{$link_hashref});
+        $self->links([@{$self->links}, $link]);
     }
 
     while (my ($task_name, $task_hashref) = each %{$hashref->{parameters}->{tasks}}) {

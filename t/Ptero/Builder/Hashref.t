@@ -17,16 +17,18 @@ use Ptero::Builder::TestHelpers qw(
         parameters => {
             links => [
                 {
-                    destination => "A",
-                    destinationProperty => "A_in",
                     source => "input connector",
-                    sourceProperty => "A_in",
+                    destination => "A",
+                    dataFlow => {
+                        A_in => "A_in",
+                    },
                 },
                 {
-                    destination => "output connector",
-                    destinationProperty => "A_out",
                     source => "A",
-                    sourceProperty => "A_out",
+                    destination => "output connector",
+                    "dataFlow" => {
+                        A_out => "A_out",
+                    },
                 },
             ],
             tasks => {
@@ -75,16 +77,18 @@ use Ptero::Builder::TestHelpers qw(
         parameters => {
             links => [
                 {
-                    destination => "A",
-                    destinationProperty => "A_in",
                     source => "input connector",
-                    sourceProperty => "A_in",
+                    destination => "A",
+                    dataFlow => {
+                        A_in => "A_in",
+                    },
                 },
                 {
-                    destination => "output connector",
-                    destinationProperty => "A_out",
                     source => "A",
-                    sourceProperty => "A_out",
+                    destination => "output connector",
+                    dataFlow => {
+                        A_out => "A_out",
+                    },
                 },
             ],
             tasks => {
@@ -136,16 +140,18 @@ use Ptero::Builder::TestHelpers qw(
         parameters => {
             links => [
                 {
-                    destination => "A",
-                    destinationProperty => "A_in",
                     source => "input connector",
-                    sourceProperty => "A_in",
+                    destination => "A",
+                    dataFlow => {
+                        A_in => "A_in",
+                    },
                 },
                 {
-                    destination => "output connector",
-                    destinationProperty => "A_out",
                     source => "A",
-                    sourceProperty => "A_out",
+                    destination => "output connector",
+                    dataFlow => {
+                        A_out => "A_out",
+                    },
                 },
             ],
             tasks => {
@@ -156,16 +162,18 @@ use Ptero::Builder::TestHelpers qw(
                             parameters => {
                                 links => [
                                     {
-                                        destination => "A",
-                                        destinationProperty => "A_in",
                                         source => "input connector",
-                                        sourceProperty => "A_in",
+                                        destination => "A",
+                                        dataFlow => {
+                                            A_in => "A_in",
+                                        },
                                     },
                                     {
-                                        destination => "output connector",
-                                        destinationProperty => "A_out",
                                         source => "A",
-                                        sourceProperty => "A_out",
+                                        destination => "output connector",
+                                        dataFlow => {
+                                            A_out => "A_out",
+                                        },
                                     },
                                 ],
                                 tasks => {
