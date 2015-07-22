@@ -1,28 +1,20 @@
 {
    "links" : [
       {
+         "dataFlow" : {
+            "in_constant" : "in_constant",
+            "in_parallel" : "in_parallel"
+         },
          "destination" : "A",
-         "destinationProperty" : "in_constant",
-         "source" : "input connector",
-         "sourceProperty" : "in_constant"
+         "source" : "input connector"
       },
       {
+         "dataFlow" : {
+            "out_constant" : "out_constant",
+            "out_parallel" : "out_parallel"
+         },
          "destination" : "output connector",
-         "destinationProperty" : "out_constant",
-         "source" : "A",
-         "sourceProperty" : "out_constant"
-      },
-      {
-         "destination" : "A",
-         "destinationProperty" : "in_parallel",
-         "source" : "input connector",
-         "sourceProperty" : "in_parallel"
-      },
-      {
-         "destination" : "output connector",
-         "destinationProperty" : "out_parallel",
-         "source" : "A",
-         "sourceProperty" : "out_parallel"
+         "source" : "A"
       }
    ],
    "tasks" : {
@@ -33,28 +25,20 @@
                "parameters" : {
                   "links" : [
                      {
+                        "dataFlow" : {
+                           "in_constant" : "const_param",
+                           "in_parallel" : "parallel_param"
+                        },
                         "destination" : "A",
-                        "destinationProperty" : "const_param",
-                        "source" : "input connector",
-                        "sourceProperty" : "in_constant"
+                        "source" : "input connector"
                      },
                      {
+                        "dataFlow" : {
+                           "const_param" : "out_constant",
+                           "parallel_param" : "out_parallel"
+                        },
                         "destination" : "output connector",
-                        "destinationProperty" : "out_constant",
-                        "source" : "A",
-                        "sourceProperty" : "const_param"
-                     },
-                     {
-                        "destination" : "A",
-                        "destinationProperty" : "parallel_param",
-                        "source" : "input connector",
-                        "sourceProperty" : "in_parallel"
-                     },
-                     {
-                        "destination" : "output connector",
-                        "destinationProperty" : "out_parallel",
-                        "source" : "A",
-                        "sourceProperty" : "parallel_param"
+                        "source" : "A"
                      }
                   ],
                   "tasks" : {
@@ -91,4 +75,3 @@
       }
    }
 }
-
