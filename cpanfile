@@ -19,5 +19,6 @@ requires "IO::String";
 on 'test' => sub {
     requires "Test::Exception";
     requires "Devel::Cover";
-    requires "Devel::Cover::Report::Coveralls"
+    requires "Devel::Cover::Report::Coveralls";
+    requires "Text::Diff";
 };
