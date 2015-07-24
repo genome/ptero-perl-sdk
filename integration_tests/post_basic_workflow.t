@@ -36,15 +36,17 @@ sub create_echo_workflow {
         name => 'A',
         methods => [$sc],
     );
-    $workflow->connect_input(
-        source_property => 'A_in',
+    $workflow->create_link(
         destination => $task,
-        destination_property => 'A_in',
+        data_flow => {
+            'A_in' => 'A_in',
+        },
     );
-    $workflow->connect_output(
+    $workflow->create_link(
         source => $task,
-        source_property => 'A_in',
-        destination_property => 'A_out',
+        data_flow => {
+            'A_in' => 'A_out',
+        },
     );
 
     return $workflow;

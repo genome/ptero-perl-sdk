@@ -28,7 +28,7 @@ use Ptero::Builder::TestHelpers qw(
 
 {
     my $workflow = build_basic_workflow('missing-task-names');
-    $workflow->connect_input(
+    $workflow->add_data_flow(
         source_property => 'C_in',
         destination => 'C',
         destination_property => 'C_in',
@@ -46,7 +46,7 @@ use Ptero::Builder::TestHelpers qw(
 
     # create an additional manditory input
     my $task = $workflow->task_named('A');
-    $task->methods->[0]->connect_input(
+    $task->methods->[0]->add_data_flow(
         source_property => 'A_in_two',
         destination => 'A',
         destination_property => 'A_in_two',
@@ -60,14 +60,14 @@ use Ptero::Builder::TestHelpers qw(
     my $workflow = build_nested_workflow('invalid-output');
 
     my $inner_workflow = $workflow->task_named('A')->methods->[0];
-    $inner_workflow->connect_output(
+    $inner_workflow->add_data_flow(
         source => 'A',
         source_property => 'A_out_two',
         destination_property => 'A_out_two',
     );
     is_deeply([$workflow->validation_errors], [], 'no validation errors (task has unknown io properties)');
 
-    $workflow->connect_output(
+    $workflow->add_data_flow(
         source => 'A',
         source_property => 'A_out_missing',
         destination_property => 'A_out_missing',
@@ -93,13 +93,13 @@ use Ptero::Builder::TestHelpers qw(
 {
     my $workflow = build_nested_workflow('cycle');
     create_basic_task($workflow, 'B');
-    $workflow->link_tasks(
+    $workflow->add_data_flow(
         source => 'A',
         source_property => 'A_out',
         destination => 'B',
         destination_property => 'B_in',
     );
-    $workflow->link_tasks(
+    $workflow->add_data_flow(
         source => 'B',
         source_property => 'B_out',
         destination => 'A',

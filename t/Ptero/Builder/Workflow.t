@@ -29,12 +29,12 @@ use_ok('Ptero::Builder::ShellCommand');
 {
     my $workflow = build_basic_workflow('basic');
     create_basic_task($workflow, 'B');
-    $workflow->connect_input(
+    $workflow->add_data_flow(
         source_property => 'B_in',
         destination => 'B',
         destination_property => 'B_in',
     );
-    $workflow->link_tasks(
+    $workflow->add_data_flow(
         source => 'B',
         source_property => 'B_out',
         destination => 'A',

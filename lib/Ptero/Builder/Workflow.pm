@@ -31,6 +31,12 @@ has links => (
     default => sub { [] },
 );
 
+has _links => (
+    is => 'rw',
+    isa => 'HashRef[HashRef[Ptero::Builder::Detail::Workflow::Link]]',
+    default => sub { {} },
+);
+
 override 'BUILDARGS' => sub {
     my $params = super();
     $params->{service} = 'workflow';
@@ -83,114 +89,51 @@ sub add_task {
     return $task;
 }
 
-sub link_tasks {
+sub create_link {
     my $self = shift;
-    my %p = Params::Validate::validate(@_, {
-            source => {
-                type => SCALAR|OBJECT,
-                default => 'input connector',
-            },
-            destination => {
-                type => SCALAR|OBJECT,
-                default => 'output connector',
-            },
-            source_property => {
-                type => SCALAR,
-                optional => 1,
-                callbacks => {
-                    'destination_property set' => \&validate_source_property,
-                },
-            },
-            destination_property => {
-                type => SCALAR,
-                optional => 1,
-                callbacks => {
-                    'source_property set' => \&validate_destination_property,
-                },
-            },
-    });
+    my $link = Ptero::Builder::Detail::Workflow::Link->new(@_);
+    return $self->add_link($link);
+}
 
-    my $link = Ptero::Builder::Detail::Workflow::Link->new(
-        source => $p{source},
-        destination => $p{destination},
-    );
+sub add_link {
+    my ($self, $link) = @_;
     $self->links([@{$self->links}, $link]);
-
-    if (exists $p{source_property} and exists $p{destination_property}) {
-        $link->add_data_flow($p{source_property}, $p{destination_property});
-    }
-
+    $self->_links->{$link->source}->{$link->destination} = $link;
     return $link;
 }
 
-sub validate_source_property {
-    my ($value, $params) = @_;
-
-    if (exists($params->{destination_property})) {
-        return 1;
-    } else {
-        die "You must specify 'destination_property' if 'source_property' ".
-            "is given.";
-    }
-}
-
-sub validate_destination_property {
-    my ($value, $params) = @_;
-
-    if (exists($params->{source_property})) {
-        return 1;
-    } else {
-        die "You must specify 'source_property' if 'destination_property' ".
-            "is given.";
-    }
-}
-
-sub connect_input {
+sub get_link {
     my $self = shift;
-    my %args = Params::Validate::validate(@_, {
-            destination => { type => SCALAR|OBJECT },
-            source_property => {
-                type => SCALAR,
-                optional => 1,
-                callbacks => {
-                    'destination_property set' => \&validate_source_property,
-                },
-            },
-            destination_property => {
-                type => SCALAR,
-                optional => 1,
-                callbacks => {
-                    'source_property set' => \&validate_destination_property,
-                },
-            },
-    });
-
-    $self->link_tasks(%args);
-    return;
-}
-
-sub connect_output {
-    my $self = shift;
-    my %args = Params::Validate::validate(@_, {
+    my %p = Params::Validate::validate(@_, {
             source => { type => SCALAR|OBJECT },
-            source_property => {
-                type => SCALAR,
-                optional => 1,
-                callbacks => {
-                    'destination_property set' => \&validate_source_property,
-                },
-            },
-            destination_property => {
-                type => SCALAR,
-                optional => 1,
-                callbacks => {
-                    'source_property set' => \&validate_destination_property,
-                },
-            },
+            destination => { type => SCALAR|OBJECT }
     });
+    my $source = ref($p{source}) ?
+        $p{source}->name : $p{source};
+    my $destination = ref($p{destination}) ?
+        $p{destination}->name : $p{destination};
+    return $self->_links->{$source}->{$destination};
+}
 
-    $self->link_tasks(%args);
-    return;
+sub add_data_flow {
+    my $self = shift;
+    my %p = Params::Validate::validate(@_, {
+            source => { type => SCALAR|OBJECT,
+                        default => 'input connector'},
+            destination => { type => SCALAR|OBJECT, 
+                             default => 'output connector'},
+            source_property => { type => SCALAR },
+            destination_property => { type => SCALAR },
+    });
+    my $link = $self->get_link(source => $p{source},
+        destination => $p{destination});
+
+    $link = $self->create_link(
+        source => $p{source},
+        destination => $p{destination},
+    ) unless $link;
+
+    return $link->add_data_flow($p{source_property}, $p{destination_property});
 }
 
 sub task_named {
@@ -638,12 +581,12 @@ submission
         methods => [$shortcut_method, $execute_method],
     );
 
-    $workflow->connect_input(
+    $workflow->create_link(
         source_property => 'workflow_input_name',
         destination => $task,
         destination_property => 'task_input_name',
     );
-    $workflow->connect_output(
+    $workflow->create_link(
         source => $task,
         source_property => 'task_output_name',
         destination_property => 'workflow_output_name',
