@@ -27,21 +27,24 @@ sub create_echo_workflow {
     my $task_a = get_task($workflow, 'A');
     my $task_b = get_task($workflow, 'B');
 
-    $workflow->connect_input(
-        source_property => 'A_in',
+    $workflow->create_link(
         destination => $task_a,
-        destination_property => 'A_in',
+        data_flow => {
+            'A_in' => 'A_in',
+        },
     );
-    $workflow->link_tasks(
+    $workflow->create_link(
         source => $task_a,
         destination => $task_b,
-        source_property => 'A_in',
-        destination_property => 'A_in',
+        data_flow => {
+            'A_in' => 'A_in',
+        },
     );
-    $workflow->connect_output(
+    $workflow->create_link(
         source => $task_b,
-        source_property => 'A_in',
-        destination_property => 'A_out',
+        data_flow => {
+            'A_in' => 'A_out',
+        },
     );
 
     return $workflow;
