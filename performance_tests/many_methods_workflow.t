@@ -53,12 +53,12 @@ sub create_workflow {
         name => 'A',
         methods => \@methods,
     );
-    $workflow->connect_input(
+    $workflow->add_data_flow(
         source_property => 'A_in',
         destination => $task,
         destination_property => 'A_in',
     );
-    $workflow->connect_output(
+    $workflow->add_data_flow(
         source => $task,
         source_property => 'A_in',
         destination_property => 'A_out',

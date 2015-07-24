@@ -33,15 +33,17 @@ sub build_nested_workflow {
             succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
         },
     );
-    $workflow->connect_input(
-        source_property => 'A_in',
+    $workflow->create_link(
         destination => $task,
-        destination_property => 'A_in',
+        data_flow => {
+            'A_in' => 'A_in',
+        }
     );
-    $workflow->connect_output(
+    $workflow->create_link(
         source => $task,
-        source_property => 'A_out',
-        destination_property => 'A_out',
+        data_flow => {
+            'A_out' => 'A_out',
+        }
     );
     $workflow->webhooks( {
         scheduled => 'http://localhost:8080/example/outer/scheduled',
@@ -78,15 +80,17 @@ sub build_basic_workflow {
             succeeded => ['http://localhost:8080/example/task/succeeded', 'http://localhost:8080/congrats']
         },
     );
-    $workflow->connect_input(
-        source_property => 'A_in',
+    $workflow->create_link(
         destination => $task,
-        destination_property => 'A_in',
+        data_flow => {
+            'A_in' => 'A_in',
+        }
     );
-    $workflow->connect_output(
+    $workflow->create_link(
         source => $task,
-        source_property => 'A_out',
-        destination_property => 'A_out',
+        data_flow => {
+            'A_out' => 'A_out',
+        }
     );
     $workflow->webhooks( {
         scheduled => 'http://localhost:8080/example/workflow/scheduled',

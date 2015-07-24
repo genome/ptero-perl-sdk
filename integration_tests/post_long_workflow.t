@@ -107,15 +107,17 @@ sub create_echo_workflow {
             create_sleep_echo_command(),
         ],
     );
-    $workflow->connect_input(
-        source_property => 'easy_in',
+    $workflow->create_link(
         destination => $easy_street,
-        destination_property => 'easy_in',
+        data_flow => {
+            'easy_in' => 'easy_in',
+        },
     );
-    $workflow->connect_output(
+    $workflow->create_link(
         source => $easy_street,
-        source_property => 'easy_in',
-        destination_property => 'easy_out',
+        data_flow => {
+            'easy_in' => 'easy_out',
+        },
     );
 
     my $try_hard = $workflow->create_task(
@@ -130,12 +132,12 @@ sub create_echo_workflow {
             create_sleep_echo_command(),
         ],
     );
-    $workflow->connect_input(
+    $workflow->add_data_flow(
         source_property => 'try_in',
         destination => $try_hard,
         destination_property => 'try_in',
     );
-    $workflow->connect_output(
+    $workflow->add_data_flow(
         source => $try_hard,
         source_property => 'try_in',
         destination_property => 'try_out',
