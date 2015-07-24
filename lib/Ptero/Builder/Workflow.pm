@@ -190,7 +190,6 @@ sub validation_errors {
         _orphaned_task_errors
         _task_input_errors
         _task_output_errors
-        _multiple_link_target_errors
         _cycle_errors
     );
 
@@ -357,34 +356,6 @@ sub _task_output_errors {
                     );
                 }
             }
-        }
-    }
-
-    return @errors;
-}
-
-sub _multiple_link_target_errors {
-    my $self = shift;
-    my @errors;
-
-    my %destinations;
-
-    for my $link (@{$self->links}) {
-        for my $destination_property ($link->destination_properties) {
-            my $key = _encode_target($link->destination, $destination_property);
-            push @{$destinations{$key}}, $link;
-        }
-    }
-
-    while (my ($key, $links) = each %destinations) {
-        my @links = @$links;
-
-        if (@links > 1) {
-            push @errors, sprintf(
-                "Multiple links on Workflow (%s) target the same input_property:\n%s",
-                $self->name,
-                join(",\n", map { $_->to_string } @links),
-            );
         }
     }
 

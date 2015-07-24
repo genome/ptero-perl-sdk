@@ -78,19 +78,6 @@ use Ptero::Builder::TestHelpers qw(
 }
 
 {
-    my $workflow = build_basic_workflow('multi-link-target');
-    $workflow->connect_input(
-        source_property => 'A_in_two',
-        destination => 'A',
-        destination_property => 'A_in',
-    );
-    is_deeply([$workflow->validation_errors], [
-            qq(Multiple links on Workflow (multi-link-target) target the same input_property:\nPtero::Builder::Detail::Workflow::Link(source => "input connector", destination => "A", data_flow => { A_in => ["A_in"] }),\nPtero::Builder::Detail::Workflow::Link(source => "input connector", destination => "A", data_flow => { A_in_two => ["A_in"] })),
-        ], 'multi link target');
-
-}
-
-{
     my $workflow = build_nested_workflow('cycle');
     create_basic_task($workflow, 'B');
     $workflow->add_data_flow(
