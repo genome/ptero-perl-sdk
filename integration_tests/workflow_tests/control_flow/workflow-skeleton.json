@@ -1,0 +1,30 @@
+{
+   "id" : 26,
+   "name" : "OPWcH0uSTPiLsc6L72DRpA",
+   "rootTaskId" : 764,
+   "status" : "succeeded",
+   "tasks" : {
+      "A" : {
+         "id" : 766,
+         "methods" : [
+            {
+               "id" : 1113,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 0
+      },
+      "B" : {
+         "id" : 767,
+         "methods" : [
+            {
+               "id" : 1114,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 1
+      }
+   }
+}
