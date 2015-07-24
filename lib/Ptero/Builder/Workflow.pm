@@ -74,10 +74,10 @@ sub submit {
 sub create_task {
     my $self = shift;
     my $task= Ptero::Builder::Detail::Workflow::Task->new(@_);
-    return $self->_add_task($task);
+    return $self->add_task($task);
 }
 
-sub _add_task {
+sub add_task {
     my ($self, $task) = @_;
     $self->tasks([@{$self->tasks}, $task]);
     return $task;
@@ -484,7 +484,7 @@ sub from_hashref {
 
     while (my ($task_name, $task_hashref) = each %{$hashref->{parameters}->{tasks}}) {
         my $task_class = $class->task_class;
-        $self->_add_task($task_class->from_hashref(
+        $self->add_task($task_class->from_hashref(
             $task_hashref, $task_name));
     }
 
