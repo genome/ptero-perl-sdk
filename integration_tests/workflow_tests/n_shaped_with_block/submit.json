@@ -1,0 +1,145 @@
+{
+    "tasks": {
+        "A": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./ptero-test-command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        },
+        "B": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./ptero-test-command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        },
+        "C": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./ptero-test-command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        },
+        "D": {
+            "methods": [
+                {
+                    "name": "execute",
+                    "service": "shell-command",
+                    "parameters": {
+                        "commandLine": ["./ptero-test-command"],
+                        "user": "{{ user }}",
+                        "workingDirectory": "{{ workingDirectory }}",
+                        "environment": {{ environment }}
+                    }
+                }
+            ]
+        },
+        "Block": {
+            "methods": [
+                {
+                    "name": "blocker",
+                    "service": "workflow-block",
+                    "parameters": {
+                    }
+                }
+            ]
+        }
+    },
+
+    "links": [
+        {
+            "source": "input connector",
+            "destination": "A",
+            "dataFlow": {
+                "in_a_1": "param_1",
+                "in_a_2": "param_2"
+            }
+        },
+        {
+            "source": "input connector",
+            "destination": "B",
+            "dataFlow": {
+                "in_b": "param"
+            }
+        },
+        {
+            "source": "A",
+            "destination": "C",
+            "dataFlow": {
+                "param_1": "param"
+            }
+        },
+        {
+            "source": "A",
+            "destination": "D",
+            "dataFlow": {
+                "param_2": "param_1"
+            }
+        },
+        {
+            "source": "B",
+            "destination": "D",
+            "dataFlow": {
+                "param": "param_2"
+            }
+        },
+        {
+            "source": "C",
+            "destination": "output connector",
+            "dataFlow": {
+                "param": "out_c"
+            }
+        },
+        {
+            "source": "D",
+            "destination": "output connector",
+            "dataFlow": {
+                "param_1": "out_d_1",
+                "param_2": "out_d_2"
+            }
+        },
+        {
+            "source": "D",
+            "destination": "Block",
+            "dataFlow": {
+                "param_2": "param_2"
+            }
+        },
+        {
+            "source": "Block",
+            "destination": "output connector",
+            "dataFlow": {
+                "result": "block_result",
+                "param_2": "block_param_2"
+            }
+        }
+    ],
+
+    "inputs": {
+        "in_a_1": "foo",
+        "in_a_2": "bar",
+        "in_b": "baz"
+    }
+}
