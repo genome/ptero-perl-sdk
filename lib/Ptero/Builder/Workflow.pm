@@ -59,6 +59,9 @@ sub submit {
     });
 
     my $submission_data = $self->submission_data($p{inputs}, $p{name});
+    if ($ENV{PTERO_WORKFLOW_EXECUTION_URL}) {
+        $submission_data->{parentExecutionUrl} = $ENV{PTERO_WORKFLOW_EXECUTION_URL};
+    }
     my $response = Ptero::HTTP::post(submit_url(), $submission_data);
 
     unless ($response->code == 201) {
