@@ -6,7 +6,7 @@ use Log::Log4perl qw(:easy);
 use Test::Exception;
 use Test::More;
 use File::Spec;
-use Ptero::TestHelper qw(
+use Ptero::Test::Utils qw(
     repo_relative_path
     get_environment
 );
@@ -54,7 +54,7 @@ sub create_sleep_echo_command {
                 commandLine => [
                     repo_relative_path('bin',
                         'ptero-perl-subroutine-wrapper'),
-                    '--package' => 'Ptero::Builder::TestHelpers',
+                    '--package' => 'Ptero::Test::Commands',
                     '--subroutine' => 'echo_test'],
                 environment => get_environment(),
                 user => $ENV{USER},
@@ -70,7 +70,7 @@ sub create_sleep_fail_command {
             parameters => {
                 commandLine => [
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
-                    '--package' => 'Ptero::Builder::TestHelpers',
+                    '--package' => 'Ptero::Test::Commands',
                     '--subroutine' => 'echo_fail'],
                 environment => get_environment(),
                 user => $ENV{USER},
@@ -87,7 +87,7 @@ sub create_echo_workflow {
             parameters => {
                 commandLine => [
                     repo_relative_path('scripts','perl_subroutine_wrapper'),
-                    '--package' => 'Ptero::Builder::TestHelpers',
+                    '--package' => 'Ptero::Test::Commands',
                     '--subroutine' => 'echo_test'],
                 environment => get_environment(),
                 user => $ENV{USER},

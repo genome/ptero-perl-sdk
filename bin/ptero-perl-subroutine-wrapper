@@ -11,7 +11,7 @@ exit main();
 
 sub main {
     my ($package_name, $subroutine_name) = get_options();
-    validate_environment();
+    validate_execution_environment();
 
     use_package($package_name);
 
@@ -50,11 +50,22 @@ sub get_options {
     return ($package_name, $subroutine_name);
 }
 
-sub validate_environment {
-    unless (defined $ENV{PTERO_WORKFLOW_EXECUTION_URL}) {
-        print STDERR "ptero-perl-subroutine-wrapper: Environment variable PTERO_WORKFLOW_EXECUTION_URL must be set\n";
-        exit 1;
+my @EXPECTED_EXECUTION_ENV_VARIABLES = qw(
+    PTERO_WORKFLOW_EXECUTION_URL
+    PTERO_WORKFLOW_SUBMIT_URL
+);
+
+sub validate_execution_environment {
+    my $validated = 1;
+    for my $env_var (@EXPECTED_EXECUTION_ENV_VARIABLES) {
+        unless (defined $ENV{$env_var}) {
+            printf STDERR "ptero-perl-subroutine-wrapper: Environment Variable %s must be set before method execution\n", $env_var;
+            $validated = 0;
+        }
     }
+
+    exit 1 unless $validated;
+    return;
 }
 
 sub use_package {

@@ -3,7 +3,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
-use Ptero::TestHelper qw(
+use Ptero::Test::Utils qw(
     repo_relative_path
     get_environment
 );
@@ -12,7 +12,7 @@ use_ok('Ptero::Builder::Workflow');
 use_ok('Ptero::Builder::ShellCommand');
 
 my $test_input = 'example test input';
-my $count = 500;
+my $count = 50;
 my $workflow = create_workflow($count);
 my $wf_proxy = $workflow->submit(inputs => {'A_in' => $test_input});
 $wf_proxy->wait(polling_interval => 1);
@@ -35,7 +35,7 @@ sub shell_command_method {
             parameters => {
                 commandLine => [
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
-                    '--package' => 'Ptero::Builder::TestHelpers',
+                    '--package' => 'Ptero::Test::Commands',
                     '--subroutine' => $subroutine],
                 environment => get_environment(),
                 user => $ENV{USER},

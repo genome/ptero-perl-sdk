@@ -6,7 +6,7 @@ use Test::More;
 
 use File::Basename qw(dirname);
 use lib dirname(dirname(dirname(__FILE__)));
-use Ptero::Builder::TestHelpers qw(
+use Ptero::Test::Builder qw(
     build_basic_workflow
     create_basic_task
 );

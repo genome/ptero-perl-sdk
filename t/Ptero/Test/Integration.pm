@@ -1,7 +1,8 @@
-package Ptero::TestHelper;
+package Ptero::Test::Integration;
 
 use strict;
 use warnings FATAL => 'all';
+
 use Test::More;
 use Text::Diff;
 use JSON qw(to_json from_json);
@@ -11,25 +12,30 @@ use File::Temp qw(tempfile);
 use File::Basename qw(dirname);
 use File::Spec qw();
 use Template;
+
 use Ptero::Builder::Workflow;
 use Ptero::Builder::ShellCommand;
-
-use Exporter 'import';
-our @EXPORT_OK = qw(
-    run_test
+use Ptero::Test::Utils qw(
+    validate_submit_environment
     repo_relative_path
     get_environment
 );
 
+use Exporter 'import';
+our @EXPORT_OK = qw(
+    run_test
+);
+
+
 sub run_test {
     my $file = shift;
 
-    validate_environment();
+    validate_submit_environment();
 
     my $dir = dirname($file);
 
     my $submit_file = File::Spec->join($dir, 'submit.json');
-    my $workflow_json = _get_workflow_json($submit_file);
+    my $workflow_json = get_workflow_json($submit_file);
     my $workflow = Ptero::Builder::Workflow->from_json($workflow_json, 'some-test-workflow');
 
     my $wf_proxy = $workflow->submit(inputs => get_workflow_inputs($workflow_json));
@@ -92,12 +98,6 @@ sub get_workflow_executions {
     return from_json($json_text);
 }
 
-sub validate_environment {
-    unless (defined $ENV{PTERO_WORKFLOW_SUBMIT_URL}) {
-        die "Environment variable PTERO_WORKFLOW_SUBMIT_URL must be set";
-    }
-}
-
 sub get_workflow_inputs {
     my $workflow_json = shift;
 
@@ -114,20 +114,7 @@ sub get_expected_outputs {
     return $hashref->{outputs};
 }
 
-sub repo_relative_path {
-    my $home = $ENV{PTERO_PERL_SDK_HOME} || die "You must set PTERO_PERL_SDK_HOME";
-    return File::Spec->join($home, @_);
-}
-
-sub get_environment {
-    my %env = %ENV;
-    $env{PERL5LIB} = join(':', $env{PERL5LIB},
-        repo_relative_path('lib'),
-        repo_relative_path('t'));
-    return \%env;
-}
-
-sub _get_workflow_json {
+sub get_workflow_json {
     my $submit_file = shift;
 
     my $template = Template->new({

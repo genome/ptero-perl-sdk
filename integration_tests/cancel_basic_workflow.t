@@ -5,7 +5,7 @@ use warnings FATAL => 'all';
 use Test::Exception;
 use Test::More;
 use File::Spec;
-use Ptero::TestHelper qw(
+use Ptero::Test::Utils qw(
     repo_relative_path
     get_environment
 );
@@ -57,7 +57,7 @@ sub get_task {
             parameters => {
                 commandLine => [
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
-                    '--package' => 'Ptero::Builder::TestHelpers',
+                    '--package' => 'Ptero::Test::Commands',
                     '--subroutine' => 'sleep_echo_test'],
                 environment => get_environment(),
                 user => $ENV{USER},
