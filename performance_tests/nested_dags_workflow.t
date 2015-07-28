@@ -12,7 +12,8 @@ use_ok('Ptero::Builder::Workflow');
 use_ok('Ptero::Builder::ShellCommand');
 
 my $test_input = 'example test input';
-my $workflow = create_workflow(25);
+my $count = $ENV{PTERO_TEST_NESTING_FACTOR} || 25;
+my $workflow = create_workflow($count);
 my $wf_proxy = $workflow->submit(inputs => {'A_in' => $test_input});
 $wf_proxy->wait(polling_interval => 1);
 is_deeply($wf_proxy->outputs, {'A_in' => $test_input}, 'Got expected outputs');

@@ -12,7 +12,7 @@ use_ok('Ptero::Builder::Workflow');
 use_ok('Ptero::Builder::ShellCommand');
 
 my $test_input = 'example test input';
-my $count = 50;
+my $count = $ENV{PTERO_TEST_SCALE_FACTOR} || 50;
 my $workflow = create_workflow($count);
 my $wf_proxy = $workflow->submit(inputs => {'A_in' => $test_input});
 $wf_proxy->wait(polling_interval => 1);
