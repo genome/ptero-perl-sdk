@@ -128,7 +128,7 @@ sub get_workflow_json {
     my $vars = {
         user => $ENV{USER},
         environment => to_json(get_environment()),
-        workingDirectory => repo_relative_path('bin'),
+        workingDirectory => repo_relative_path('t', 'bin'),
         webhook => '"'.$ENV{PTERO_WORKFLOW_SUBMIT_URL}.'"',
     };
 
