@@ -2,6 +2,7 @@ package Ptero::Test::Utils;
 
 use strict;
 use warnings FATAL => 'all';
+use Data::UUID qw();
 
 use Exporter 'import';
 our @EXPORT_OK = qw(
@@ -9,7 +10,17 @@ our @EXPORT_OK = qw(
     validate_execution_environment
     repo_relative_path
     get_environment
+    get_test_name
 );
+
+sub get_test_name {
+    my $base_name = shift;
+
+    my $generator = Data::UUID->new();
+    my $uuid = $generator->create();
+    return sprintf("Perl SDK Integration Test (%s) %s",
+        $base_name, $generator->to_string($uuid));
+}
 
 my @EXPECTED_SUBMIT_ENV_VARIABLES = qw(
     PTERO_WORKFLOW_SUBMIT_URL

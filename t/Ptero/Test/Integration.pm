@@ -11,7 +11,6 @@ use IO::File;
 use File::Temp qw(tempfile);
 use File::Basename qw(dirname basename);
 use File::Spec qw();
-use Data::UUID qw();
 use Template;
 
 use Ptero::Builder::Workflow;
@@ -20,6 +19,7 @@ use Ptero::Test::Utils qw(
     validate_submit_environment
     repo_relative_path
     get_environment
+    get_test_name
 );
 
 use Exporter 'import';
@@ -50,15 +50,6 @@ sub run_test {
     compare_workflow_view($dir, $wf_proxy);
 
     done_testing();
-}
-
-sub get_test_name {
-    my $base_name = shift;
-
-    my $generator = Data::UUID->new();
-    my $uuid = $generator->create();
-    return sprintf("Perl SDK Integration Test (%s) %s",
-        $base_name, $generator->to_string($uuid));
 }
 
 sub compare_workflow_view {
