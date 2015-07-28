@@ -9,6 +9,7 @@ use File::Spec;
 use Ptero::Test::Utils qw(
     repo_relative_path
     get_environment
+    get_test_name
 );
 
 use_ok('Ptero::Builder::Workflow');
@@ -16,7 +17,13 @@ use_ok('Ptero::Builder::ShellCommand');
 
 setup_logging();
 my $workflow = create_echo_workflow();
-my $wf_proxy = $workflow->submit( inputs => { 'easy_in' => 'foo', 'try_in' => 'bar' } );
+my $wf_proxy = $workflow->submit(
+    inputs => {
+        'easy_in' => 'foo',
+        'try_in' => 'bar'
+    },
+    name => get_test_name("post_long_workflow"),
+);
 
 my $concrete_workflow = $wf_proxy->concrete_workflow;
 isa_ok($concrete_workflow, 'Ptero::Concrete::Workflow');
