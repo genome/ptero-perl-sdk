@@ -27,7 +27,11 @@ sub main {
             $package_name, $subroutine_name, pp($execution->inputs));
     }
 
-    $execution->set_outputs($outputs);
+    if ($outputs) {
+        # only set outputs if they're not empty.
+        $execution->set_outputs($outputs);
+    }
+
     return 0;
 }
 
