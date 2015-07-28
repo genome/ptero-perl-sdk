@@ -9,8 +9,9 @@ use JSON qw(to_json from_json);
 use File::Slurp qw(read_file write_file);
 use IO::File;
 use File::Temp qw(tempfile);
-use File::Basename qw(dirname);
+use File::Basename qw(dirname basename);
 use File::Spec qw();
+use Data::UUID qw();
 use Template;
 
 use Ptero::Builder::Workflow;
@@ -26,7 +27,6 @@ our @EXPORT_OK = qw(
     run_test
 );
 
-
 sub run_test {
     my $file = shift;
 
@@ -38,7 +38,10 @@ sub run_test {
     my $workflow_json = get_workflow_json($submit_file);
     my $workflow = Ptero::Builder::Workflow->from_json($workflow_json, 'some-test-workflow');
 
-    my $wf_proxy = $workflow->submit(inputs => get_workflow_inputs($workflow_json));
+    my $wf_proxy = $workflow->submit(
+        inputs => get_workflow_inputs($workflow_json),
+        name => get_test_name(basename($dir)),
+    );
     $wf_proxy->wait(polling_interval => 1);
 
     my $result_file = File::Spec->join($dir, 'result.json');
@@ -47,6 +50,15 @@ sub run_test {
     compare_workflow_view($dir, $wf_proxy);
 
     done_testing();
+}
+
+sub get_test_name {
+    my $base_name = shift;
+
+    my $generator = Data::UUID->new();
+    my $uuid = $generator->create();
+    return sprintf("Perl SDK Integration Test (%s) %s",
+        $base_name, $generator->to_string($uuid));
 }
 
 sub compare_workflow_view {
