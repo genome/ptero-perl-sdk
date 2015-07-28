@@ -89,18 +89,6 @@ sub create_sleep_fail_command {
 sub create_echo_workflow {
     use Ptero::Concrete::Workflow;
     my $workflow = Ptero::Builder::Workflow->new(name => 'test');
-    my $sc = Ptero::Builder::ShellCommand->new(
-            name => 'do something',
-            parameters => {
-                commandLine => [
-                    repo_relative_path('scripts','perl_subroutine_wrapper'),
-                    '--package' => 'Ptero::Test::Commands',
-                    '--subroutine' => 'echo_test'],
-                environment => get_environment(),
-                user => $ENV{USER},
-                workingDirectory => '/tmp'
-            },
-    );
 
     my $easy_street = $workflow->create_task(
         name => 'easy street',
