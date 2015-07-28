@@ -447,6 +447,13 @@ sub from_json {
     my ($class, $json_string, $name) = validate_pos(@_, 1,
         {type => SCALAR}, {type => SCALAR});
     my $hashref = $codec->decode($json_string);
+    return $class->from_json_hashref($hashref, $name);
+
+}
+
+sub from_json_hashref {
+    my ($class, $hashref, $name) = validate_pos(@_, 1,
+        {type => HASHREF}, {type => SCALAR});
 
     $hashref->{name} = $name;
     $hashref->{parameters}->{tasks} = delete $hashref->{tasks};

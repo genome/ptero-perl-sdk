@@ -35,6 +35,12 @@ sub new {
         $self->{parent_id} = $hashref->{taskId};
     }
 
+    if (exists $hashref->{childWorkflowUrls}) {
+        $self->{child_workflow_urls} = $hashref->{childWorkflowUrls};
+    } else {
+        $self->{child_workflow_urls} = [];
+    }
+
     # only detailed executions have these
     $self->{data} = $hashref->{data};
     $self->{name} = $hashref->{name};

@@ -6,6 +6,7 @@ use warnings FATAL => 'all';
 use Params::Validate qw(validate_pos :types);
 use Ptero::HTTP qw(get make_request_and_decode_repsonse);
 use Ptero::Concrete::Workflow::Execution;
+use Ptero::Proxy::Workflow;
 use Ptero::Statuses qw(is_terminal is_success);
 
 has url => (
@@ -90,6 +91,21 @@ sub set_outputs {
         $new_execution_data));
 
     return;
+}
+
+sub child_workflow_proxies {
+    my $self = shift;
+    my $result = [];
+
+    for my $workflow_url (@{$self->child_workflow_urls}) {
+        push @$result, Ptero::Proxy::Workflow->new($workflow_url);
+    }
+    return $result;
+}
+
+sub child_workflow_urls {
+    my $self = shift;
+    return $self->concrete_execution->{child_workflow_urls};
 }
 
 

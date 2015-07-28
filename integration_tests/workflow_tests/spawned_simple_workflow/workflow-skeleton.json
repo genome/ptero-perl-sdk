@@ -1,0 +1,19 @@
+{
+   "id" : 125,
+   "name" : "Perl SDK Integration Test (spawned_simple_workflow) 2FC6AFD6-3576-11E5-8496-DDC1C5871DAF",
+   "rootTaskId" : 1186,
+   "status" : "succeeded",
+   "tasks" : {
+      "A" : {
+         "id" : 1190,
+         "methods" : [
+            {
+               "id" : 730,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 0
+      }
+   }
+}
