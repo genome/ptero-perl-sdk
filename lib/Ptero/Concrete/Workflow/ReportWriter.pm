@@ -140,6 +140,11 @@ sub report_on_method {
             join(', ', $execution->parallel_indexes),
             $INDENTATION_STR x $indent,
             $method->{name});
+
+        for my $wf_proxy (@{$execution->child_workflow_proxies}) {
+            my $concrete_workflow = $wf_proxy->concrete_workflow;
+            $self->report_on_workflow($concrete_workflow, $indent+1, 0);
+        }
     } elsif (scalar(keys %{$method->{executions}}) == 0) {
         $self->printf($FORMAT_LINE,
             $DISPLAY_NAMES->{$method->{service}},

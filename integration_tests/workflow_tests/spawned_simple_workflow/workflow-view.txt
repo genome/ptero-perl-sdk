@@ -1,4 +1,5 @@
            TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded  2015-07-28T22:15:42      00:00:04           Perl SDK Integration Test (spawned_simple_workflow) 2FC6AFD6-3576-11E5-8496-DDC1C5871DAF
-           Task  succeeded  2015-07-28T22:15:43      00:00:02           A 
-   ShellCommand  succeeded  2015-07-28T22:15:44      00:00:01           . execute
+       Workflow  succeeded  2015-07-28T22:29:18      00:00:03           Perl SDK Integration Test (spawned_simple_workflow) 15EC6D1A-3578-11E5-AACB-E1CAC5871DAF
+           Task  succeeded  2015-07-28T22:29:19      00:00:02           A 
+   ShellCommand  succeeded  2015-07-28T22:29:19      00:00:02           . execute
+       Workflow  succeeded  2015-07-28T22:29:20      00:00:00           . . Perl SDK Integration Test (spawned_workflow) 16D875F2-3578-11E5-8F7D-E6CAC5871DAF
