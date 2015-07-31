@@ -4,7 +4,7 @@ use Moose;
 use warnings FATAL => 'all';
 
 use Params::Validate qw(validate_pos :types);
-use Ptero::HTTP qw(get make_request_and_decode_repsonse);
+use Ptero::HTTP qw(get make_request_and_decode_response);
 use Ptero::Concrete::Workflow::Execution;
 use Ptero::Statuses qw(is_terminal is_success);
 
@@ -41,7 +41,7 @@ sub BUILDARGS {
         unless ($args{url}) {
             die "Cannot create a Ptero::Proxy::Workflow::Execution without a url";
         }
-        my $execution_data = make_request_and_decode_repsonse(method => 'GET',
+        my $execution_data = make_request_and_decode_response(method => 'GET',
             url => $args{url});
         $args{concrete_execution} = Ptero::Concrete::Workflow::Execution->new(
             $execution_data);
@@ -71,7 +71,7 @@ sub update_data {
     my %old_data = %{$self->data};
     my %patch_data = (%old_data, %new_data);
 
-    my $new_execution_data = make_request_and_decode_repsonse(method => 'PATCH',
+    my $new_execution_data = make_request_and_decode_response(method => 'PATCH',
         url => $self->url, data => {data => \%patch_data});
 
     $self->concrete_execution(Ptero::Concrete::Workflow::Execution->new(
@@ -83,7 +83,7 @@ sub update_data {
 sub set_outputs {
     my ($self, $outputs) = validate_pos(@_, 1, {type => HASHREF});
 
-    my $new_execution_data = make_request_and_decode_repsonse(method => 'PATCH',
+    my $new_execution_data = make_request_and_decode_response(method => 'PATCH',
         url => $self->url, data => {outputs => $outputs});
 
     $self->concrete_execution(Ptero::Concrete::Workflow::Execution->new(
