@@ -6,9 +6,10 @@ use Log::Log4perl qw(:easy);
 use Test::Exception;
 use Test::More;
 use File::Spec;
-use Ptero::TestHelper qw(
+use Ptero::Test::Utils qw(
     repo_relative_path
     get_environment
+    get_test_name
 );
 
 use_ok('Ptero::Builder::Workflow');
@@ -16,7 +17,13 @@ use_ok('Ptero::Builder::ShellCommand');
 
 setup_logging();
 my $workflow = create_echo_workflow();
-my $wf_proxy = $workflow->submit( inputs => { 'easy_in' => 'foo', 'try_in' => 'bar' } );
+my $wf_proxy = $workflow->submit(
+    inputs => {
+        'easy_in' => 'foo',
+        'try_in' => 'bar'
+    },
+    name => get_test_name("post_long_workflow"),
+);
 
 my $concrete_workflow = $wf_proxy->concrete_workflow;
 isa_ok($concrete_workflow, 'Ptero::Concrete::Workflow');
@@ -54,7 +61,7 @@ sub create_sleep_echo_command {
                 commandLine => [
                     repo_relative_path('bin',
                         'ptero-perl-subroutine-wrapper'),
-                    '--package' => 'Ptero::Builder::TestHelpers',
+                    '--package' => 'Ptero::Test::Commands',
                     '--subroutine' => 'echo_test'],
                 environment => get_environment(),
                 user => $ENV{USER},
@@ -70,7 +77,7 @@ sub create_sleep_fail_command {
             parameters => {
                 commandLine => [
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
-                    '--package' => 'Ptero::Builder::TestHelpers',
+                    '--package' => 'Ptero::Test::Commands',
                     '--subroutine' => 'echo_fail'],
                 environment => get_environment(),
                 user => $ENV{USER},
@@ -82,18 +89,6 @@ sub create_sleep_fail_command {
 sub create_echo_workflow {
     use Ptero::Concrete::Workflow;
     my $workflow = Ptero::Builder::Workflow->new(name => 'test');
-    my $sc = Ptero::Builder::ShellCommand->new(
-            name => 'do something',
-            parameters => {
-                commandLine => [
-                    repo_relative_path('scripts','perl_subroutine_wrapper'),
-                    '--package' => 'Ptero::Builder::TestHelpers',
-                    '--subroutine' => 'echo_test'],
-                environment => get_environment(),
-                user => $ENV{USER},
-                workingDirectory => '/tmp'
-            },
-    );
 
     my $easy_street = $workflow->create_task(
         name => 'easy street',

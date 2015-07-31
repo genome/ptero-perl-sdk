@@ -1,0 +1,48 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings FATAL => 'all';
+
+use Data::Dump qw(pp);
+use Getopt::Long;
+use Ptero::Builder::Workflow;
+use Ptero::Proxy::Workflow::Execution qw();
+use Ptero::Test::Utils qw(
+    validate_execution_environment
+    get_test_name
+);
+
+exit main();
+
+sub main {
+    validate_execution_environment();
+    my $execution = Ptero::Proxy::Workflow::Execution->new(
+        url => $ENV{PTERO_WORKFLOW_EXECUTION_URL},
+    );
+    my $inputs = $execution->inputs;
+
+    my $workflow_data = $inputs->{workflow_data};
+    my $workflow = Ptero::Builder::Workflow->from_json_hashref($workflow_data, 'spawned_workflow');
+    my $wf_proxy = $workflow->submit(
+        inputs => $inputs->{workflow_data}->{inputs},
+        name => get_test_name("spawned_workflow"),
+    );
+
+    $wf_proxy->wait(polling_interval => 1);
+    unless ($wf_proxy->has_succeeded) {
+        die sprintf("Spawned workflow (%s) didn't succeed", $wf_proxy->url);
+    }
+
+    my $updated_execution = Ptero::Proxy::Workflow::Execution->new(
+        url => $execution->url,
+    );
+    unless ($updated_execution->child_workflow_urls) {
+        die sprintf("No child workflows registered for execution %s", $updated_execution->url);
+    }
+    unless ($updated_execution->child_workflow_proxies->[0]->url eq $wf_proxy->url) {
+        die sprintf("Didn't find workflow (%s) as a child of execution (%s)",
+            $wf_proxy->url, $updated_execution->url);
+    }
+
+    return 0;
+}

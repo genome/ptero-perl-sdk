@@ -1,0 +1,63 @@
+{
+   "id" : 48,
+   "name" : "WxIc2saZR5WS8vrNPPI6Dg",
+   "rootTaskId" : 940,
+   "status" : "succeeded",
+   "tasks" : {
+      "A" : {
+         "id" : 944,
+         "methods" : [
+            {
+               "id" : 1199,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 0
+      },
+      "B" : {
+         "id" : 945,
+         "methods" : [
+            {
+               "id" : 1200,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 1
+      },
+      "Block" : {
+         "id" : 948,
+         "methods" : [
+            {
+               "id" : 1203,
+               "name" : "blocker",
+               "service" : "workflow-block"
+            }
+         ],
+         "topologicalIndex" : 4
+      },
+      "C" : {
+         "id" : 946,
+         "methods" : [
+            {
+               "id" : 1201,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 2
+      },
+      "D" : {
+         "id" : 947,
+         "methods" : [
+            {
+               "id" : 1202,
+               "name" : "execute",
+               "service" : "shell-command"
+            }
+         ],
+         "topologicalIndex" : 3
+      }
+   }
+}

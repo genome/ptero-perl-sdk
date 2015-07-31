@@ -92,5 +92,15 @@ sub set_outputs {
     return;
 }
 
+sub child_workflow_proxies {
+    my $self = shift;
+    return $self->concrete_execution->child_workflow_proxies;
+}
+
+sub child_workflow_urls {
+    my $self = shift;
+    return $self->concrete_execution->{child_workflow_urls};
+}
+
 
 __PACKAGE__->meta->make_immutable;

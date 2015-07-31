@@ -3,9 +3,10 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
-use Ptero::TestHelper qw(
+use Ptero::Test::Utils qw(
     repo_relative_path
     get_environment
+    get_test_name
 );
 
 use_ok('Ptero::Builder::Workflow');
@@ -13,7 +14,10 @@ use_ok('Ptero::Builder::ShellCommand');
 
 my $test_input = 'example test input';
 my $workflow = create_echo_workflow();
-my $wf_proxy = $workflow->submit( inputs => { 'A_in' => $test_input } );
+my $wf_proxy = $workflow->submit(
+    inputs => {'A_in' => $test_input},
+    name => get_test_name("post_basic_workflow"),
+);
 $wf_proxy->wait(polling_interval => 1);
 is_deeply($wf_proxy->outputs, { 'A_out' => $test_input }, 'Got expected outputs');
 done_testing();
@@ -25,7 +29,7 @@ sub create_echo_workflow {
             parameters => {
                 commandLine => [
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
-                    '--package' => 'Ptero::Builder::TestHelpers',
+                    '--package' => 'Ptero::Test::Commands',
                     '--subroutine' => 'echo_test'],
                 environment => get_environment(),
                 user => $ENV{USER},

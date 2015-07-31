@@ -5,9 +5,10 @@ use warnings FATAL => 'all';
 use Test::Exception;
 use Test::More;
 use File::Spec;
-use Ptero::TestHelper qw(
+use Ptero::Test::Utils qw(
     repo_relative_path
     get_environment
+    get_test_name
 );
 
 use_ok('Ptero::Builder::Workflow');
@@ -15,7 +16,10 @@ use_ok('Ptero::Builder::ShellCommand');
 
 my $test_input = 'example test input';
 my $workflow = create_echo_workflow();
-my $wf_proxy = $workflow->submit( inputs => { 'A_in' => $test_input } );
+my $wf_proxy = $workflow->submit(
+    inputs => {'A_in' => $test_input},
+    name => get_test_name("cancel_basic_workflow"),
+);
 $wf_proxy->cancel;
 $wf_proxy->wait(polling_interval => 1);
 is($wf_proxy->status, 'canceled', 'Got expected (canceled) status');
@@ -57,7 +61,7 @@ sub get_task {
             parameters => {
                 commandLine => [
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
-                    '--package' => 'Ptero::Builder::TestHelpers',
+                    '--package' => 'Ptero::Test::Commands',
                     '--subroutine' => 'sleep_echo_test'],
                 environment => get_environment(),
                 user => $ENV{USER},

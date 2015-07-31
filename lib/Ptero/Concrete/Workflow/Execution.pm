@@ -8,6 +8,7 @@ use DateTime qw();
 use Date::Calc "Delta_DHMS";
 use Set::Scalar;
 use Ptero::Statuses qw(is_terminal);
+use Ptero::Proxy::Workflow;
 
 my $DATETIME_PARSER = DateTime::Format::Strptime->new(
     pattern => '%Y-%m-%d %H:%M:%S',
@@ -35,12 +36,28 @@ sub new {
         $self->{parent_id} = $hashref->{taskId};
     }
 
+    if (exists $hashref->{childWorkflowUrls}) {
+        $self->{child_workflow_urls} = $hashref->{childWorkflowUrls};
+    } else {
+        $self->{child_workflow_urls} = [];
+    }
+
     # only detailed executions have these
     $self->{data} = $hashref->{data};
     $self->{name} = $hashref->{name};
     $self->{inputs} = $hashref->{inputs};
 
     return bless $self, $class;
+}
+
+sub child_workflow_proxies {
+    my $self = shift;
+    my $result = [];
+
+    for my $workflow_url (@{$self->{child_workflow_urls}}) {
+        push @$result, Ptero::Proxy::Workflow->new($workflow_url);
+    }
+    return $result;
 }
 
 sub parallel_indexes {

@@ -7,11 +7,14 @@ use Data::Dump qw(pp);
 use Getopt::Long;
 use Ptero::HTTP qw();
 use File::Temp qw(tempfile);
+use Ptero::Test::Utils qw(
+    validate_execution_environment
+);
 
 exit main();
 
 sub main {
-    validate_environment();
+    validate_execution_environment();
 
     my $inputs = get_inputs();
     if (exists $inputs->{filename}) {
@@ -22,13 +25,6 @@ sub main {
     }
 
     return 0;
-}
-
-sub validate_environment {
-    unless (defined $ENV{PTERO_WORKFLOW_EXECUTION_URL}) {
-        print STDERR "ptero-test-command: Environment variable PTERO_WORKFLOW_EXECUTION_URL must be set\n";
-        exit 1;
-    }
 }
 
 sub get_inputs {
