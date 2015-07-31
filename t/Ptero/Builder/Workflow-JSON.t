@@ -8,7 +8,7 @@ use Text::Diff qw(diff);
 
 use File::Basename qw(dirname);
 use lib dirname(dirname(dirname(__FILE__)));
-use Ptero::Builder::TestHelpers qw(
+use Ptero::Test::Builder qw(
     build_nested_workflow
 );
 

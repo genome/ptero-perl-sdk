@@ -1,4 +1,4 @@
-package Ptero::Builder::TestHelpers;
+package Ptero::Test::Builder;
 
 use strict;
 use warnings FATAL => 'all';
@@ -12,11 +12,6 @@ our @EXPORT_OK = qw(
     build_basic_workflow
     create_basic_task
 );
-
-sub echo_test { shift }
-sub fail_test { die "on purpose"; }
-sub sleep_echo_test { sleep(2); return shift }
-sub sleep_fail_test { sleep(2); die "Bad news"; }
 
 sub build_nested_workflow {
     my $name = shift;
