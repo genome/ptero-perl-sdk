@@ -13,6 +13,9 @@ use File::Basename qw(dirname basename);
 use File::Spec qw();
 use Template;
 
+use Ptero::Proxy::Workflow;
+use Sub::Install qw();
+
 use Ptero::Builder::Workflow;
 use Ptero::Builder::ShellCommand;
 use Ptero::Test::Utils qw(
@@ -26,6 +29,47 @@ use Exporter 'import';
 our @EXPORT_OK = qw(
     run_test
 );
+
+sub setup_http_response_mocks {
+    my $cache_file = shift;
+
+    note "Mocking Ptero::Proxy::Workflow::make_request_and_decode_response";
+
+    my $orig = Ptero::Proxy::Workflow->can('make_request_and_decode_response');
+    Sub::Install::reinstall_sub({
+            code => sub {
+                my $args = [@_];
+                return lookup_locally($orig, $args, $cache_file);
+            },
+            into => 'Ptero::Proxy::Workflow',
+            as => 'make_request_and_decode_response',
+    });
+}
+
+sub lookup_locally {
+    my ($orig, $args, $cache_file) = @_;
+
+    my %args = @$args;
+    my $url = $args{url};
+
+    if ($ENV{PTERO_REGENERATE_TEST_DATA_OUTPUTS}) {
+        note "Putting response from ($url) into cache_file ($cache_file)";
+        my $cache = -e $cache_file ? from_json(read_file($cache_file)) : {};
+        my $data = $orig->(@$args);
+        $cache->{$url} = $data;
+        write_file($cache_file, to_json($cache, {pretty=>1, canonical=>1}));
+    }
+
+    note "Looking for ($url) in local Ptero::Workflow response cache";
+    my $cache = from_json(read_file($cache_file));
+
+    if (exists($cache->{$url})) {
+        note "    Found response in cache.";
+        return $cache->{$url};
+    } else {
+        die "Could not find response for ($url) in cache_file ($cache_file)";
+    }
+}
 
 sub run_test {
     my $file = shift;
@@ -47,6 +91,9 @@ sub run_test {
     my $result_file = File::Spec->join($dir, 'result.json');
     is_deeply($wf_proxy->outputs, get_expected_outputs($result_file), 'Got expected outputs');
 
+    my $cache_file = File::Spec->join($dir, 'http-response-cache.json');
+
+    setup_http_response_mocks($cache_file);
     compare_workflow_view($dir, $wf_proxy);
 
     done_testing();

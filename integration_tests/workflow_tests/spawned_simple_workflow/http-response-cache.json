@@ -1,0 +1,353 @@
+{
+   "http://localhost:7000/v1/reports/workflow-executions?workflow_id=199" : {
+      "executions" : [
+         {
+            "begins" : [],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/2688",
+            "id" : 2688,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-07-31 21:53:33.659333+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-07-31 21:53:36.817417+00:00"
+               }
+            ],
+            "taskId" : 1649
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/2689",
+            "id" : 2689,
+            "methodId" : 906,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-07-31 21:53:34.072024+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-07-31 21:53:34.224367+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-07-31 21:53:34.224367+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-07-31 21:53:36.765437+00:00"
+               }
+            ]
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/2690",
+            "id" : 2690,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-07-31 21:53:34.151379+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-07-31 21:53:34.151379+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-07-31 21:53:34.151379+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-07-31 21:53:34.307431+00:00"
+               }
+            ],
+            "taskId" : 1652
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/2691",
+            "id" : 2691,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-07-31 21:53:34.356884+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-07-31 21:53:34.356884+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-07-31 21:53:34.356884+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-07-31 21:53:36.533978+00:00"
+               }
+            ],
+            "taskId" : 1653
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "childWorkflowUrls" : [
+               "http://localhost:7000/v1/workflows/200"
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/2692",
+            "id" : 2692,
+            "methodId" : 907,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-07-31 21:53:34.443819+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-07-31 21:53:34.523599+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-07-31 21:53:35.054868+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-07-31 21:53:36.454012+00:00"
+               }
+            ]
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/2697",
+            "id" : 2697,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-07-31 21:53:36.588278+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-07-31 21:53:36.588278+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-07-31 21:53:36.588278+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-07-31 21:53:36.718742+00:00"
+               }
+            ],
+            "taskId" : 1651
+         }
+      ],
+      "updateUrl" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=199&since=2015-07-31+21%3A53%3A36.817417"
+   },
+   "http://localhost:7000/v1/reports/workflow-executions?workflow_id=200" : {
+      "executions" : [
+         {
+            "begins" : [],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/2693",
+            "id" : 2693,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-07-31 21:53:35.156398+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-07-31 21:53:35.966735+00:00"
+               }
+            ],
+            "taskId" : 1655
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/2694",
+            "id" : 2694,
+            "methodId" : 908,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-07-31 21:53:35.471584+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-07-31 21:53:35.628007+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-07-31 21:53:35.628007+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-07-31 21:53:35.936052+00:00"
+               }
+            ]
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/2695",
+            "id" : 2695,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-07-31 21:53:35.552384+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-07-31 21:53:35.552384+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-07-31 21:53:35.552384+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-07-31 21:53:35.689464+00:00"
+               }
+            ],
+            "taskId" : 1658
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/2696",
+            "id" : 2696,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-07-31 21:53:35.744133+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-07-31 21:53:35.744133+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-07-31 21:53:35.744133+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-07-31 21:53:35.883474+00:00"
+               }
+            ],
+            "taskId" : 1657
+         }
+      ],
+      "updateUrl" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=200&since=2015-07-31+21%3A53%3A35.966735"
+   },
+   "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=199" : {
+      "id" : 199,
+      "name" : "Perl SDK Integration Test (spawned_simple_workflow) 96B6FFE8-37CE-11E5-BF8C-EE8FC5871DAF",
+      "rootTaskId" : 1649,
+      "status" : "succeeded",
+      "tasks" : {
+         "A" : {
+            "id" : 1653,
+            "methods" : [
+               {
+                  "id" : 907,
+                  "name" : "execute",
+                  "service" : "shell-command"
+               }
+            ],
+            "topologicalIndex" : 0
+         }
+      }
+   },
+   "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=200" : {
+      "id" : 200,
+      "name" : "Perl SDK Integration Test (spawned_workflow) 979EF65E-37CE-11E5-A125-F38FC5871DAF",
+      "rootTaskId" : 1655,
+      "status" : "succeeded",
+      "tasks" : {}
+   },
+   "http://localhost:7000/v1/workflows/200" : {
+      "name" : "Perl SDK Integration Test (spawned_workflow) 979EF65E-37CE-11E5-A125-F38FC5871DAF",
+      "reports" : {
+         "workflow-details" : "http://localhost:7000/v1/reports/workflow-details?workflow_id=200",
+         "workflow-executions" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=200",
+         "workflow-outputs" : "http://localhost:7000/v1/reports/workflow-outputs?workflow_id=200",
+         "workflow-skeleton" : "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=200",
+         "workflow-status" : "http://localhost:7000/v1/reports/workflow-status?workflow_id=200",
+         "workflow-submission-data" : "http://localhost:7000/v1/reports/workflow-submission-data?workflow_id=200"
+      },
+      "status" : "succeeded"
+   }
+}
