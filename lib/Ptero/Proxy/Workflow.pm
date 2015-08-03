@@ -4,7 +4,7 @@ use Moose;
 use warnings FATAL => 'all';
 
 use Params::Validate;
-use Ptero::HTTP qw(get make_request_and_decode_repsonse);
+use Ptero::HTTP qw(get make_request_and_decode_response);
 use Ptero::Concrete::Workflow;
 use Ptero::Statuses qw(is_terminal is_success);
 
@@ -41,7 +41,7 @@ sub BUILDARGS {
         unless ($args{url}) {
             die "Cannot create a Ptero::Proxy::Workflow without a url";
         }
-        $args{resource} = make_request_and_decode_repsonse(method => 'GET',
+        $args{resource} = make_request_and_decode_response(method => 'GET',
             url => $args{url});
     }
     return \%args;
@@ -64,19 +64,19 @@ sub _concrete_workflow {
 
 sub workflow_skeleton {
     my $self = shift;
-    return make_request_and_decode_repsonse(method => 'GET',
+    return make_request_and_decode_response(method => 'GET',
         url => $self->report_url('workflow-skeleton'));
 }
 
 sub workflow_executions {
     my $self = shift;
-    return make_request_and_decode_repsonse(method => 'GET',
+    return make_request_and_decode_response(method => 'GET',
         url => $self->report_url('workflow-executions'));
 }
 
 sub cancel {
     my $self = shift;
-    make_request_and_decode_repsonse(method => 'PATCH', url => $self->url,
+    make_request_and_decode_response(method => 'PATCH', url => $self->url,
         data => { is_canceled => 1 });
     return;
 }
@@ -112,7 +112,7 @@ sub report_url {
 sub status {
     my $self = shift;
 
-    my $r = make_request_and_decode_repsonse(method => 'GET',
+    my $r = make_request_and_decode_response(method => 'GET',
         url => $self->report_url('workflow-status'));
     return $r->{status};
 }
@@ -131,7 +131,7 @@ sub has_succeeded {
 sub outputs {
     my $self = shift;
 
-    my $workflow_output_report = make_request_and_decode_repsonse(
+    my $workflow_output_report = make_request_and_decode_response(
         method => 'GET', url => $self->report_url('workflow-outputs'));
 
     return $workflow_output_report->{outputs};

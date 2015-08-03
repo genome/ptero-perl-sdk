@@ -22,4 +22,5 @@ on 'test' => sub {
     requires "Devel::Cover::Report::Coveralls";
     requires "Text::Diff";
     requires "Data::UUID";
+    requires "Sub::Install";
 };

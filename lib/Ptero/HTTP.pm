@@ -18,7 +18,7 @@ our @EXPORT_OK = qw(
     get
     patch
     post
-    make_request_and_decode_repsonse
+    make_request_and_decode_response
 );
 
 my $logger = Log::Log4perl->get_logger();
@@ -98,7 +98,7 @@ sub get   { make_request('GET',   @_) }
 sub patch { make_request('PATCH', @_) }
 sub post  { make_request('POST',  @_) }
 
-sub make_request_and_decode_repsonse {
+sub make_request_and_decode_response {
     my %p = Params::Validate::validate(@_, {
             method => { regex => qr/^(GET|PATCH|POST)$/ },
             url => { type => SCALAR },
