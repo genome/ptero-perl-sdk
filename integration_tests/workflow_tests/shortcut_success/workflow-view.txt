@@ -1,5 +1,5 @@
-           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded  2015-05-28T20:39:52      00:00:02           7jFfutcARLigHBJDerXQmA
-           Task  succeeded  2015-05-28T20:39:53      00:00:01           A 
-   ShellCommand  succeeded  2015-05-28T20:39:54      00:00:00           . shortcut
-   ShellCommand                                                         . execute
+           TYPE     STATUS              STARTED      DURATION  NAME
+       Workflow  succeeded  2015-05-28T20:39:52      00:00:02  7jFfutcARLigHBJDerXQmA
+           Task  succeeded  2015-05-28T20:39:53      00:00:01  A 
+   ShellCommand  succeeded  2015-05-28T20:39:54      00:00:00  . shortcut
+   ShellCommand                                                . execute

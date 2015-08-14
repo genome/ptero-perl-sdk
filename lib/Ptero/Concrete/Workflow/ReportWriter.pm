@@ -5,7 +5,7 @@ use warnings FATAL => 'all';
 use Params::Validate qw(validate validate_pos :types);
 
 my $INDENTATION_STR = '. ';
-my $FORMAT_LINE = "%15s %10s %20s %13s  %-7s  %s%s\n";
+my $FORMAT_LINE = "%15s %10s %20s %13s  %s%s\n";
 
 sub new {
     my $class = shift;
@@ -39,7 +39,6 @@ sub write_header {
         'STATUS',
         'STARTED',
         'DURATION',
-        'P-INDEX',
         '',
         'NAME');
 
@@ -56,14 +55,12 @@ sub report_on_workflow {
             $execution->{status},
             $execution->datetime_started,
             $execution->duration,
-            join(', ', $execution->parallel_indexes),
             $INDENTATION_STR x $indent,
             $workflow->{name});
     } elsif (scalar(keys %{$workflow->{executions}}) == 0) {
         $self->printf($FORMAT_LINE,
             'Workflow',
             $workflow->{status},
-            '',
             '',
             '',
             $INDENTATION_STR x $indent,
@@ -81,28 +78,29 @@ sub report_on_workflow {
 }
 
 sub report_on_task {
-    my ($self, $task_name, $task, $indent, $color) = @_;
-
-    my $parallel_by_str = '';
-    if ($task->{parallel_by}) {
-        $parallel_by_str = sprintf("parallel-by: %s", $task->{parallel_by});
-    }
-
+    my ($self, $task_name, $task, $indent, $color, $parallel_by) = @_;
 
     my $execution = $task->{executions}->{$color};
+
+    my $parallel_by_str = '';
+    if ($parallel_by) {
+        $parallel_by_str = sprintf("[%s]",
+            join(', ', $execution->parallel_indexes));
+    } elsif ($task->{parallel_by}) {
+            $parallel_by_str = sprintf("[parallel-by: %s]", $task->{parallel_by});
+    }
+
     if ($execution) {
         $self->printf($FORMAT_LINE,
             'Task',
             $execution->{status},
             $execution->datetime_started,
             $execution->duration,
-            join(', ', $execution->parallel_indexes),
             $INDENTATION_STR x $indent,
             $task_name . ' ' . $parallel_by_str);
     } elsif (scalar(keys %{$task->{executions}}) == 0) {
         $self->printf($FORMAT_LINE,
             'Task',
-            '',
             '',
             '',
             '',
@@ -115,9 +113,8 @@ sub report_on_task {
     }
 
     for my $child_execution ($task->executions_with_parent_color($color)) {
-        for my $method (@{$task->{methods}}) {
-            $self->report_on_method($method, $indent+1, $child_execution->{color});
-        }
+        $self->report_on_task($task_name, $task, $indent+1,
+            $child_execution->{color}, 1);
     }
     return;
 }
@@ -137,7 +134,6 @@ sub report_on_method {
             $execution->{status},
             $execution->datetime_started,
             $execution->duration,
-            join(', ', $execution->parallel_indexes),
             $INDENTATION_STR x $indent,
             $method->{name});
 
@@ -148,7 +144,6 @@ sub report_on_method {
     } elsif (scalar(keys %{$method->{executions}}) == 0) {
         $self->printf($FORMAT_LINE,
             $DISPLAY_NAMES->{$method->{service}},
-            '',
             '',
             '',
             '',
