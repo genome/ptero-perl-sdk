@@ -7,10 +7,13 @@ use Ptero::Test::Utils qw(
     repo_relative_path
     get_environment
     get_test_name
+    validate_submit_environment
 );
 
 use_ok('Ptero::Builder::Workflow');
 use_ok('Ptero::Builder::ShellCommand');
+
+validate_submit_environment();
 
 my $test_input = 'example test input';
 my $workflow = create_echo_workflow();
