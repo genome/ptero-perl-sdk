@@ -8,5 +8,5 @@ else
     FILES=t/Ptero
 fi
 
-HARNESS_PERL_SWITCHES=-MDevel::Cover=+ignore,local carton exec prove -vrl $FILES
+HARNESS_PERL_SWITCHES=-MDevel::Cover=+ignore,local carton exec prove -vrl -It $FILES
 carton exec cover -report html
