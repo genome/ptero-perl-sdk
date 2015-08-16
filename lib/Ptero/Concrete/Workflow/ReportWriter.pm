@@ -3,6 +3,11 @@ package Ptero::Concrete::Workflow::ReportWriter;
 use strict;
 use warnings FATAL => 'all';
 use Params::Validate qw(validate validate_pos :types);
+use Ptero::Statuses qw(
+    is_abnormal
+    is_running
+);
+use Ptero::Proxy::Workflow::Execution;
 
 my $INDENTATION_STR = '. ';
 my $FORMAT_LINE = "%15s %10s %20s %13s  %s%s\n";
@@ -13,6 +18,7 @@ sub new {
 
     my $self = {
         handle => $handle,
+        executions_of_interest => {},
     };
 
     return bless $self, $class;
@@ -29,6 +35,7 @@ sub write_report {
 
     $self->write_header;
     $self->report_on_workflow($workflow, 0, 0);
+    $self->report_on_abnormal_executions();
 }
 
 sub write_header {
@@ -98,6 +105,11 @@ sub report_on_task {
             $execution->duration,
             $INDENTATION_STR x $indent,
             $task_name . ' ' . $parallel_by_str);
+
+        if (is_abnormal($execution->{status})) {
+            push @{$self->{executions_of_interest}->{task}},
+                $execution;
+        }
     } elsif (scalar(keys %{$task->{executions}}) == 0) {
         $self->printf($FORMAT_LINE,
             'Task',
@@ -141,6 +153,13 @@ sub report_on_method {
             my $concrete_workflow = $wf_proxy->concrete_workflow;
             $self->report_on_workflow($concrete_workflow, $indent+1, 0);
         }
+
+        if (is_abnormal($execution->{status}) or
+                is_running($execution->{status})) {
+            my $service = $method->{service};
+            push @{$self->{executions_of_interest}->{$service}},
+                $execution;
+        }
     } elsif (scalar(keys %{$method->{executions}}) == 0) {
         $self->printf($FORMAT_LINE,
             $DISPLAY_NAMES->{$method->{service}},
@@ -161,6 +180,82 @@ sub report_on_method {
     }
 
     return;
+}
+
+sub report_on_abnormal_executions {
+    my $self = shift;
+
+    return unless scalar(keys %{$self->{executions_of_interest}});
+
+    $self->printf("\n");
+    while (my ($service, $executions) =
+            each(%{$self->{executions_of_interest}})) {
+        for my $execution (@{$executions}) {
+            my $proxy = Ptero::Proxy::Workflow::Execution->new(
+                $execution->{details_url}
+            );
+            $self->report_on_execution($proxy, $service);
+            $self->printf("\n");
+        }
+    }
+}
+
+my $EXECUTION_REPORT_METHODS = {
+    'shell-command' => 'report_on_shell_command_execution',
+};
+
+sub report_on_execution {
+    my ($self, $proxy, $service) = @_;
+
+    my $accessor = $EXECUTION_REPORT_METHODS->{$service};
+
+    if ($accessor) {
+        $self->$accessor($proxy, $service);
+    } else {
+        $self->report_on_basic_execution($proxy, $service);
+    }
+}
+
+sub report_on_basic_execution {
+    my ($self, $proxy, $service) = @_;
+
+    $self->printf("  status: %s    name: %s\n", 
+        $proxy->concrete_execution->{status},
+        $proxy->name);
+    $self->printf("  service: %s\n", $service);
+    $self->printf("  details url: %s\n", $proxy->url);
+    my $error = $proxy->data->{error};
+    if ($error) {
+        $self->printf("  error: %s\n", $error);
+    }
+}
+
+sub report_on_shell_command_execution {
+    my ($self, $proxy, $service) = @_;
+
+    $self->report_on_basic_execution($proxy, $service);
+
+    my $error = $proxy->data->{errorMessage};
+    if ($error) {
+        $self->printf("  error: %s\n", $error);
+    }
+
+    my $exit_code = $proxy->data->{exitCode};
+    if ($exit_code) {
+        $self->printf("  exit code: %s\n", $exit_code);
+    }
+
+    my $stdout = $proxy->data->{stdout};
+    if ($stdout) {
+        chomp($stdout);
+        $self->printf("  stdout:\n%s\n", $stdout);
+    }
+
+    my $stderr = $proxy->data->{stderr};
+    if ($stderr) {
+        chomp($stderr);
+        $self->printf("  stderr:\n%s\n", $stderr);
+    }
 }
 
 1;
