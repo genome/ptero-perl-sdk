@@ -21,7 +21,7 @@ You could also setup Carton using the system Perl on Debian-based Linux:
 
 Once your have Carton:
 
-    $ carton install --deployment # from the root of this repo
+    $ carton install # from the root of this repo
 
 To run tests:
 
