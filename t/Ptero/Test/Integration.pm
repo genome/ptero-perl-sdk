@@ -160,7 +160,7 @@ sub get_expected_outputs {
 
     my $json_text = read_file($filename);
     my $hashref = from_json($json_text);
-    note "No outputs found in file '$filename'";
+    note "No outputs found in file '$filename'" unless ($hashref);
     return $hashref->{outputs};
 }
 
