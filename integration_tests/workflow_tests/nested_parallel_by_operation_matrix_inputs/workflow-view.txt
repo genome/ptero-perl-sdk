@@ -1,12 +1,19 @@
-           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded  2015-05-28T20:38:50      00:00:08           kUprIXsmRoqD8m6FtKerWA
-           Task  succeeded  2015-05-28T20:38:51      00:00:06           A parallel-by: in_matrix
-            DAG  succeeded  2015-05-28T20:38:52      00:00:05  0        . inner
-           Task  succeeded  2015-05-28T20:38:52      00:00:05  0        . . A parallel-by: name
-   ShellCommand  succeeded  2015-05-28T20:38:56      00:00:00  0, 1     . . . execute
-   ShellCommand  succeeded  2015-05-28T20:38:56      00:00:00  0, 0     . . . execute
-   ShellCommand  succeeded  2015-05-28T20:38:55      00:00:01  0, 2     . . . execute
-            DAG  succeeded  2015-05-28T20:38:52      00:00:05  1        . inner
-           Task  succeeded  2015-05-28T20:38:52      00:00:05  1        . . A parallel-by: name
-   ShellCommand  succeeded  2015-05-28T20:38:54      00:00:02  1, 0     . . . execute
-   ShellCommand  succeeded  2015-05-28T20:38:56      00:00:00  1, 1     . . . execute
+           TYPE     STATUS              STARTED      DURATION  NAME
+       Workflow  succeeded  2015-05-28T20:38:50      00:00:08  kUprIXsmRoqD8m6FtKerWA
+           Task  succeeded  2015-05-28T20:38:51      00:00:06  A [parallel-by: in_matrix]
+           Task  succeeded  2015-05-28T20:38:52      00:00:05  . A [0]
+            DAG  succeeded  2015-05-28T20:38:52      00:00:05  . . inner
+           Task  succeeded  2015-05-28T20:38:52      00:00:05  . . . A [parallel-by: name]
+           Task  succeeded  2015-05-28T20:38:53      00:00:03  . . . . A [0, 0]
+   ShellCommand  succeeded  2015-05-28T20:38:56      00:00:00  . . . . . execute
+           Task  succeeded  2015-05-28T20:38:53      00:00:04  . . . . A [0, 1]
+   ShellCommand  succeeded  2015-05-28T20:38:56      00:00:00  . . . . . execute
+           Task  succeeded  2015-05-28T20:38:52      00:00:04  . . . . A [0, 2]
+   ShellCommand  succeeded  2015-05-28T20:38:55      00:00:01  . . . . . execute
+           Task  succeeded  2015-05-28T20:38:52      00:00:05  . A [1]
+            DAG  succeeded  2015-05-28T20:38:52      00:00:05  . . inner
+           Task  succeeded  2015-05-28T20:38:52      00:00:05  . . . A [parallel-by: name]
+           Task  succeeded  2015-05-28T20:38:52      00:00:04  . . . . A [1, 0]
+   ShellCommand  succeeded  2015-05-28T20:38:54      00:00:02  . . . . . execute
+           Task  succeeded  2015-05-28T20:38:53      00:00:03  . . . . A [1, 1]
+   ShellCommand  succeeded  2015-05-28T20:38:56      00:00:00  . . . . . execute

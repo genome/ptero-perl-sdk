@@ -53,7 +53,7 @@ sub executions_with_parent_color {
             push @executions, $execution;
         }
     }
-    return @executions;
+    return sort {$a->{color} <=> $b->{color}} @executions;
 }
 
 1;
