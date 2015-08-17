@@ -14,6 +14,7 @@ use File::Spec qw();
 use Template;
 
 use Ptero::Proxy::Workflow;
+use Ptero::Proxy::Workflow::Execution;
 use Sub::Install qw();
 
 use Ptero::Builder::Workflow;
@@ -44,6 +45,19 @@ sub setup_http_response_mocks {
             into => 'Ptero::Proxy::Workflow',
             as => 'make_request_and_decode_response',
     });
+
+
+    note "Mocking Ptero::Proxy::Workflow::Execution::make_request_and_decode_response";
+
+    $orig = Ptero::Proxy::Workflow::Execution->can('make_request_and_decode_response');
+    Sub::Install::reinstall_sub({
+            code => sub {
+                my $args = [@_];
+                return lookup_locally($orig, $args, $cache_file);
+            },
+            into => 'Ptero::Proxy::Workflow::Execution',
+            as => 'make_request_and_decode_response',
+    });
 }
 
 sub lookup_locally {
@@ -60,7 +74,7 @@ sub lookup_locally {
         write_file($cache_file, to_json($cache, {pretty=>1, canonical=>1}));
     }
 
-    note "Looking for ($url) in local Ptero::Workflow response cache";
+    note "Looking for ($url) in local response cache";
     my $cache = from_json(read_file($cache_file));
 
     if (exists($cache->{$url})) {
@@ -160,7 +174,7 @@ sub get_expected_outputs {
 
     my $json_text = read_file($filename);
     my $hashref = from_json($json_text);
-    note "No outputs found in file '$filename'";
+    note "No outputs found in file '$filename'" unless ($hashref);
     return $hashref->{outputs};
 }
 

@@ -1,0 +1,296 @@
+{
+   "http://localhost:7000/v1/executions/396" : {
+      "begins" : [
+         0
+      ],
+      "color" : 0,
+      "colors" : [
+         0
+      ],
+      "data" : {
+         "exitCode" : 1,
+         "jobId" : "0280255b-4045-45f9-ae9d-c36ca22a4d9d",
+         "job_id" : "0280255b-4045-45f9-ae9d-c36ca22a4d9d",
+         "petri_response_links" : {
+            "created" : "http://localhost:6000/v1/nets/xG-cdoCRSCqR1mtYplCCnw/places/0/tokens?color=0&color_group=0"
+         },
+         "petri_response_links_for_shell_command" : {
+            "failure" : "http://localhost:6000/v1/nets/xG-cdoCRSCqR1mtYplCCnw/places/32/tokens?color=0&color_group=0",
+            "success" : "http://localhost:6000/v1/nets/xG-cdoCRSCqR1mtYplCCnw/places/45/tokens?color=0&color_group=0"
+         },
+         "status" : "failed",
+         "stderr" : "",
+         "stdout" : ""
+      },
+      "inputs" : {
+         "param" : "kittens"
+      },
+      "name" : "A.shortcut.396",
+      "outputs" : {
+         "param" : "kittens"
+      },
+      "parent_color" : null,
+      "status" : "failed",
+      "status_history" : [
+         {
+            "status" : "new",
+            "timestamp" : "2015-08-17 16:07:21.858795+00:00"
+         },
+         {
+            "status" : "scheduled",
+            "timestamp" : "2015-08-17 16:07:21.959459+00:00"
+         },
+         {
+            "status" : "running",
+            "timestamp" : "2015-08-17 16:07:22.499353+00:00"
+         },
+         {
+            "status" : "failed",
+            "timestamp" : "2015-08-17 16:07:22.521583+00:00"
+         }
+      ]
+   },
+   "http://localhost:7000/v1/reports/workflow-executions?workflow_id=31" : {
+      "executions" : [
+         {
+            "begins" : [],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/392",
+            "id" : 392,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-08-17 16:07:21.009056+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-08-17 16:07:23.786596+00:00"
+               }
+            ],
+            "taskId" : 229
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/393",
+            "id" : 393,
+            "methodId" : 121,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-08-17 16:07:21.501015+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-08-17 16:07:21.648336+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-08-17 16:07:21.648336+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-08-17 16:07:23.718214+00:00"
+               }
+            ]
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/394",
+            "id" : 394,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-08-17 16:07:21.578955+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-08-17 16:07:21.578955+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-08-17 16:07:21.578955+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-08-17 16:07:21.730520+00:00"
+               }
+            ],
+            "taskId" : 231
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/395",
+            "id" : 395,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-08-17 16:07:21.789282+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-08-17 16:07:21.789282+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-08-17 16:07:21.789282+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-08-17 16:07:23.448189+00:00"
+               }
+            ],
+            "taskId" : 232
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/396",
+            "id" : 396,
+            "methodId" : 122,
+            "parentColor" : null,
+            "status" : "failed",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-08-17 16:07:21.858795+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-08-17 16:07:21.959459+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-08-17 16:07:22.499353+00:00"
+               },
+               {
+                  "status" : "failed",
+                  "timestamp" : "2015-08-17 16:07:22.521583+00:00"
+               }
+            ]
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/397",
+            "id" : 397,
+            "methodId" : 123,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-08-17 16:07:22.608208+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-08-17 16:07:22.690345+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-08-17 16:07:23.217588+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-08-17 16:07:23.358685+00:00"
+               }
+            ]
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/398",
+            "id" : 398,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "statusHistory" : [
+               {
+                  "status" : "new",
+                  "timestamp" : "2015-08-17 16:07:23.507441+00:00"
+               },
+               {
+                  "status" : "scheduled",
+                  "timestamp" : "2015-08-17 16:07:23.507441+00:00"
+               },
+               {
+                  "status" : "running",
+                  "timestamp" : "2015-08-17 16:07:23.507441+00:00"
+               },
+               {
+                  "status" : "succeeded",
+                  "timestamp" : "2015-08-17 16:07:23.678589+00:00"
+               }
+            ],
+            "taskId" : 233
+         }
+      ],
+      "updateUrl" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=31&since=2015-08-17+16%3A07%3A23.786596"
+   },
+   "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=31" : {
+      "id" : 31,
+      "name" : "Perl SDK Integration Test (shortcut_failure) 0A4541F8-44FA-11E5-ABC1-5DD3C5871DAF",
+      "rootTaskId" : 229,
+      "status" : "succeeded",
+      "tasks" : {
+         "A" : {
+            "id" : 232,
+            "methods" : [
+               {
+                  "id" : 122,
+                  "name" : "shortcut",
+                  "service" : "shell-command"
+               },
+               {
+                  "id" : 123,
+                  "name" : "execute",
+                  "service" : "shell-command"
+               }
+            ],
+            "topologicalIndex" : 0
+         }
+      }
+   }
+}
