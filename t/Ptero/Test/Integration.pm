@@ -34,6 +34,10 @@ our @EXPORT_OK = qw(
 sub setup_http_response_mocks {
     my $cache_file = shift;
 
+    if ($ENV{PTERO_REGENERATE_TEST_DATA_INPUTS}) {
+        unlink($cache_file);
+    }
+
     note "Mocking Ptero::Proxy::Workflow::make_request_and_decode_response";
 
     my $orig = Ptero::Proxy::Workflow->can('make_request_and_decode_response');
