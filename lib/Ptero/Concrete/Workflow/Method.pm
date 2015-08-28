@@ -12,6 +12,11 @@ sub new {
     $self->{service} = $hashref->{service};
     $self->{executions} = {};
 
+    # only Job Methods have serviceUrl
+    if (exists $hashref->{serviceUrl}) {
+        $self->{serviceUrl} = $hashref->{serviceUrl};
+    }
+
     return bless $self, $class;
 }
 

@@ -7,7 +7,7 @@ use Ptero::Concrete::Workflow::DAG;
 use Ptero::Concrete::Workflow::Method;
 
 my $CLASS_LOOKUP = {
-    'shell-command' => 'Ptero::Concrete::Workflow::Method',
+    'job' => 'Ptero::Concrete::Workflow::Method',
     'workflow' => 'Ptero::Concrete::Workflow::DAG',
     'workflow-block' => 'Ptero::Concrete::Workflow::Method',
     'workflow-converge' => 'Ptero::Concrete::Workflow::Method',
@@ -25,11 +25,23 @@ sub new {
 
     $self->{methods} = [];
     for my $method_data (@{$hashref->{methods}}) {
-        my $method_class = $CLASS_LOOKUP->{$method_data->{service}};
+        my $method_class = $class->_lookup_class($method_data->{service});
         push @{$self->{methods}}, $method_class->new($method_data);
     }
 
     return bless $self, $class;
+}
+
+sub _lookup_class {
+    my $self = shift;
+    my ($service_name) =  @_;
+
+    unless (exists $CLASS_LOOKUP->{$service_name}) {
+        die sprintf("Failed to lookup method class by service name (%s)",
+            $service_name);
+    }
+
+    return $CLASS_LOOKUP->{$service_name};
 }
 
 sub register_with_workflow {

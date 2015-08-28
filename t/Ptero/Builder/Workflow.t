@@ -12,7 +12,7 @@ use Ptero::Test::Builder qw(
 );
 
 use_ok('Ptero::Builder::Workflow');
-use_ok('Ptero::Builder::ShellCommand');
+use_ok('Ptero::Builder::Job');
 
 {
     my $workflow = build_basic_workflow('basic');

@@ -139,7 +139,7 @@ sub from_hashref {
 
 sub class_lookup {
     return {
-        'shell-command' => 'Ptero::Builder::ShellCommand',
+        'job' => 'Ptero::Builder::Job',
         'workflow' => 'Ptero::Builder::Workflow',
         'workflow-block' => 'Ptero::Builder::Detail::Workflow::Block',
         'workflow-converge' => 'Ptero::Builder::Detail::Workflow::Converge',

@@ -18,7 +18,7 @@ use Ptero::Proxy::Workflow::Execution;
 use Sub::Install qw();
 
 use Ptero::Builder::Workflow;
-use Ptero::Builder::ShellCommand;
+use Ptero::Builder::Job;
 use Ptero::Test::Utils qw(
     validate_submit_environment
     repo_relative_path
@@ -195,6 +195,7 @@ sub get_workflow_json {
         environment => to_json(get_environment()),
         workingDirectory => repo_relative_path('t', 'bin'),
         webhook => '"'.$ENV{PTERO_WORKFLOW_SUBMIT_URL}.'"',
+        shellCommandServiceUrl => $ENV{PTERO_PERL_SDK_TEST_SHELL_COMMAND_SERVICE_URL},
     };
 
     my $in_fh = IO::File->new("< $submit_file");

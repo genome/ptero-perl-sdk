@@ -123,7 +123,7 @@ sub add_data_flow {
     my %p = Params::Validate::validate(@_, {
             source => { type => SCALAR|OBJECT,
                         default => 'input connector'},
-            destination => { type => SCALAR|OBJECT, 
+            destination => { type => SCALAR|OBJECT,
                              default => 'output connector'},
             source_property => { type => SCALAR },
             destination_property => { type => SCALAR },
@@ -525,12 +525,13 @@ submission
 =head1 SYNOPSIS
 
     use Ptero::Builder::Workflow;
-    use Ptero::Builder::ShellCommand;
+    use Ptero::Builder::Job;
 
     my $workflow = Ptero::Builder::Workflow->new(name => 'test');
 
-    my $shortcut_method = Ptero::Builder::ShellCommand->new(
+    my $shortcut_method = Ptero::Builder::Job->new(
             name => 'try to shortcut',
+            service_url => 'http://example.com/v1',
             parameters => {
                 commandLine => [
                     'ptero-perl-subroutine-wrapper',
@@ -543,8 +544,9 @@ submission
             },
     );
 
-    my $execute_method = Ptero::Builder::ShellCommand->new(
+    my $execute_method = Ptero::Builder::Job->new(
             name => 'try to execute',
+            service_url => 'http://example.com/v1',
             parameters => {
                 commandLine => [
                     'ptero-perl-subroutine-wrapper',

@@ -178,7 +178,7 @@
                   "user" : "testuser",
                   "workingDirectory" : "/tmp"
                },
-               "service" : "shell-command"
+               "service" : "job"
             }
          ]
       },
@@ -288,7 +288,7 @@
                   "user" : "testuser",
                   "workingDirectory" : "/tmp"
                },
-               "service" : "shell-command"
+               "service" : "job"
             }
          ]
       },
@@ -446,7 +446,7 @@
                         "petri_response_links" : {
                            "created" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/69/tokens?color=0&color_group=0"
                         },
-                        "petri_response_links_for_shell_command" : {
+                        "petri_response_links_for_job" : {
                            "failure" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/90/tokens?color=0&color_group=0",
                            "success" : "http://localhost:6000/v1/nets/yQOlZeG9SPaWiSHHkE65XA/places/25/tokens?color=0&color_group=0"
                         },
@@ -491,7 +491,7 @@
                   "user" : "testuser",
                   "workingDirectory" : "/tmp"
                },
-               "service" : "shell-command"
+               "service" : "job"
             }
          ]
       },
@@ -605,7 +605,7 @@
                   "user" : "testuser",
                   "workingDirectory" : "/tmp"
                },
-               "service" : "shell-command"
+               "service" : "job"
             }
          ]
       }

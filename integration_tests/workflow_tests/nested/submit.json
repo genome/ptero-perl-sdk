@@ -4,7 +4,8 @@
             "methods": [
                 {
                     "name": "execute",
-                    "service": "shell-command",
+                    "service": "job",
+                    "serviceUrl": "{{ shellCommandServiceUrl }}",
                     "parameters": {
                         "commandLine": ["./ptero-test-command"],
                         "user": "{{ user }}",
@@ -32,7 +33,8 @@
                                 "methods": [
                                     {
                                         "name": "execute",
-                                        "service": "shell-command",
+                                        "service": "job",
+                                        "serviceUrl": "{{ shellCommandServiceUrl }}",
                                         "parameters": {
                                             "commandLine": ["./ptero-test-command"],
                                             "user": "{{ user }}",
@@ -84,7 +86,8 @@
             "methods": [
                 {
                     "name": "execute",
-                    "service": "shell-command",
+                    "service": "job",
+                    "serviceUrl": "{{ shellCommandServiceUrl }}",
                     "parameters": {
                         "commandLine": ["./ptero-test-command"],
                         "user": "{{ user }}",

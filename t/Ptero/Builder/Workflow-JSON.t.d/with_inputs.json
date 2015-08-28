@@ -61,7 +61,8 @@
                                  },
                                  "workingDirectory" : "/test/working/directory"
                               },
-                              "service" : "shell-command"
+                              "service" : "job",
+                              "serviceUrl" : "http://localhost:5000/v1"
                            }
                         ]
                      }

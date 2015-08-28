@@ -1,11 +1,11 @@
            TYPE     STATUS              STARTED      DURATION  NAME
-       Workflow  succeeded  2015-08-17T16:07:21      00:00:02  Perl SDK Integration Test (shortcut_failure) 0A4541F8-44FA-11E5-ABC1-5DD3C5871DAF
-           Task  succeeded  2015-08-17T16:07:21      00:00:02  A 
-   ShellCommand     failed  2015-08-17T16:07:22      00:00:00  . shortcut
-   ShellCommand  succeeded  2015-08-17T16:07:23      00:00:00  . execute
+       Workflow  succeeded  2015-08-28T15:50:22      00:00:02  Perl SDK Integration Test (shortcut_failure) 669B92CA-4DC6-11E5-A1A5-AE6A00DAD14B
+           Task  succeeded  2015-08-28T15:50:23      00:00:01  A 
+            Job     failed  2015-08-28T15:50:23      00:00:00  . shortcut
+            Job  succeeded  2015-08-28T15:50:24      00:00:00  . execute
 
-  status: failed    name: A.shortcut.396
-  service: shell-command
-  details url: http://localhost:7000/v1/executions/396
+  status: failed    name: A.shortcut.4110
+  service: job
+  details url: http://localhost:7000/v1/executions/4110
   exit code: 1
 
