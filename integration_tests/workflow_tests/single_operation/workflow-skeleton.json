@@ -1,16 +1,17 @@
 {
-   "id" : 58,
-   "name" : "dzp2a3EIQMmjO3R5jzvY-w",
-   "rootTaskId" : 469,
+   "id" : 287,
+   "name" : "Perl SDK Integration Test (single_operation) 6C821998-4DC6-11E5-A938-C56A00DAD14B",
+   "rootTaskId" : 2248,
    "status" : "succeeded",
    "tasks" : {
       "A" : {
-         "id" : 471,
+         "id" : 2252,
          "methods" : [
             {
-               "id" : 269,
+               "id" : 1186,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 0

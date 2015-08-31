@@ -133,7 +133,7 @@ sub report_on_task {
 
 my $DISPLAY_NAMES = {
     'workflow' => 'DAG',
-    'shell-command' => 'ShellCommand',
+    'job' => 'Job',
 };
 
 sub report_on_method {
@@ -201,7 +201,7 @@ sub report_on_abnormal_executions {
 }
 
 my $EXECUTION_REPORT_METHODS = {
-    'shell-command' => 'report_on_shell_command_execution',
+    'job' => 'report_on_job_execution',
 };
 
 sub report_on_execution {
@@ -219,7 +219,7 @@ sub report_on_execution {
 sub report_on_basic_execution {
     my ($self, $proxy, $service) = @_;
 
-    $self->printf("  status: %s    name: %s\n", 
+    $self->printf("  status: %s    name: %s\n",
         $proxy->concrete_execution->{status},
         $proxy->name);
     $self->printf("  service: %s\n", $service);
@@ -230,7 +230,7 @@ sub report_on_basic_execution {
     }
 }
 
-sub report_on_shell_command_execution {
+sub report_on_job_execution {
     my ($self, $proxy, $service) = @_;
 
     $self->report_on_basic_execution($proxy, $service);

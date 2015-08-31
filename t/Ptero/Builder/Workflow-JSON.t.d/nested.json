@@ -58,7 +58,8 @@
                                  },
                                  "workingDirectory" : "/test/working/directory"
                               },
-                              "service" : "shell-command"
+                              "service" : "job",
+                              "serviceUrl" : "http://example.com/v1"
                            }
                         ],
                         "webhooks" : {

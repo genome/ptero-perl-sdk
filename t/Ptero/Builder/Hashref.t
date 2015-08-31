@@ -46,7 +46,8 @@ use Ptero::Test::Builder qw(
                                     succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
                                 },
                             },
-                            service => "shell-command",
+                            service => "job",
+                            serviceUrl => 'http://example.com/v1',
                         },
                     ],
                     webhooks => {
@@ -106,7 +107,8 @@ use Ptero::Test::Builder qw(
                                     succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
                                 },
                             },
-                            service => "shell-command",
+                            service => "job",
+                            serviceUrl => 'http://example.com/v1',
                         },
                     ],
                     parallelBy => "A_in",
@@ -191,7 +193,8 @@ use Ptero::Test::Builder qw(
                                                         succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
                                                     },
                                                 },
-                                                service => "shell-command",
+                                                service => "job",
+                                                serviceUrl => 'http://example.com/v1'
                                             },
                                         ],
                                         webhooks => {
