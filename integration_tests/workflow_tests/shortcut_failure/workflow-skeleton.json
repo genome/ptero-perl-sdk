@@ -1,21 +1,23 @@
 {
-   "id" : 56,
-   "name" : "HIYRPvKwQyKhRcO_metlQA",
-   "rootTaskId" : 457,
+   "id" : 285,
+   "name" : "Perl SDK Integration Test (shortcut_failure) 669B92CA-4DC6-11E5-A1A5-AE6A00DAD14B",
+   "rootTaskId" : 2236,
    "status" : "succeeded",
    "tasks" : {
       "A" : {
-         "id" : 459,
+         "id" : 2240,
          "methods" : [
             {
-               "id" : 263,
+               "id" : 1180,
                "name" : "shortcut",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             },
             {
-               "id" : 264,
+               "id" : 1181,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 0

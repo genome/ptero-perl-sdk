@@ -14,10 +14,11 @@ use File::Spec qw();
 use Template;
 
 use Ptero::Proxy::Workflow;
+use Ptero::Proxy::Workflow::Execution;
 use Sub::Install qw();
 
 use Ptero::Builder::Workflow;
-use Ptero::Builder::ShellCommand;
+use Ptero::Builder::Job;
 use Ptero::Test::Utils qw(
     validate_submit_environment
     repo_relative_path
@@ -33,6 +34,10 @@ our @EXPORT_OK = qw(
 sub setup_http_response_mocks {
     my $cache_file = shift;
 
+    if ($ENV{PTERO_REGENERATE_TEST_DATA_INPUTS}) {
+        unlink($cache_file);
+    }
+
     note "Mocking Ptero::Proxy::Workflow::make_request_and_decode_response";
 
     my $orig = Ptero::Proxy::Workflow->can('make_request_and_decode_response');
@@ -42,6 +47,19 @@ sub setup_http_response_mocks {
                 return lookup_locally($orig, $args, $cache_file);
             },
             into => 'Ptero::Proxy::Workflow',
+            as => 'make_request_and_decode_response',
+    });
+
+
+    note "Mocking Ptero::Proxy::Workflow::Execution::make_request_and_decode_response";
+
+    $orig = Ptero::Proxy::Workflow::Execution->can('make_request_and_decode_response');
+    Sub::Install::reinstall_sub({
+            code => sub {
+                my $args = [@_];
+                return lookup_locally($orig, $args, $cache_file);
+            },
+            into => 'Ptero::Proxy::Workflow::Execution',
             as => 'make_request_and_decode_response',
     });
 }
@@ -60,7 +78,7 @@ sub lookup_locally {
         write_file($cache_file, to_json($cache, {pretty=>1, canonical=>1}));
     }
 
-    note "Looking for ($url) in local Ptero::Workflow response cache";
+    note "Looking for ($url) in local response cache";
     my $cache = from_json(read_file($cache_file));
 
     if (exists($cache->{$url})) {
@@ -160,7 +178,7 @@ sub get_expected_outputs {
 
     my $json_text = read_file($filename);
     my $hashref = from_json($json_text);
-    note "No outputs found in file '$filename'";
+    note "No outputs found in file '$filename'" unless ($hashref);
     return $hashref->{outputs};
 }
 
@@ -177,6 +195,7 @@ sub get_workflow_json {
         environment => to_json(get_environment()),
         workingDirectory => repo_relative_path('t', 'bin'),
         webhook => '"'.$ENV{PTERO_WORKFLOW_SUBMIT_URL}.'"',
+        shellCommandServiceUrl => $ENV{PTERO_PERL_SDK_TEST_SHELL_COMMAND_SERVICE_URL},
     };
 
     my $in_fh = IO::File->new("< $submit_file");

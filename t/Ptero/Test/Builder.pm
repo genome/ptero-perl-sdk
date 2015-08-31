@@ -3,7 +3,7 @@ package Ptero::Test::Builder;
 use strict;
 use warnings FATAL => 'all';
 
-use Ptero::Builder::ShellCommand;
+use Ptero::Builder::Job;
 use Ptero::Builder::Workflow;
 
 use Exporter 'import';
@@ -55,8 +55,9 @@ sub build_basic_workflow {
     my $task = $workflow->create_task(
         name => 'A',
         methods => [
-            Ptero::Builder::ShellCommand->new(
+            Ptero::Builder::Job->new(
                 name => 'do something',
+                service_url => 'http://example.com/v1',
                 parameters => {
                     commandLine => ['echo', 'basic-workflow'],
                     user => 'testuser',
@@ -102,8 +103,9 @@ sub create_basic_task {
     return $workflow->create_task(
         name => $name,
         methods => [
-            Ptero::Builder::ShellCommand->new(
+            Ptero::Builder::Job->new(
                 name => 'do something',
+                service_url => 'http://example.com/v1',
                 parameters => {
                     commandLine => ['echo', 'basic-task'],
                     user => 'testuser',

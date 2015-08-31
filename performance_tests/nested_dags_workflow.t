@@ -9,7 +9,7 @@ use Ptero::Test::Utils qw(
 );
 
 use_ok('Ptero::Builder::Workflow');
-use_ok('Ptero::Builder::ShellCommand');
+use_ok('Ptero::Builder::Job');
 
 my $test_input = 'example test input';
 my $count = $ENV{PTERO_TEST_NESTING_FACTOR} || 25;
@@ -21,12 +21,13 @@ is_deeply($wf_proxy->outputs, {'A_in' => $test_input}, 'Got expected outputs');
 done_testing();
 
 
-sub shell_command_method {
+sub job_method {
     my $name = shift;
     my $subroutine = shift;
 
-    return Ptero::Builder::ShellCommand->new(
+    return Ptero::Builder::Job->new(
             name => $name,
+            service_url => $ENV{PTERO_PERL_SDK_TEST_SHELL_COMMAND_SERVICE_URL},
             parameters => {
                 commandLine => [
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
@@ -42,7 +43,7 @@ sub shell_command_method {
 sub create_workflow {
     my $count = shift;
 
-    my $method = shell_command_method("shell_command", "echo_test");
+    my $method = job_method("job", "echo_test");
     for my $i (1..$count) {
         my $workflow = Ptero::Builder::Workflow->new(name => "DAG $i");
         my $task = $workflow->create_task(

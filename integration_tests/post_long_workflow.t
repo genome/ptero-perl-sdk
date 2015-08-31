@@ -10,10 +10,13 @@ use Ptero::Test::Utils qw(
     repo_relative_path
     get_environment
     get_test_name
+    validate_submit_environment
 );
 
 use_ok('Ptero::Builder::Workflow');
-use_ok('Ptero::Builder::ShellCommand');
+use_ok('Ptero::Builder::Job');
+
+validate_submit_environment();
 
 setup_logging();
 my $workflow = create_echo_workflow();
@@ -55,8 +58,9 @@ sub write_report {
 my $count = 0;
 sub create_sleep_echo_command {
     $count++;
-    return Ptero::Builder::ShellCommand->new(
+    return Ptero::Builder::Job->new(
             name => "echo succeed $count",
+            service_url => $ENV{PTERO_PERL_SDK_TEST_SHELL_COMMAND_SERVICE_URL},
             parameters => {
                 commandLine => [
                     repo_relative_path('bin',
@@ -72,8 +76,9 @@ sub create_sleep_echo_command {
 
 sub create_sleep_fail_command {
     $count++;
-    return Ptero::Builder::ShellCommand->new(
+    return Ptero::Builder::Job->new(
             name => "echo fail $count",
+            service_url => $ENV{PTERO_PERL_SDK_TEST_SHELL_COMMAND_SERVICE_URL},
             parameters => {
                 commandLine => [
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),

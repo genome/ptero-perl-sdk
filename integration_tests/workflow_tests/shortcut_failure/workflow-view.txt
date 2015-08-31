@@ -1,5 +1,11 @@
-           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded  2015-05-28T20:39:48      00:00:03           HIYRPvKwQyKhRcO_metlQA
-           Task  succeeded  2015-05-28T20:39:49      00:00:01           A 
-   ShellCommand     failed  2015-05-28T20:39:50      00:00:00           . shortcut
-   ShellCommand  succeeded  2015-05-28T20:39:50      00:00:00           . execute
+           TYPE     STATUS              STARTED      DURATION  NAME
+       Workflow  succeeded  2015-08-28T15:50:22      00:00:02  Perl SDK Integration Test (shortcut_failure) 669B92CA-4DC6-11E5-A1A5-AE6A00DAD14B
+           Task  succeeded  2015-08-28T15:50:23      00:00:01  A 
+            Job     failed  2015-08-28T15:50:23      00:00:00  . shortcut
+            Job  succeeded  2015-08-28T15:50:24      00:00:00  . execute
+
+  status: failed    name: A.shortcut.4110
+  service: job
+  details url: http://localhost:7000/v1/executions/4110
+  exit code: 1
+

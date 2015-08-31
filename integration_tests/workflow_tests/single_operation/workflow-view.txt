@@ -1,4 +1,4 @@
-           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded  2015-05-28T20:39:56      00:00:01           dzp2a3EIQMmjO3R5jzvY-w
-           Task  succeeded  2015-05-28T20:39:56      00:00:01           A 
-   ShellCommand  succeeded  2015-05-28T20:39:57      00:00:00           . execute
+           TYPE     STATUS              STARTED      DURATION  NAME
+       Workflow  succeeded  2015-08-28T15:50:32      00:00:01  Perl SDK Integration Test (single_operation) 6C821998-4DC6-11E5-A938-C56A00DAD14B
+           Task  succeeded  2015-08-28T15:50:32      00:00:01  A 
+            Job  succeeded  2015-08-28T15:50:33      00:00:00  . execute

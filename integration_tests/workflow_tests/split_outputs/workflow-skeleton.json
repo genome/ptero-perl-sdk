@@ -1,38 +1,41 @@
 {
-   "id" : 59,
-   "name" : "gm2J3SCPTXGsS2_9j5GJuA",
-   "rootTaskId" : 475,
+   "id" : 290,
+   "name" : "Perl SDK Integration Test (split_outputs) 724CC4FE-4DC6-11E5-8233-D76A00DAD14B",
+   "rootTaskId" : 2265,
    "status" : "succeeded",
    "tasks" : {
       "A" : {
-         "id" : 477,
+         "id" : 2268,
          "methods" : [
             {
-               "id" : 271,
+               "id" : 1191,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 0
       },
       "B" : {
-         "id" : 479,
+         "id" : 2269,
          "methods" : [
             {
-               "id" : 273,
+               "id" : 1192,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 1
       },
       "C" : {
-         "id" : 478,
+         "id" : 2271,
          "methods" : [
             {
-               "id" : 272,
+               "id" : 1193,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 2

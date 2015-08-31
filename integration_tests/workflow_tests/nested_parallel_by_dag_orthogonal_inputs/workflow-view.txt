@@ -1,25 +1,33 @@
-           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded  2015-05-28T20:38:37      00:00:12           wzzqRbAtQpe77mRJQrtJzg
-           Task  succeeded  2015-05-28T20:38:39      00:00:09           A parallel-by: in_outer_parallel
-            DAG  succeeded  2015-05-28T20:38:40      00:00:08  0        . inner
-           Task  succeeded  2015-05-28T20:38:40      00:00:08  0        . . Inner parallel-by: kitten_name_in
-            DAG  succeeded  2015-05-28T20:38:41      00:00:06  0, 0     . . . some_workflow
-           Task  succeeded  2015-05-28T20:38:42      00:00:04  0, 0     . . . . A 
-   ShellCommand  succeeded  2015-05-28T20:38:46      00:00:00  0, 0     . . . . . execute
-            DAG  succeeded  2015-05-28T20:38:41      00:00:07  0, 1     . . . some_workflow
-           Task  succeeded  2015-05-28T20:38:42      00:00:05  0, 1     . . . . A 
-   ShellCommand  succeeded  2015-05-28T20:38:46      00:00:01  0, 1     . . . . . execute
-            DAG  succeeded  2015-05-28T20:38:41      00:00:05  0, 2     . . . some_workflow
-           Task  succeeded  2015-05-28T20:38:42      00:00:04  0, 2     . . . . A 
-   ShellCommand  succeeded  2015-05-28T20:38:43      00:00:02  0, 2     . . . . . execute
-            DAG  succeeded  2015-05-28T20:38:40      00:00:08  1        . inner
-           Task  succeeded  2015-05-28T20:38:40      00:00:08  1        . . Inner parallel-by: kitten_name_in
-            DAG  succeeded  2015-05-28T20:38:41      00:00:06  1, 0     . . . some_workflow
-           Task  succeeded  2015-05-28T20:38:42      00:00:04  1, 0     . . . . A 
-   ShellCommand  succeeded  2015-05-28T20:38:45      00:00:01  1, 0     . . . . . execute
-            DAG  succeeded  2015-05-28T20:38:41      00:00:07  1, 1     . . . some_workflow
-           Task  succeeded  2015-05-28T20:38:42      00:00:05  1, 1     . . . . A 
-   ShellCommand  succeeded  2015-05-28T20:38:47      00:00:00  1, 1     . . . . . execute
-            DAG  succeeded  2015-05-28T20:38:41      00:00:06  1, 2     . . . some_workflow
-           Task  succeeded  2015-05-28T20:38:42      00:00:05  1, 2     . . . . A 
-   ShellCommand  succeeded  2015-05-28T20:38:46      00:00:01  1, 2     . . . . . execute
+           TYPE     STATUS              STARTED      DURATION  NAME
+       Workflow  succeeded  2015-08-28T15:49:12      00:00:08  Perl SDK Integration Test (nested_parallel_by_dag_orthogonal_inputs) 3C9B4650-4DC6-11E5-8A0C-FA6900DAD14B
+           Task  succeeded  2015-08-28T15:49:13      00:00:06  A [parallel-by: in_outer_parallel]
+           Task  succeeded  2015-08-28T15:49:13      00:00:06  . A [0]
+            DAG  succeeded  2015-08-28T15:49:13      00:00:06  . . inner
+           Task  succeeded  2015-08-28T15:49:13      00:00:06  . . . Inner [parallel-by: kitten_name_in]
+           Task  succeeded  2015-08-28T15:49:13      00:00:05  . . . . Inner [0, 0]
+            DAG  succeeded  2015-08-28T15:49:14      00:00:04  . . . . . some_workflow
+           Task  succeeded  2015-08-28T15:49:14      00:00:04  . . . . . . A 
+            Job  succeeded  2015-08-28T15:49:17      00:00:01  . . . . . . . execute
+           Task  succeeded  2015-08-28T15:49:13      00:00:05  . . . . Inner [0, 1]
+            DAG  succeeded  2015-08-28T15:49:14      00:00:04  . . . . . some_workflow
+           Task  succeeded  2015-08-28T15:49:14      00:00:04  . . . . . . A 
+            Job  succeeded  2015-08-28T15:49:17      00:00:01  . . . . . . . execute
+           Task  succeeded  2015-08-28T15:49:13      00:00:06  . . . . Inner [0, 2]
+            DAG  succeeded  2015-08-28T15:49:14      00:00:05  . . . . . some_workflow
+           Task  succeeded  2015-08-28T15:49:14      00:00:04  . . . . . . A 
+            Job  succeeded  2015-08-28T15:49:18      00:00:00  . . . . . . . execute
+           Task  succeeded  2015-08-28T15:49:13      00:00:06  . A [1]
+            DAG  succeeded  2015-08-28T15:49:13      00:00:06  . . inner
+           Task  succeeded  2015-08-28T15:49:13      00:00:06  . . . Inner [parallel-by: kitten_name_in]
+           Task  succeeded  2015-08-28T15:49:13      00:00:06  . . . . Inner [1, 0]
+            DAG  succeeded  2015-08-28T15:49:14      00:00:05  . . . . . some_workflow
+           Task  succeeded  2015-08-28T15:49:14      00:00:05  . . . . . . A 
+            Job  succeeded  2015-08-28T15:49:18      00:00:00  . . . . . . . execute
+           Task  succeeded  2015-08-28T15:49:13      00:00:06  . . . . Inner [1, 1]
+            DAG  succeeded  2015-08-28T15:49:14      00:00:05  . . . . . some_workflow
+           Task  succeeded  2015-08-28T15:49:14      00:00:04  . . . . . . A 
+            Job  succeeded  2015-08-28T15:49:18      00:00:00  . . . . . . . execute
+           Task  succeeded  2015-08-28T15:49:13      00:00:06  . . . . Inner [1, 2]
+            DAG  succeeded  2015-08-28T15:49:14      00:00:05  . . . . . some_workflow
+           Task  succeeded  2015-08-28T15:49:14      00:00:05  . . . . . . A 
+            Job  succeeded  2015-08-28T15:49:18      00:00:01  . . . . . . . execute

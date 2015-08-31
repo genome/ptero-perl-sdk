@@ -4,11 +4,12 @@ use warnings FATAL => 'all';
 use Test::Exception;
 use Test::More;
 
-use_ok('Ptero::Builder::ShellCommand');
+use_ok('Ptero::Builder::Job');
 
 {
-    my $sc = Ptero::Builder::ShellCommand->new(
+    my $sc = Ptero::Builder::Job->new(
         name => 'foo',
+        service_url => 'http://example.com/v1',
         parameters => {
             commandLine => ['echo', 'hi'],
             user => 'testuser',
@@ -16,13 +17,14 @@ use_ok('Ptero::Builder::ShellCommand');
         },
     );
 
-    is($sc->service, 'shell-command',
-        'service automatically set to shell-command');
+    is($sc->service, 'job',
+        'service automatically set to job');
 }
 
 {
-    my $sc = Ptero::Builder::ShellCommand->new(
+    my $sc = Ptero::Builder::Job->new(
         name => 'foo',
+        service_url => 'http://example.com/v1',
         parameters => {
             commandLine => ['echo', 'hi'],
             user => 'testuser',

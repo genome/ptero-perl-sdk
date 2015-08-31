@@ -94,7 +94,7 @@
                         }
                     },
                     "name": "execute",
-                    "service": "shell-command"
+                    "service": "job"
                 }
             ],
             "webhooks": {

@@ -1,24 +1,25 @@
 {
-   "id" : 49,
-   "name" : "1wN1h4AtTwyUryBum6Zqrg",
-   "rootTaskId" : 399,
+   "id" : 278,
+   "name" : "Perl SDK Integration Test (nested_parallel_by_operation_orthogonal_inputs) 48AB440E-4DC6-11E5-B60E-346A00DAD14B",
+   "rootTaskId" : 2178,
    "status" : "succeeded",
    "tasks" : {
       "A" : {
-         "id" : 401,
+         "id" : 2182,
          "methods" : [
             {
-               "id" : 241,
+               "id" : 1158,
                "name" : "inner",
                "parameters" : {
                   "tasks" : {
                      "A" : {
-                        "id" : 404,
+                        "id" : 2185,
                         "methods" : [
                            {
-                              "id" : 242,
+                              "id" : 1159,
                               "name" : "execute",
-                              "service" : "shell-command"
+                              "service" : "job",
+                              "serviceUrl" : "http://localhost:5000/v1"
                            }
                         ],
                         "parallelBy" : "kitten_name",

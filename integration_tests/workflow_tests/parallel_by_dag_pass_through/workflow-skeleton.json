@@ -1,35 +1,37 @@
 {
-   "id" : 51,
-   "name" : "iXDuo3dET6SlLMMQlCvJ7A",
-   "rootTaskId" : 417,
+   "id" : 280,
+   "name" : "Perl SDK Integration Test (parallel_by_dag_pass_through) 51EFFAAA-4DC6-11E5-A61C-596A00DAD14B",
+   "rootTaskId" : 2196,
    "status" : "succeeded",
    "tasks" : {
       "A" : {
-         "id" : 419,
+         "id" : 2201,
          "methods" : [
             {
-               "id" : 247,
+               "id" : 1165,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 1
       },
       "Inner" : {
-         "id" : 421,
+         "id" : 2199,
          "methods" : [
             {
-               "id" : 248,
+               "id" : 1164,
                "name" : "some_workflow",
                "parameters" : {
                   "tasks" : {
                      "michael" : {
-                        "id" : 424,
+                        "id" : 2203,
                         "methods" : [
                            {
-                              "id" : 249,
+                              "id" : 1166,
                               "name" : "execute",
-                              "service" : "shell-command"
+                              "service" : "job",
+                              "serviceUrl" : "http://localhost:5000/v1"
                            }
                         ],
                         "topologicalIndex" : 0

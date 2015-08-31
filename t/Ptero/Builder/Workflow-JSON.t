@@ -39,7 +39,7 @@ use_ok('Ptero::Builder::Workflow');
 {
     my $blessed_json = get_test_json('with_parallel_by');
     my $workflow = Ptero::Builder::Workflow->from_json($blessed_json, 'some-workflow');
-    is_same($workflow->to_json, get_test_file('with_parallel_by'), 
+    is_same($workflow->to_json, get_test_file('with_parallel_by'),
         'nested with parallelBy');
 }
 
@@ -71,7 +71,7 @@ sub regenerate_test_data {
     my $name = shift;
     my $json_filename = File::Spec->join($test_dir, $name . '.json');
     if ($ENV{REGENERATE_TEST_DATA}) {
-        File::Slurp::write_file($json_filename, $workflow->to_json() . "\n");
+        File::Slurp::write_file($json_filename, $workflow->to_json());
     }
 }
 
@@ -79,6 +79,7 @@ sub is_same {
     my ($got, $expected_file, $label) = @_;
 
     my $diff = diff($expected_file, \$got, { STYLE => "Context" });
-    ok(!$diff, $label) || printf "Found differences:\n%s", $diff;
+    ok(!$diff, $label) || printf "Found differences:\n"
+        ."*** => generated string\n--- => %s\n%s", $expected_file, $diff;
 }
 

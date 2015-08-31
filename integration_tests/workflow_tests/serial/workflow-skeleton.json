@@ -1,38 +1,41 @@
 {
-   "id" : 55,
-   "name" : "N_PbIYhGR--4f8XFz1RZVA",
-   "rootTaskId" : 449,
+   "id" : 284,
+   "name" : "Perl SDK Integration Test (serial) 63556DFC-4DC6-11E5-BB7B-9C6A00DAD14B",
+   "rootTaskId" : 2228,
    "status" : "succeeded",
    "tasks" : {
       "A" : {
-         "id" : 451,
+         "id" : 2231,
          "methods" : [
             {
-               "id" : 259,
+               "id" : 1176,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 0
       },
       "B" : {
-         "id" : 453,
+         "id" : 2232,
          "methods" : [
             {
-               "id" : 261,
+               "id" : 1177,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 1
       },
       "C" : {
-         "id" : 452,
+         "id" : 2234,
          "methods" : [
             {
-               "id" : 260,
+               "id" : 1178,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 2

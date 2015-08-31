@@ -1,46 +1,49 @@
 {
-   "id" : 46,
-   "name" : "G1KjUvUsTHuMie3CT1W2sw",
-   "rootTaskId" : 367,
+   "id" : 275,
+   "name" : "Perl SDK Integration Test (nested) 387F2082-4DC6-11E5-845B-E86900DAD14B",
+   "rootTaskId" : 2146,
    "status" : "succeeded",
    "tasks" : {
       "A" : {
-         "id" : 369,
+         "id" : 2150,
          "methods" : [
             {
-               "id" : 229,
+               "id" : 1147,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 0
       },
       "C" : {
-         "id" : 370,
+         "id" : 2152,
          "methods" : [
             {
-               "id" : 230,
+               "id" : 1148,
                "name" : "execute",
-               "service" : "shell-command"
+               "service" : "job",
+               "serviceUrl" : "http://localhost:5000/v1"
             }
          ],
          "topologicalIndex" : 2
       },
       "Inner" : {
-         "id" : 373,
+         "id" : 2149,
          "methods" : [
             {
-               "id" : 231,
+               "id" : 1146,
                "name" : "some_workflow",
                "parameters" : {
                   "tasks" : {
                      "B" : {
-                        "id" : 375,
+                        "id" : 2154,
                         "methods" : [
                            {
-                              "id" : 232,
+                              "id" : 1149,
                               "name" : "execute",
-                              "service" : "shell-command"
+                              "service" : "job",
+                              "serviceUrl" : "http://localhost:5000/v1"
                            }
                         ],
                         "topologicalIndex" : 0

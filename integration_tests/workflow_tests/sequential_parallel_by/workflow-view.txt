@@ -1,10 +1,16 @@
-           TYPE     STATUS              STARTED      DURATION  P-INDEX  NAME
-       Workflow  succeeded  2015-05-28T20:39:35      00:00:07           sxu_SGVmQbGzvVnVbJwoNw
-           Task  succeeded  2015-05-28T20:39:36      00:00:03           A parallel-by: parallel_param
-   ShellCommand  succeeded  2015-05-28T20:39:37      00:00:01  0        . execute
-   ShellCommand  succeeded  2015-05-28T20:39:38      00:00:00  2        . execute
-   ShellCommand  succeeded  2015-05-28T20:39:38      00:00:01  1        . execute
-           Task  succeeded  2015-05-28T20:39:39      00:00:03           B parallel-by: parallel_param
-   ShellCommand  succeeded  2015-05-28T20:39:41      00:00:00  2        . execute
-   ShellCommand  succeeded  2015-05-28T20:39:41      00:00:00  0        . execute
-   ShellCommand  succeeded  2015-05-28T20:39:41      00:00:00  1        . execute
+           TYPE     STATUS              STARTED      DURATION  NAME
+       Workflow  succeeded  2015-08-28T15:50:08      00:00:06  Perl SDK Integration Test (sequential_parallel_by) 5E6078A0-4DC6-11E5-807E-876A00DAD14B
+           Task  succeeded  2015-08-28T15:50:09      00:00:02  A [parallel-by: parallel_param]
+           Task  succeeded  2015-08-28T15:50:09      00:00:02  . A [0]
+            Job  succeeded  2015-08-28T15:50:11      00:00:00  . . execute
+           Task  succeeded  2015-08-28T15:50:09      00:00:02  . A [1]
+            Job  succeeded  2015-08-28T15:50:11      00:00:00  . . execute
+           Task  succeeded  2015-08-28T15:50:09      00:00:02  . A [2]
+            Job  succeeded  2015-08-28T15:50:11      00:00:00  . . execute
+           Task  succeeded  2015-08-28T15:50:11      00:00:03  B [parallel-by: parallel_param]
+           Task  succeeded  2015-08-28T15:50:12      00:00:02  . B [0]
+            Job  succeeded  2015-08-28T15:50:13      00:00:01  . . execute
+           Task  succeeded  2015-08-28T15:50:12      00:00:02  . B [1]
+            Job  succeeded  2015-08-28T15:50:13      00:00:01  . . execute
+           Task  succeeded  2015-08-28T15:50:12      00:00:02  . B [2]
+            Job  succeeded  2015-08-28T15:50:14      00:00:00  . . execute

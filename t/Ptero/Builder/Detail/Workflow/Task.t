@@ -4,7 +4,7 @@ use warnings FATAL => 'all';
 use Test::Exception;
 use Test::More;
 
-use_ok('Ptero::Builder::ShellCommand');
+use_ok('Ptero::Builder::Job');
 use_ok('Ptero::Builder::Detail::Workflow::Task');
 
 {
@@ -21,8 +21,9 @@ use_ok('Ptero::Builder::Detail::Workflow::Task');
 }
 
 {
-    my $sc = Ptero::Builder::ShellCommand->new(
-        name => 'test-shell-command',
+    my $sc = Ptero::Builder::Job->new(
+        name => 'test-job',
+        service_url => 'http://example.com/v1',
         parameters => {
             commandLine => ['echo', 'hi'],
             user => 'testuser',
@@ -52,7 +53,7 @@ use_ok('Ptero::Builder::Detail::Workflow::Task');
     $sc->parameters->{invalid_parameter} = 'bad';
     is_deeply([$t->validation_errors],
         [
-            'Method (test-shell-command) has one or more invalid parameter(s): "invalid_parameter"',
+            'Method (test-job) has one or more invalid parameter(s): "invalid_parameter"',
         ], 'errors from methods');
 
     delete $t->methods->[0];

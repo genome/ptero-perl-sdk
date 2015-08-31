@@ -1,32 +1,33 @@
 {
-   "id" : 47,
-   "name" : "wzzqRbAtQpe77mRJQrtJzg",
-   "rootTaskId" : 378,
+   "id" : 276,
+   "name" : "Perl SDK Integration Test (nested_parallel_by_dag_orthogonal_inputs) 3C9B4650-4DC6-11E5-8A0C-FA6900DAD14B",
+   "rootTaskId" : 2157,
    "status" : "succeeded",
    "tasks" : {
       "A" : {
-         "id" : 380,
+         "id" : 2161,
          "methods" : [
             {
-               "id" : 234,
+               "id" : 1151,
                "name" : "inner",
                "parameters" : {
                   "tasks" : {
                      "Inner" : {
-                        "id" : 384,
+                        "id" : 2163,
                         "methods" : [
                            {
-                              "id" : 235,
+                              "id" : 1152,
                               "name" : "some_workflow",
                               "parameters" : {
                                  "tasks" : {
                                     "A" : {
-                                       "id" : 386,
+                                       "id" : 2167,
                                        "methods" : [
                                           {
-                                             "id" : 236,
+                                             "id" : 1153,
                                              "name" : "execute",
-                                             "service" : "shell-command"
+                                             "service" : "job",
+                                             "serviceUrl" : "http://localhost:5000/v1"
                                           }
                                        ],
                                        "topologicalIndex" : 0

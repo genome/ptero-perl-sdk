@@ -7,10 +7,13 @@ use Ptero::Test::Utils qw(
     repo_relative_path
     get_environment
     get_test_name
+    validate_submit_environment
 );
 
 use_ok('Ptero::Builder::Workflow');
-use_ok('Ptero::Builder::ShellCommand');
+use_ok('Ptero::Builder::Job');
+
+validate_submit_environment();
 
 my $test_input = 'example test input';
 my $workflow = create_echo_workflow();
@@ -24,8 +27,9 @@ done_testing();
 
 sub create_echo_workflow {
     my $workflow = Ptero::Builder::Workflow->new(name => 'test');
-    my $sc = Ptero::Builder::ShellCommand->new(
+    my $sc = Ptero::Builder::Job->new(
             name => 'do something',
+            service_url => $ENV{PTERO_PERL_SDK_TEST_SHELL_COMMAND_SERVICE_URL},
             parameters => {
                 commandLine => [
                     repo_relative_path('bin','ptero-perl-subroutine-wrapper'),
