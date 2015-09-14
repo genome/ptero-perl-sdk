@@ -32,20 +32,39 @@ use_ok('Ptero::Builder::Job');
         },
     );
 
-    is_deeply([$sc->validation_errors], [], 'no validation errors');
+    is_deeply([$sc->validation_errors], [],
+        'no validation errors for shell-command style parameters');
 
-    delete $sc->parameters->{commandLine};
+    delete $sc->parameters->{user};
     is_deeply([$sc->validation_errors],
-        ['Method (foo) is missing one or more required parameter(s): "commandLine"'],
+        ['Method (foo) is missing one or more required parameter(s): "user"'],
         'missing required parameter errors');
 
     $sc->parameters->{bar} = 'baz';
     is_deeply([$sc->validation_errors],
         [
-            'Method (foo) is missing one or more required parameter(s): "commandLine"',
+            'Method (foo) is missing one or more required parameter(s): "user"',
             'Method (foo) has one or more invalid parameter(s): "bar"',
         ],
         'invalid parameter errors');
+}
+
+{
+    my $lsf = Ptero::Builder::Job->new(
+        name => 'foo',
+        service_url => 'http://example.com/v1',
+        parameters => {
+            command => ['echo', 'hi'],
+            cwd => '/test/working/directory',
+            environment => { FOO => 'bar' },
+            options => {},
+            rLimits => {},
+            user => 'testuser',
+        },
+    );
+
+    is_deeply([$lsf->validation_errors], [],
+        'no validation errors for lsf-style parameters');
 }
 
 done_testing();

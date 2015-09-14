@@ -41,17 +41,21 @@ sub has_possible_output_property {
 
 sub required_parameters {
     return qw(
-        commandLine
         user
-        workingDirectory
     );
 }
 
 sub optional_parameters {
     return qw(
-        webhooks
+        command
+        commandLine
+        cwd
         environment
+        options
+        rLimits
         umask
+        webhooks
+        workingDirectory
     );
 }
 
