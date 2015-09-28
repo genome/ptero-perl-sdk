@@ -1,0 +1,3 @@
+#! /bin/bash
+
+carton exec perl -I lib bin/ptero-view $1
