@@ -10,7 +10,7 @@
                         "user": "{{ user }}",
                         "cwd": "{{ workingDirectory }}",
                         "environment": {{ environment }},
-                        "command": "./echo_command",
+                        "command": "./ptero-test-command",
                         "pollingInterval": 3,
                         "options": {
                             "outFile": "{{ lsfOutputsDirectory }}"
