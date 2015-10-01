@@ -1,0 +1,37 @@
+{
+   "links" : [
+      {
+         "destination" : "SomeTask",
+         "source" : "input connector"
+      },
+      {
+         "destination" : "output connector",
+         "source" : "SomeTask"
+      }
+   ],
+   "tasks" : {
+      "SomeTask" : {
+         "methods" : [
+            {
+               "name" : "SomeMethod",
+               "parameters" : {
+                  "commandLine" : [
+                     "ptero-perl-subroutine-wrapper",
+                     "--package",
+                     "Some::Perl::Module",
+                     "--subroutine",
+                     "some_subroutine"
+                  ],
+                  "environment" : {
+                     "PERL5LIB" : "/path/to/some/perl/module"
+                  },
+                  "user" : "some_user",
+                  "workingDirectory" : "/tmp"
+               },
+               "service" : "job",
+               "serviceUrl" : "http://some-job-service.example.com/v1"
+            }
+         ]
+      }
+   }
+}
