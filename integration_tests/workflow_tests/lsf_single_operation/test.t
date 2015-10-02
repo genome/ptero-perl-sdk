@@ -1,8 +1,7 @@
 use Ptero::Test::Integration qw(run_test);
 use Test::More;
 
-my @required_env = qw(PTERO_PERL_SDK_TEST_LSF_SERVICE_URL
-    PTERO_WORKFLOW_TEST_LSF_OUTPUTS_DIR);
+my @required_env = qw(PTERO_PERL_SDK_TEST_LSF_SERVICE_URL);
 
 SKIP: {
     skip(join(' and ', @required_env).' must be set to run these tests', 1)

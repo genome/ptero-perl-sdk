@@ -12,9 +12,6 @@
                         "environment": {{ environment }},
                         "command": "./ptero-test-command",
                         "pollingInterval": 3,
-                        "options": {
-                            "outFile": "{{ lsfOutputsDirectory }}"
-                        },
                         "rLimits": {
                             "cpuTime": 1
                         }
