@@ -1,0 +1,6 @@
+site_name: PTero Perl SDK
+pages:
+    - Home: index.md
+    - Examples:
+        - 'Single Task': 'examples/single_task.md'
+theme: readthedocs
