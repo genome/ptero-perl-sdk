@@ -196,6 +196,7 @@ sub get_workflow_json {
         workingDirectory => repo_relative_path('t', 'bin'),
         webhook => '"'.$ENV{PTERO_WORKFLOW_SUBMIT_URL}.'"',
         shellCommandServiceUrl => $ENV{PTERO_PERL_SDK_TEST_SHELL_COMMAND_SERVICE_URL},
+        lsfServiceUrl => $ENV{PTERO_PERL_SDK_TEST_LSF_SERVICE_URL},
     };
 
     my $in_fh = IO::File->new("< $submit_file");

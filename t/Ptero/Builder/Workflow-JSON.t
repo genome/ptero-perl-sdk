@@ -10,11 +10,20 @@ use File::Basename qw(dirname);
 use lib dirname(dirname(dirname(__FILE__)));
 use Ptero::Test::Builder qw(
     build_nested_workflow
+    single_task_example_workflow
 );
 
 my $test_dir = sprintf '%s.d', __FILE__;
 
 use_ok('Ptero::Builder::Workflow');
+
+{
+    my $workflow = single_task_example_workflow();
+    regenerate_test_data($workflow, 'single_task_example');
+
+    is_same($workflow->to_json(), get_test_file('single_task_example'),
+        'single task example');
+}
 
 {
     my $workflow = build_nested_workflow('parent-workflow');

@@ -3,6 +3,10 @@ package Ptero::Test::Utils;
 use strict;
 use warnings FATAL => 'all';
 use Data::UUID qw();
+use File::Slurp qw(read_file write_file);
+use File::Basename qw(basename);
+use Test::More;
+use Text::Diff qw(diff);
 
 use Exporter 'import';
 our @EXPORT_OK = qw(
@@ -11,6 +15,9 @@ our @EXPORT_OK = qw(
     repo_relative_path
     get_environment
     get_test_name
+    process_into_markdown
+    filter
+    is_same
 );
 
 sub get_test_name {
@@ -60,7 +67,7 @@ sub validate_execution_environment {
 }
 
 sub repo_relative_path {
-    my $home = $ENV{PTERO_PERL_SDK_HOME};
+    my $home = $ENV{PTERO_PERL_SDK_HOME} || die "Must specify PTERO_PERL_SDK_HOME";
     return File::Spec->join($home, @_);
 }
 
@@ -72,5 +79,58 @@ sub get_environment {
     return \%env;
 }
 
+sub process_into_markdown {
+    my $infile = shift;
+
+    my $CAPTURE_MODE_REGEX = qr/^\s*#<<(.*)/;
+    my $MARKDOWN_REGEX = qr/^\s*#\|(.*)/;
+
+    my $capture_mode = 0;
+    my $result = '';
+    for my $line (read_file($infile)) {
+        if ($capture_mode) {
+            if ($line =~ m/$CAPTURE_MODE_REGEX/) {
+                $result .= "```\n\n";
+                $capture_mode = 0;
+            } else {
+                $result .= $line;
+            }
+        } else {
+            if ($line =~ m/$CAPTURE_MODE_REGEX/) {
+                $result .= "\n\n```$1\n";
+                $capture_mode = 1;
+            } else {
+                if ($line =~ m/$MARKDOWN_REGEX/) {
+                    $result .= $1 . "\n";
+                }
+            }
+        }
+    }
+
+    my $outfile = repo_relative_path('docs', 'examples', basename($infile));
+    $outfile =~ s/t$/md/;
+    write_file($outfile, $result);
+}
+
+sub filter {
+    my $string = shift;
+    my $regex = shift;
+
+    return join("\n", grep {!($_ =~ $regex)} split(/\n/, $string)) . "\n";
+}
+
+sub is_same {
+    my ($got, $expected, $label) = @_;
+
+    my $filtered_expected = filter($expected, qr(^\s*#));
+    my $diff = diff(\$got, \$filtered_expected, { STYLE => "Context" });
+
+    my $rv = ok(!$diff, $label);
+    unless ($rv) {
+        printf "Found differences:\n"
+        ."*** => got\n--- => expected\n%s", $diff;
+    }
+    return $rv;
+}
 
 1;

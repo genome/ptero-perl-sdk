@@ -52,6 +52,7 @@ sub optional_parameters {
         cwd
         environment
         options
+        pollingInterval
         rLimits
         umask
         webhooks

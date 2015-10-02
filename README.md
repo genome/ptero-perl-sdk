@@ -5,23 +5,13 @@ ptero-perl-sdk
 
 Perl interface to the PTero services
 
-Dependencies are managed using [Carton](https://github.com/perl-carton/carton). To use Carton with [plenv](https://github.com/tokuhirom/plenv) you could do something like this, assuming you have installed plenv and cloned this repo:
-    
-    $ export PTERO_PERL_VERSION=5.18.2 # or whatever version you want
-    $ plenv install $PTERO_PERL_VERSION
-    $ plenv install-cpanm
-    $ cd ptero-perl-sdk
-    $ plenv local $PTERO_PERL_VERSION
-    $ cpanm install Carton
-    $ plenv rehash
+Dependencies are managed using [Carton](https://github.com/perl-carton/carton).  To setup plenv you can use the `setup_plenv` script:
 
-You could also setup Carton using the system Perl on Debian-based Linux:
-
-    $ sudo apt-get install carton
+    $ ./setup_plenv # from the root of this repo
 
 Once your have Carton:
 
-    $ carton install # from the root of this repo
+    $ carton install
 
 To run tests:
 

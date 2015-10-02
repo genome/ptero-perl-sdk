@@ -4,6 +4,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Ptero::Builder::Job;
+use Ptero::Builder::Detail::Workflow::Task;
 use Ptero::Builder::Workflow;
 
 use Exporter 'import';
@@ -11,7 +12,39 @@ our @EXPORT_OK = qw(
     build_nested_workflow
     build_basic_workflow
     create_basic_task
+    single_task_example_workflow
 );
+
+sub single_task_example_workflow {
+    # This code is used in an example:
+    #   https://github.com/genome/ptero-perl-sdk/wiki/Single-Task-Example
+    # Therefore, if this code changes, please update the example.
+    my $workflow = Ptero::Builder::Workflow->new(name => "SomeWorkflow");
+
+    my $task = Ptero::Builder::Detail::Workflow::Task->new(name => "SomeTask");
+    $workflow->add_task($task);
+
+    my $method = Ptero::Builder::Job->new(
+        name => "SomeMethod",
+        service_url => "http://some-job-service.example.com/v1",
+        parameters => {
+            commandLine => [
+                'ptero-perl-subroutine-wrapper',
+                '--package' => 'Some::Perl::Module',
+                '--subroutine' => 'some_subroutine'
+            ],
+            environment => {PERL5LIB => '/path/to/some/perl/module'},
+            user => 'some_user',
+            workingDirectory => '/tmp',
+        },
+    );
+    $task->add_method($method);
+
+    $workflow->create_link(destination => $task);
+    $workflow->create_link(source => $task);
+
+    return $workflow;
+}
 
 sub build_nested_workflow {
     my $name = shift;
