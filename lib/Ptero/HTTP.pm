@@ -69,8 +69,8 @@ sub make_request {
         } else {
             gzip(\$_json_codec->encode($data), \$content);
             push @headers, 'Content-Encoding' => 'gzip';
-            push @headers, 'Content-Type' => 'application/json';
         }
+        push @headers, 'Content-Type' => 'application/json';
         push @headers, 'Content-Length' => length $content;
         push @request_args, \@headers, $content;
     } else {
