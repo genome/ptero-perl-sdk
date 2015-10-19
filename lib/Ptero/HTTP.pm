@@ -59,7 +59,6 @@ sub make_request {
     my @headers = (
         'Accept' => 'application/json',
         'Accept-Encoding' => 'gzip',
-        'Content-Type' => 'application/json',
     );
 
     my @request_args = ($method, $url);
@@ -70,6 +69,7 @@ sub make_request {
         } else {
             gzip(\$_json_codec->encode($data), \$content);
             push @headers, 'Content-Encoding' => 'gzip';
+            push @headers, 'Content-Type' => 'application/json';
         }
         push @headers, 'Content-Length' => length $content;
         push @request_args, \@headers, $content;
