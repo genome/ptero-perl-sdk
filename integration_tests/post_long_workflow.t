@@ -37,7 +37,7 @@ is_deeply($wf_proxy->outputs, { 'easy_out' => 'foo', 'try_out' => 'bar' }, 'Got 
 done_testing();
 
 sub setup_logging {
-    my $logging_level = $ENV{PTERO_PERL_SDK_LOGGING_LEVEL} || $INFO;
+    my $logging_level = $ENV{PTERO_PERL_SDK_LOG_LEVEL} || $INFO;
     Log::Log4perl->easy_init($logging_level);
 }
 
