@@ -52,7 +52,7 @@ sub submit {
     });
 
     my $submit_url = $p{submit_url} || $ENV{PTERO_WORKFLOW_SUBMIT_URL} || die
-        "Must specify 'submit_url' or set PTERO_WORKFLOW_EXECUTION_URL env variable.";
+        "Must specify 'submit_url' or set PTERO_WORKFLOW_SUBMIT_URL env variable.";
 
     my $submission_data = $self->submission_data($p{inputs}, $p{name});
     if ($ENV{PTERO_WORKFLOW_EXECUTION_URL}) {
