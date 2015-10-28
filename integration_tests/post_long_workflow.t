@@ -2,7 +2,6 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Log::Log4perl qw(:easy);
 use Test::Exception;
 use Test::More;
 use File::Spec;
@@ -18,7 +17,6 @@ use_ok('Ptero::Builder::Job');
 
 validate_submit_environment();
 
-setup_logging();
 my $workflow = create_echo_workflow();
 my $wf_proxy = $workflow->submit(
     inputs => {
@@ -35,11 +33,6 @@ $wf_proxy->wait(polling_interval => 1);
 
 is_deeply($wf_proxy->outputs, { 'easy_out' => 'foo', 'try_out' => 'bar' }, 'Got expected outputs');
 done_testing();
-
-sub setup_logging {
-    my $logging_level = $ENV{PTERO_PERL_SDK_LOG_LEVEL} || $INFO;
-    Log::Log4perl->easy_init($logging_level);
-}
 
 sub write_report {
     my $concrete_workflow = shift;
