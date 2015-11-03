@@ -197,6 +197,7 @@ sub get_workflow_json {
         webhook => '"'.$ENV{PTERO_WORKFLOW_SUBMIT_URL}.'"',
         shellCommandServiceUrl => $ENV{PTERO_PERL_SDK_TEST_SHELL_COMMAND_SERVICE_URL},
         lsfServiceUrl => $ENV{PTERO_PERL_SDK_TEST_LSF_SERVICE_URL},
+        lsfQueue => $ENV{PTERO_PERL_SDK_TEST_LSF_QUEUE},
     };
 
     my $in_fh = IO::File->new("< $submit_file");
