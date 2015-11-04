@@ -12,6 +12,9 @@
                         "environment": {{ environment }},
                         "command": "./ptero-test-command",
                         "pollingInterval": 3,
+                        "options": {
+                            "queue": "{{ lsfQueue }}"
+                        },
                         "rLimits": {
                             "cpuTime": 1
                         }
