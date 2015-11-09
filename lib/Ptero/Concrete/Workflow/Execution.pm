@@ -104,7 +104,10 @@ sub _parse_datetime {
     my $self = shift;
     my ($time) = @_;
 
-    my $pattern = '%Y-%m-%d %H:%M:%S';
+    # Convert timezone: e.g., '-05:00' -> '-5000'
+    $time =~ s/([-+]\d{2}):(\d{2})$/$1$2/;
+
+    my $pattern = '%Y-%m-%d %H:%M:%S.%6N%z';
     my $parser = DateTime::Format::Strptime->new(pattern => $pattern);
 
     my $datetime = $parser->parse_datetime($time);
