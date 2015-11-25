@@ -16,7 +16,7 @@
                             "queue": "{{ lsfQueue }}"
                         },
                         "rLimits": {
-                            "cpuTime": 1
+                            "cpuTime": 300
                         }
                     }
                 }
