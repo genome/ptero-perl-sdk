@@ -3,17 +3,13 @@ package Ptero::Concrete::Workflow::Execution;
 use strict;
 use warnings FATAL => 'all';
 
+use Carp qw(confess);
 use DateTime::Format::Strptime qw();
 use DateTime qw();
 use Date::Calc "Delta_DHMS";
 use Set::Scalar;
 use Ptero::Statuses qw(is_terminal);
 use Ptero::Proxy::Workflow;
-
-my $DATETIME_PARSER = DateTime::Format::Strptime->new(
-    pattern => '%Y-%m-%d %H:%M:%S',
-    on_error => 'croak'
-);
 
 sub new {
     my ($class, $hashref) = @_;
@@ -89,7 +85,7 @@ sub time_started {
 sub datetime_started {
     my $self = shift;
 
-    return $DATETIME_PARSER->parse_datetime($self->time_started);
+    return $self->_parse_datetime($self->time_started);
 }
 
 sub datetime_ended {
@@ -97,11 +93,29 @@ sub datetime_ended {
 
     if (is_terminal($self->{status})) {
         my $end_time = $self->timestamp_for($self->{status});
-        my $end_datetime = $DATETIME_PARSER->parse_datetime($end_time);
+        my $end_datetime = $self->_parse_datetime($end_time);
         return $end_datetime;
     } else {
         return DateTime->now(time_zone => 'UTC');
     }
+}
+
+sub _parse_datetime {
+    my $self = shift;
+    my ($time) = @_;
+
+    # Convert timezone: e.g., '-05:00' -> '-5000'
+    $time =~ s/([-+]\d{2}):(\d{2})$/$1$2/;
+
+    my $pattern = '%Y-%m-%d %H:%M:%S.%6N%z';
+    my $parser = DateTime::Format::Strptime->new(pattern => $pattern);
+
+    my $datetime = $parser->parse_datetime($time);
+    unless (defined $datetime) {
+        confess "Failed to parse time '$time' with pattern '$pattern'";
+    }
+
+    return $datetime;
 }
 
 sub duration {
