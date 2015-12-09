@@ -42,7 +42,6 @@
                                             "environment": {{ environment }},
                                             "webhooks" : {
                                                 "failed" : {{ webhook }},
-                                                    "scheduled" : {{ webhook }},
                                                     "succeeded" : [
                                                     {{ webhook }},
                                                     {{ webhook }}
