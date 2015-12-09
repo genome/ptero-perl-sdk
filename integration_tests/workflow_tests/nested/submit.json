@@ -68,7 +68,7 @@
                                     "param": "inner_out_b"
                                 }
                             }
-                        ],
+                        ]
                     },
                     "service": "workflow",
                     "webhooks" : {
