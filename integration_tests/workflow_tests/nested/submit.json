@@ -69,16 +69,16 @@
                                 }
                             }
                         ],
-                        "webhooks" : {
-                            "failed" : {{ webhook }},
-                            "scheduled" : {{ webhook }},
-                            "succeeded" : [
-                            {{ webhook }},
-                            {{ webhook }}
-                            ]
-                        }
                     },
-                    "service": "workflow"
+                    "service": "workflow",
+                    "webhooks" : {
+                        "failed" : {{ webhook }},
+                        "scheduled" : {{ webhook }},
+                        "succeeded" : [
+                        {{ webhook }},
+                        {{ webhook }}
+                        ]
+                    }
                 }
             ]
         },
