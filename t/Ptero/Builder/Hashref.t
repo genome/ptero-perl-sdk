@@ -40,14 +40,14 @@ use Ptero::Test::Builder qw(
                                 commandLine => ["echo", "basic-workflow"],
                                 user => 'testuser',
                                 workingDirectory => '/test/working/directory',
-                                webhooks => {
-                                    scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
-                                    failed => 'http://localhost:8080/example/shellcmd/failed',
-                                    succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
-                                },
                             },
                             service => "job",
                             serviceUrl => 'http://example.com/v1',
+                            webhooks => {
+                                scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
+                                failed => 'http://localhost:8080/example/shellcmd/failed',
+                                succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
+                            },
                         },
                     ],
                     webhooks => {
@@ -57,13 +57,13 @@ use Ptero::Test::Builder qw(
                     },
                 },
             },
-            webhooks => {
-                scheduled => 'http://localhost:8080/example/workflow/scheduled',
-                failed => 'http://localhost:8080/example/workflow/failed',
-                succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
-            },
         },
         service => "workflow",
+        webhooks => {
+            scheduled => 'http://localhost:8080/example/workflow/scheduled',
+            failed => 'http://localhost:8080/example/workflow/failed',
+            succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
+        },
     };
 
     my $workflow = build_basic_workflow('foo');
@@ -101,14 +101,14 @@ use Ptero::Test::Builder qw(
                                 commandLine => ["echo", "basic-workflow"],
                                 user => 'testuser',
                                 workingDirectory => '/test/working/directory',
-                                webhooks => {
-                                    scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
-                                    failed => 'http://localhost:8080/example/shellcmd/failed',
-                                    succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
-                                },
                             },
                             service => "job",
                             serviceUrl => 'http://example.com/v1',
+                            webhooks => {
+                                scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
+                                failed => 'http://localhost:8080/example/shellcmd/failed',
+                                succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
+                            },
                         },
                     ],
                     parallelBy => "A_in",
@@ -119,13 +119,13 @@ use Ptero::Test::Builder qw(
                     },
                 },
             },
-            webhooks => {
-                scheduled => 'http://localhost:8080/example/workflow/scheduled',
-                failed => 'http://localhost:8080/example/workflow/failed',
-                succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
-            },
         },
         service => "workflow",
+        webhooks => {
+            scheduled => 'http://localhost:8080/example/workflow/scheduled',
+            failed => 'http://localhost:8080/example/workflow/failed',
+            succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
+        },
     };
 
     my $workflow = build_basic_workflow('foo');
@@ -187,14 +187,14 @@ use Ptero::Test::Builder qw(
                                                     commandLine => ["echo", "basic-workflow"],
                                                     user => 'testuser',
                                                     workingDirectory => '/test/working/directory',
-                                                    webhooks => {
-                                                        scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
-                                                        failed => 'http://localhost:8080/example/shellcmd/failed',
-                                                        succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
-                                                    },
                                                 },
                                                 service => "job",
-                                                serviceUrl => 'http://example.com/v1'
+                                                serviceUrl => 'http://example.com/v1',
+                                                webhooks => {
+                                                    scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
+                                                    failed => 'http://localhost:8080/example/shellcmd/failed',
+                                                    succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
+                                                },
                                             },
                                         ],
                                         webhooks => {
@@ -204,13 +204,13 @@ use Ptero::Test::Builder qw(
                                         },
                                     },
                                 },
-                                webhooks => {
-                                    scheduled => 'http://localhost:8080/example/workflow/scheduled',
-                                    failed => 'http://localhost:8080/example/workflow/failed',
-                                    succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
-                                },
                             },
                             service => "workflow",
+                            webhooks => {
+                                scheduled => 'http://localhost:8080/example/workflow/scheduled',
+                                failed => 'http://localhost:8080/example/workflow/failed',
+                                succeeded => ['http://localhost:8080/example/workflow/succeeded', 'http://localhost:8080/congrats']
+                            },
                         },
                     ],
                     webhooks => {
@@ -220,13 +220,13 @@ use Ptero::Test::Builder qw(
                     },
                 },
             },
-            webhooks => {
-                scheduled => 'http://localhost:8080/example/outer/scheduled',
-                failed => 'http://localhost:8080/example/outer/failed',
-                succeeded => ['http://localhost:8080/example/outer/succeeded', 'http://localhost:8080/congrats']
-            },
         },
         service => "workflow",
+        webhooks => {
+            scheduled => 'http://localhost:8080/example/outer/scheduled',
+            failed => 'http://localhost:8080/example/outer/failed',
+            succeeded => ['http://localhost:8080/example/outer/succeeded', 'http://localhost:8080/congrats']
+        },
     };
 
     my $workflow = build_nested_workflow('foo');
