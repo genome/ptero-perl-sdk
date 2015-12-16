@@ -48,18 +48,18 @@
                                     "basic-workflow"
                                  ],
                                  "user" : "testuser",
-                                 "webhooks" : {
-                                    "failed" : "http://localhost:8080/example/shellcmd/failed",
-                                    "scheduled" : "http://localhost:8080/example/shellcmd/scheduled",
-                                    "succeeded" : [
-                                       "http://localhost:8080/example/shellcmd/succeeded",
-                                       "http://localhost:8080/yay"
-                                    ]
-                                 },
                                  "workingDirectory" : "/test/working/directory"
                               },
                               "service" : "job",
-                              "serviceUrl" : "http://example.com/v1"
+                              "serviceUrl" : "http://example.com/v1",
+                              "webhooks" : {
+                                 "failed" : "http://localhost:8080/example/shellcmd/failed",
+                                 "scheduled" : "http://localhost:8080/example/shellcmd/scheduled",
+                                 "succeeded" : [
+                                    "http://localhost:8080/example/shellcmd/succeeded",
+                                    "http://localhost:8080/yay"
+                                 ]
+                              }
                            }
                         ],
                         "webhooks" : {
@@ -71,17 +71,17 @@
                            ]
                         }
                      }
-                  },
-                  "webhooks" : {
-                     "failed" : "http://localhost:8080/example/workflow/failed",
-                     "scheduled" : "http://localhost:8080/example/workflow/scheduled",
-                     "succeeded" : [
-                        "http://localhost:8080/example/workflow/succeeded",
-                        "http://localhost:8080/congrats"
-                     ]
                   }
                },
-               "service" : "workflow"
+               "service" : "workflow",
+               "webhooks" : {
+                  "failed" : "http://localhost:8080/example/workflow/failed",
+                  "scheduled" : "http://localhost:8080/example/workflow/scheduled",
+                  "succeeded" : [
+                     "http://localhost:8080/example/workflow/succeeded",
+                     "http://localhost:8080/congrats"
+                  ]
+               }
             }
          ],
          "webhooks" : {

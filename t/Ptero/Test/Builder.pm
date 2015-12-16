@@ -95,11 +95,11 @@ sub build_basic_workflow {
                     commandLine => ['echo', 'basic-workflow'],
                     user => 'testuser',
                     workingDirectory => '/test/working/directory',
-                    webhooks => {
-                        scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
-                        failed => 'http://localhost:8080/example/shellcmd/failed',
-                        succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
-                    }
+                },
+                webhooks => {
+                    scheduled => 'http://localhost:8080/example/shellcmd/scheduled',
+                    failed => 'http://localhost:8080/example/shellcmd/failed',
+                    succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
                 },
             ),
         ],

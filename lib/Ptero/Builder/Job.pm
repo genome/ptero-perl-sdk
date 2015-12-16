@@ -6,6 +6,7 @@ use warnings FATAL => 'all';
 use Params::Validate qw(validate_pos :types);
 
 with 'Ptero::Builder::Detail::Method';
+with 'Ptero::Builder::Detail::HasWebhooks';
 
 override 'BUILDARGS' => sub {
     my $params = super();
@@ -57,6 +58,7 @@ sub optional_parameters {
         umask
         webhooks
         workingDirectory
+        retrySettings
     );
 }
 
