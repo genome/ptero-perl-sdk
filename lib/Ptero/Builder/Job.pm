@@ -58,6 +58,7 @@ sub optional_parameters {
         umask
         webhooks
         workingDirectory
+        retrySettings
     );
 }
 
