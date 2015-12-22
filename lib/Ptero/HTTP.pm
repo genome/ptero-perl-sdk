@@ -100,7 +100,7 @@ sub post  { make_request('POST',  @_) }
 
 sub make_request_and_decode_response {
     my %p = Params::Validate::validate(@_, {
-            method => { regex => qr/^(GET|PATCH|POST)$/ },
+            method => { regex => qr/^(GET|PATCH|POST|DELETE)$/ },
             url => { type => SCALAR },
             valid_response_codes => { type => ARRAYREF, default => [200] },
             data => { type => HASHREF, optional => 1 },
