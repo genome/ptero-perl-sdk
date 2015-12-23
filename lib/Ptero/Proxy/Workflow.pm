@@ -81,6 +81,12 @@ sub cancel {
     return;
 }
 
+sub delete {
+    my $self = shift;
+    make_request_and_decode_response(method => 'DELETE', url => $self->url);
+    return;
+}
+
 sub wait {
     my $self = shift;
     my %p = Params::Validate::validate(@_, {

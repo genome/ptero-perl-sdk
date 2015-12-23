@@ -24,6 +24,12 @@ $wf_proxy->cancel;
 $wf_proxy->wait(polling_interval => 1);
 is($wf_proxy->status, 'canceled', 'Got expected (canceled) status');
 is_deeply($wf_proxy->outputs, undef, 'Got expected (empty) outputs');
+
+# this keeps us from deleting the workflow before petri can send
+# 'set_dag_status_running' callbacks
+sleep(3);
+$wf_proxy->delete();
+
 done_testing();
 
 sub create_echo_workflow {

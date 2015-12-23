@@ -23,6 +23,8 @@ my $wf_proxy = $workflow->submit(
 );
 $wf_proxy->wait(polling_interval => 1);
 is_deeply($wf_proxy->outputs, { 'A_out' => $test_input }, 'Got expected outputs');
+
+$wf_proxy->delete();
 done_testing();
 
 sub create_echo_workflow {
