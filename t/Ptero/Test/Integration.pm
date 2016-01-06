@@ -68,6 +68,13 @@ sub lookup_locally {
     my ($orig, $args, $cache_file) = @_;
 
     my %args = @$args;
+
+    my $method = $args{method};
+    if ($method eq 'DELETE') {
+        # Never try to cache or lookup DELETE requests.
+        return $orig->(@$args);
+    }
+
     my $url = $args{url};
 
     if ($ENV{PTERO_REGENERATE_TEST_DATA_OUTPUTS}) {
@@ -114,6 +121,7 @@ sub run_test {
     setup_http_response_mocks($cache_file);
     compare_workflow_view($dir, $wf_proxy);
 
+    $wf_proxy->delete();
     done_testing();
 }
 

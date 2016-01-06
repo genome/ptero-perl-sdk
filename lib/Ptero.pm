@@ -3,7 +3,7 @@ package Ptero;
 use strict;
 use warnings FATAL => 'all';
 
-our $VERSION = "0.2.1";
+our $VERSION = "0.2.2";
 
 use Log::Log4perl qw(:easy);
 
@@ -66,7 +66,7 @@ GPLv3
 =head1 AUTHOR
 
 Michael Kiwala E<lt>mkiwala@genome.wustl.eduE<gt>
-Ian Furgeson E<lt>ifurgeso@genome.wustl.eduE<gt>
+Ian Ferguson E<lt>iferguso@genome.wustl.eduE<gt>
 David Morton E<lt>dmorton@cpan.orgE<gt>
 Mark Burnett
 

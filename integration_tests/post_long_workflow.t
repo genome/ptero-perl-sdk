@@ -32,6 +32,8 @@ isa_ok($concrete_workflow, 'Ptero::Concrete::Workflow');
 $wf_proxy->wait(polling_interval => 1);
 
 is_deeply($wf_proxy->outputs, { 'easy_out' => 'foo', 'try_out' => 'bar' }, 'Got expected outputs');
+
+$wf_proxy->delete();
 done_testing();
 
 sub write_report {
