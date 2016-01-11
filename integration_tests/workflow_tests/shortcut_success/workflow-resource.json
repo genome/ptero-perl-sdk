@@ -1,12 +1,15 @@
 {
-   "name" : "Perl SDK Integration Test (shortcut_success) 7D857C7E-B821-11E5-B18F-13FBFCC41834",
+   "name" : "Perl SDK Integration Test (shortcut_success) E416637E-B824-11E5-BBA0-330AFDC41834",
    "reports" : {
-      "workflow-details" : "http://localhost:7000/v1/reports/workflow-details?workflow_id=40",
-      "workflow-executions" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=40",
-      "workflow-outputs" : "http://localhost:7000/v1/reports/workflow-outputs?workflow_id=40",
-      "workflow-skeleton" : "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=40",
-      "workflow-status" : "http://localhost:7000/v1/reports/workflow-status?workflow_id=40",
-      "workflow-submission-data" : "http://localhost:7000/v1/reports/workflow-submission-data?workflow_id=40"
+      "limited-workflow-executions" : "http://localhost:7000/v1/reports/limited-workflow-executions?workflow_id=18",
+      "limited-workflow-status-updates" : "http://localhost:7000/v1/reports/limited-workflow-status-updates?workflow_id=18",
+      "spawned-workflows" : "http://localhost:7000/v1/reports/spawned-workflows?workflow_id=18",
+      "workflow-details" : "http://localhost:7000/v1/reports/workflow-details?workflow_id=18",
+      "workflow-executions" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=18",
+      "workflow-outputs" : "http://localhost:7000/v1/reports/workflow-outputs?workflow_id=18",
+      "workflow-skeleton" : "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=18",
+      "workflow-status" : "http://localhost:7000/v1/reports/workflow-status?workflow_id=18",
+      "workflow-submission-data" : "http://localhost:7000/v1/reports/workflow-submission-data?workflow_id=18"
    },
    "status" : "new"
 }

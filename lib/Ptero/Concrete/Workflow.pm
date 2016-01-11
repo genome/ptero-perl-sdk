@@ -39,12 +39,10 @@ sub register_components {
     return;
 }
 
-sub create_executions {
-    my ($self, $execution_hashrefs) = @_;
+sub add_executions {
+    my ($self, $executions) = @_;
 
-    for my $hashref (@{$execution_hashrefs}) {
-        my $execution = Ptero::Concrete::Workflow::Execution->new($hashref);
-
+    for my $execution (@{$executions}) {
         if ($execution->{parent_id} == $self->{root_task_id} && $execution->{parent_type} eq 'task') {
             $self->{executions}{$execution->{color}} = $execution
         } else {

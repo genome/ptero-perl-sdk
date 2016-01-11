@@ -1,5 +1,152 @@
 {
-   "http://localhost:7000/v1/reports/workflow-executions?workflow_id=29" : {
+   "http://localhost:7000/v1/reports/limited-workflow-executions?since=2016-01-11+05%3A32%3A34.437771&workflow_id=7&limit=5" : {
+      "executions" : [
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/65",
+            "id" : 65,
+            "methodId" : 38,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:34.437771+00:00"
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/66",
+            "id" : 66,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "taskId" : 53,
+            "timestamp" : "2016-01-11 05:32:34.471487+00:00"
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/67",
+            "id" : 67,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "taskId" : 56,
+            "timestamp" : "2016-01-11 05:32:34.849860+00:00"
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/68",
+            "id" : 68,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "taskId" : 55,
+            "timestamp" : "2016-01-11 05:32:34.890321+00:00"
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/69",
+            "id" : 69,
+            "methodId" : 39,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:34.918610+00:00"
+         }
+      ],
+      "numRemaining" : 4,
+      "updateUrl" : "http://localhost:7000/v1/reports/limited-workflow-executions?since=2016-01-11+05%3A32%3A35.784928&workflow_id=7&limit=5"
+   },
+   "http://localhost:7000/v1/reports/limited-workflow-executions?since=2016-01-11+05%3A32%3A35.784928&workflow_id=7&limit=5" : {
+      "executions" : [
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/70",
+            "id" : 70,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "taskId" : 57,
+            "timestamp" : "2016-01-11 05:32:35.784928+00:00"
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/71",
+            "id" : 71,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "taskId" : 50,
+            "timestamp" : "2016-01-11 05:32:35.978386+00:00"
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/72",
+            "id" : 72,
+            "methodId" : 36,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:36.015922+00:00"
+         },
+         {
+            "begins" : [
+               0
+            ],
+            "color" : 0,
+            "colors" : [
+               0
+            ],
+            "detailsUrl" : "http://localhost:7000/v1/executions/73",
+            "id" : 73,
+            "parentColor" : null,
+            "status" : "succeeded",
+            "taskId" : 52,
+            "timestamp" : "2016-01-11 05:32:36.568518+00:00"
+         }
+      ],
+      "numRemaining" : 0,
+      "updateUrl" : "http://localhost:7000/v1/reports/limited-workflow-executions?since=2016-01-11+05%3A32%3A36.568518&workflow_id=7&limit=5"
+   },
+   "http://localhost:7000/v1/reports/limited-workflow-executions?workflow_id=7" : {
       "executions" : [
          {
             "begins" : [],
@@ -7,29 +154,12 @@
             "colors" : [
                0
             ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/385",
-            "id" : 385,
-            "methodId" : 118,
+            "detailsUrl" : "http://localhost:7000/v1/executions/60",
+            "id" : 60,
+            "methodId" : 35,
             "parentColor" : null,
             "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:07:59.079459+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:07:59.622951+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:07:59.622951+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:22.124463+00:00"
-               }
-            ]
+            "timestamp" : "2016-01-11 05:32:13.313837+00:00"
          },
          {
             "begins" : [
@@ -39,29 +169,12 @@
             "colors" : [
                0
             ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/386",
-            "id" : 386,
+            "detailsUrl" : "http://localhost:7000/v1/executions/61",
+            "id" : 61,
             "parentColor" : null,
             "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:07:59.582969+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:07:59.613610+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:07:59.613610+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:22.163557+00:00"
-               }
-            ],
-            "taskId" : 220
+            "taskId" : 47,
+            "timestamp" : "2016-01-11 05:32:13.818842+00:00"
          },
          {
             "begins" : [
@@ -71,29 +184,12 @@
             "colors" : [
                0
             ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/387",
-            "id" : 387,
+            "detailsUrl" : "http://localhost:7000/v1/executions/62",
+            "id" : 62,
             "parentColor" : null,
             "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:07:59.723396+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:07:59.770848+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:07:59.770848+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:07:59.799214+00:00"
-               }
-            ],
-            "taskId" : 226
+            "taskId" : 54,
+            "timestamp" : "2016-01-11 05:32:14.093537+00:00"
          },
          {
             "begins" : [
@@ -103,29 +199,12 @@
             "colors" : [
                0
             ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/388",
-            "id" : 388,
+            "detailsUrl" : "http://localhost:7000/v1/executions/63",
+            "id" : 63,
             "parentColor" : null,
             "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:07:59.825166+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:07:59.839031+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:07:59.839031+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:20.832651+00:00"
-               }
-            ],
-            "taskId" : 227
+            "taskId" : 51,
+            "timestamp" : "2016-01-11 05:32:14.263132+00:00"
          },
          {
             "begins" : [
@@ -135,332 +214,274 @@
             "colors" : [
                0
             ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/389",
-            "id" : 389,
-            "methodId" : 121,
+            "detailsUrl" : "http://localhost:7000/v1/executions/64",
+            "id" : 64,
+            "methodId" : 37,
             "parentColor" : null,
             "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:07:59.859989+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:07:59.881287+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:08:20.222308+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:20.654104+00:00"
-               }
-            ]
-         },
-         {
-            "begins" : [
-               0
-            ],
-            "color" : 0,
-            "colors" : [
-               0
-            ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/390",
-            "id" : 390,
-            "methodId" : 120,
-            "parentColor" : null,
-            "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:08:19.934570+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:08:20.010993+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:08:20.010993+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:21.366586+00:00"
-               }
-            ]
-         },
-         {
-            "begins" : [
-               0
-            ],
-            "color" : 0,
-            "colors" : [
-               0
-            ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/391",
-            "id" : 391,
-            "parentColor" : null,
-            "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:08:19.966000+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:08:19.988040+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:08:19.988040+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:21.414858+00:00"
-               }
-            ],
-            "taskId" : 225
-         },
-         {
-            "begins" : [
-               0
-            ],
-            "color" : 0,
-            "colors" : [
-               0
-            ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/392",
-            "id" : 392,
-            "parentColor" : null,
-            "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:08:20.338124+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:08:20.349691+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:08:20.349691+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:20.357452+00:00"
-               }
-            ],
-            "taskId" : 229
-         },
-         {
-            "begins" : [
-               0
-            ],
-            "color" : 0,
-            "colors" : [
-               0
-            ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/393",
-            "id" : 393,
-            "parentColor" : null,
-            "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:08:20.369398+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:08:20.383000+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:08:20.383000+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:21.144377+00:00"
-               }
-            ],
-            "taskId" : 230
-         },
-         {
-            "begins" : [
-               0
-            ],
-            "color" : 0,
-            "colors" : [
-               0
-            ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/394",
-            "id" : 394,
-            "methodId" : 122,
-            "parentColor" : null,
-            "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:08:20.396428+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:08:20.409039+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:08:20.601415+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:21.025387+00:00"
-               }
-            ]
-         },
-         {
-            "begins" : [
-               0
-            ],
-            "color" : 0,
-            "colors" : [
-               0
-            ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/395",
-            "id" : 395,
-            "parentColor" : null,
-            "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:08:21.248701+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:08:21.298057+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:08:21.298057+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:21.325992+00:00"
-               }
-            ],
-            "taskId" : 228
-         },
-         {
-            "begins" : [
-               0
-            ],
-            "color" : 0,
-            "colors" : [
-               0
-            ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/396",
-            "id" : 396,
-            "parentColor" : null,
-            "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:08:21.452328+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:08:21.464401+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:08:21.464401+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:21.936332+00:00"
-               }
-            ],
-            "taskId" : 224
-         },
-         {
-            "begins" : [
-               0
-            ],
-            "color" : 0,
-            "colors" : [
-               0
-            ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/397",
-            "id" : 397,
-            "methodId" : 119,
-            "parentColor" : null,
-            "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:08:21.474526+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:08:21.487222+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:08:21.583541+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:21.827846+00:00"
-               }
-            ]
-         },
-         {
-            "begins" : [
-               0
-            ],
-            "color" : 0,
-            "colors" : [
-               0
-            ],
-            "detailsUrl" : "http://localhost:7000/v1/executions/398",
-            "id" : 398,
-            "parentColor" : null,
-            "status" : "succeeded",
-            "statusHistory" : [
-               {
-                  "status" : "new",
-                  "timestamp" : "2016-01-11 05:08:22.030214+00:00"
-               },
-               {
-                  "status" : "scheduled",
-                  "timestamp" : "2016-01-11 05:08:22.088090+00:00"
-               },
-               {
-                  "status" : "running",
-                  "timestamp" : "2016-01-11 05:08:22.088090+00:00"
-               },
-               {
-                  "status" : "succeeded",
-                  "timestamp" : "2016-01-11 05:08:22.110794+00:00"
-               }
-            ],
-            "taskId" : 223
+            "timestamp" : "2016-01-11 05:32:14.356079+00:00"
          }
       ],
-      "updateUrl" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=29&since=2016-01-11+05%3A08%3A22.163557"
+      "numRemaining" : 9,
+      "updateUrl" : "http://localhost:7000/v1/reports/limited-workflow-executions?since=2016-01-11+05%3A32%3A34.437771&workflow_id=7&limit=5"
    },
-   "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=29" : {
-      "id" : 29,
-      "name" : "Perl SDK Integration Test (nested) 483D4A6A-B821-11E5-AEF7-73FAFCC41834",
-      "rootTaskId" : 220,
+   "http://localhost:7000/v1/reports/limited-workflow-status-updates?since=2016-01-11+05%3A32%3A34.903301&workflow_id=7&limit=20" : {
+      "numRemaining" : 4,
+      "statusUpdates" : [
+         {
+            "executionId" : 68,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:34.903301+00:00"
+         },
+         {
+            "executionId" : 68,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:34.903301+00:00"
+         },
+         {
+            "executionId" : 69,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:34.933605+00:00"
+         },
+         {
+            "executionId" : 69,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:35.141084+00:00"
+         },
+         {
+            "executionId" : 64,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:35.303541+00:00"
+         },
+         {
+            "executionId" : 63,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:35.429598+00:00"
+         },
+         {
+            "executionId" : 69,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:35.518946+00:00"
+         },
+         {
+            "executionId" : 68,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:35.632984+00:00"
+         },
+         {
+            "executionId" : 70,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:35.845201+00:00"
+         },
+         {
+            "executionId" : 70,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:35.845201+00:00"
+         },
+         {
+            "executionId" : 70,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:35.860337+00:00"
+         },
+         {
+            "executionId" : 65,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:35.881245+00:00"
+         },
+         {
+            "executionId" : 66,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:35.923340+00:00"
+         },
+         {
+            "executionId" : 71,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:36.001381+00:00"
+         },
+         {
+            "executionId" : 71,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:36.001381+00:00"
+         },
+         {
+            "executionId" : 72,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:36.028669+00:00"
+         },
+         {
+            "executionId" : 72,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:36.119568+00:00"
+         },
+         {
+            "executionId" : 72,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:36.357820+00:00"
+         },
+         {
+            "executionId" : 71,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:36.470375+00:00"
+         },
+         {
+            "executionId" : 73,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:36.620787+00:00"
+         }
+      ],
+      "updateUrl" : "http://localhost:7000/v1/reports/limited-workflow-status-updates?since=2016-01-11+05%3A32%3A36.620787&workflow_id=7&limit=20"
+   },
+   "http://localhost:7000/v1/reports/limited-workflow-status-updates?since=2016-01-11+05%3A32%3A36.620787&workflow_id=7&limit=20" : {
+      "numRemaining" : 0,
+      "statusUpdates" : [
+         {
+            "executionId" : 73,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:36.620787+00:00"
+         },
+         {
+            "executionId" : 73,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:36.620787+00:00"
+         },
+         {
+            "executionId" : 73,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:36.641308+00:00"
+         },
+         {
+            "executionId" : 60,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:36.657851+00:00"
+         },
+         {
+            "executionId" : 61,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:36.698792+00:00"
+         }
+      ],
+      "updateUrl" : "http://localhost:7000/v1/reports/limited-workflow-status-updates?since=2016-01-11+05%3A32%3A36.698792&workflow_id=7&limit=20"
+   },
+   "http://localhost:7000/v1/reports/limited-workflow-status-updates?workflow_id=7" : {
+      "numRemaining" : 23,
+      "statusUpdates" : [
+         {
+            "executionId" : 60,
+            "status" : "new",
+            "timestamp" : "2016-01-11 05:32:13.313837+00:00"
+         },
+         {
+            "executionId" : 61,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:13.880151+00:00"
+         },
+         {
+            "executionId" : 61,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:13.880151+00:00"
+         },
+         {
+            "executionId" : 60,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:13.925031+00:00"
+         },
+         {
+            "executionId" : 60,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:13.925031+00:00"
+         },
+         {
+            "executionId" : 62,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:14.154244+00:00"
+         },
+         {
+            "executionId" : 62,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:14.154244+00:00"
+         },
+         {
+            "executionId" : 62,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:14.221416+00:00"
+         },
+         {
+            "executionId" : 63,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:14.305958+00:00"
+         },
+         {
+            "executionId" : 63,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:14.305958+00:00"
+         },
+         {
+            "executionId" : 64,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:14.406057+00:00"
+         },
+         {
+            "executionId" : 66,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:34.490103+00:00"
+         },
+         {
+            "executionId" : 66,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:34.490103+00:00"
+         },
+         {
+            "executionId" : 65,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:34.519429+00:00"
+         },
+         {
+            "executionId" : 65,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:34.519429+00:00"
+         },
+         {
+            "executionId" : 64,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:34.734047+00:00"
+         },
+         {
+            "executionId" : 67,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:34.861592+00:00"
+         },
+         {
+            "executionId" : 67,
+            "status" : "running",
+            "timestamp" : "2016-01-11 05:32:34.861592+00:00"
+         },
+         {
+            "executionId" : 67,
+            "status" : "succeeded",
+            "timestamp" : "2016-01-11 05:32:34.873987+00:00"
+         },
+         {
+            "executionId" : 68,
+            "status" : "scheduled",
+            "timestamp" : "2016-01-11 05:32:34.903301+00:00"
+         }
+      ],
+      "updateUrl" : "http://localhost:7000/v1/reports/limited-workflow-status-updates?since=2016-01-11+05%3A32%3A34.903301&workflow_id=7&limit=20"
+   },
+   "http://localhost:7000/v1/reports/spawned-workflows?workflow_id=7" : {
+      "spawnedWorkflows" : []
+   },
+   "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=7" : {
+      "id" : 7,
+      "name" : "Perl SDK Integration Test (nested) AB08108C-B824-11E5-8D83-1B09FDC41834",
+      "rootTaskId" : 47,
       "status" : "succeeded",
       "tasks" : {
          "A" : {
-            "id" : 227,
+            "id" : 51,
             "methods" : [
                {
-                  "id" : 121,
+                  "id" : 37,
                   "name" : "execute",
                   "service" : "job",
                   "serviceUrl" : "http://localhost:5000/v1"
@@ -469,10 +490,10 @@
             "topologicalIndex" : 0
          },
          "C" : {
-            "id" : 224,
+            "id" : 50,
             "methods" : [
                {
-                  "id" : 119,
+                  "id" : 36,
                   "name" : "execute",
                   "service" : "job",
                   "serviceUrl" : "http://localhost:5000/v1"
@@ -481,18 +502,18 @@
             "topologicalIndex" : 2
          },
          "Inner" : {
-            "id" : 225,
+            "id" : 53,
             "methods" : [
                {
-                  "id" : 120,
+                  "id" : 38,
                   "name" : "some_workflow",
                   "parameters" : {
                      "tasks" : {
                         "B" : {
-                           "id" : 230,
+                           "id" : 55,
                            "methods" : [
                               {
-                                 "id" : 122,
+                                 "id" : 39,
                                  "name" : "execute",
                                  "service" : "job",
                                  "serviceUrl" : "http://localhost:5000/v1"

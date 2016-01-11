@@ -1,10 +1,10 @@
            TYPE     STATUS              STARTED      DURATION  NAME
-       Workflow  succeeded  2016-01-11T05:09:24      00:00:01  Perl SDK Integration Test (shortcut_failure) 7B2C61F4-B821-11E5-889A-0BFBFCC41834
-           Task  succeeded  2016-01-11T05:09:25      00:00:00  A 
-            Job     failed  2016-01-11T05:09:25      00:00:00  . shortcut
-            Job  succeeded  2016-01-11T05:09:25      00:00:00  . execute
+       Workflow  succeeded  2016-01-11T05:33:45      00:00:01  Perl SDK Integration Test (shortcut_failure) E1AB043C-B824-11E5-9752-2C0AFDC41834
+           Task  succeeded  2016-01-11T05:33:45      00:00:01  A 
+            Job     failed  2016-01-11T05:33:45      00:00:00  . shortcut
+            Job  succeeded  2016-01-11T05:33:45      00:00:01  . execute
 
-  status: failed    name: A.shortcut.616
+  status: failed    name: A.shortcut.291
   service: job
-  details url: http://localhost:7000/v1/executions/616
+  details url: http://localhost:7000/v1/executions/291
 

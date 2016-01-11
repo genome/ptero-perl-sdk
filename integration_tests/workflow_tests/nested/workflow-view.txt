@@ -1,10 +1,10 @@
            TYPE     STATUS              STARTED      DURATION  NAME
-       Workflow  succeeded  2016-01-11T05:07:59      00:00:23  Perl SDK Integration Test (nested) 483D4A6A-B821-11E5-AEF7-73FAFCC41834
-           Task  succeeded  2016-01-11T05:07:59      00:00:21  A 
-            Job  succeeded  2016-01-11T05:08:20      00:00:00  . execute
-           Task  succeeded  2016-01-11T05:08:19      00:00:02  Inner 
-            DAG  succeeded  2016-01-11T05:08:20      00:00:01  . some_workflow
-           Task  succeeded  2016-01-11T05:08:20      00:00:01  . . B 
-            Job  succeeded  2016-01-11T05:08:20      00:00:01  . . . execute
-           Task  succeeded  2016-01-11T05:08:21      00:00:00  C 
-            Job  succeeded  2016-01-11T05:08:21      00:00:00  . execute
+       Workflow  succeeded  2016-01-11T05:32:13      00:00:23  Perl SDK Integration Test (nested) AB08108C-B824-11E5-8D83-1B09FDC41834
+           Task  succeeded  2016-01-11T05:32:14      00:00:21  A 
+            Job  succeeded  2016-01-11T05:32:34      00:00:01  . execute
+           Task  succeeded  2016-01-11T05:32:34      00:00:01  Inner 
+            DAG  succeeded  2016-01-11T05:32:34      00:00:01  . some_workflow
+           Task  succeeded  2016-01-11T05:32:34      00:00:01  . . B 
+            Job  succeeded  2016-01-11T05:32:35      00:00:00  . . . execute
+           Task  succeeded  2016-01-11T05:32:36      00:00:00  C 
+            Job  succeeded  2016-01-11T05:32:36      00:00:00  . execute
