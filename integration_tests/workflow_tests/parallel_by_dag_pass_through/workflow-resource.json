@@ -1,0 +1,12 @@
+{
+   "name" : "Perl SDK Integration Test (parallel_by_dag_pass_through) 69FCB4BA-B821-11E5-9DDB-CFFAFCC41834",
+   "reports" : {
+      "workflow-details" : "http://localhost:7000/v1/reports/workflow-details?workflow_id=34",
+      "workflow-executions" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=34",
+      "workflow-outputs" : "http://localhost:7000/v1/reports/workflow-outputs?workflow_id=34",
+      "workflow-skeleton" : "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=34",
+      "workflow-status" : "http://localhost:7000/v1/reports/workflow-status?workflow_id=34",
+      "workflow-submission-data" : "http://localhost:7000/v1/reports/workflow-submission-data?workflow_id=34"
+   },
+   "status" : "new"
+}

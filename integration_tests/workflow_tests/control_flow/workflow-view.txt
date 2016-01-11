@@ -1,6 +1,6 @@
            TYPE     STATUS              STARTED      DURATION  NAME
-       Workflow  succeeded  2015-08-28T15:48:46      00:00:02  Perl SDK Integration Test (control_flow) 2D30F39A-4DC6-11E5-84A5-BC6900DAD14B
-           Task  succeeded  2015-08-28T15:48:46      00:00:01  A 
-            Job  succeeded  2015-08-28T15:48:47      00:00:00  . execute
-           Task  succeeded  2015-08-28T15:48:47      00:00:01  B 
-            Job  succeeded  2015-08-28T15:48:48      00:00:00  . execute
+       Workflow  succeeded  2016-01-11T05:07:43      00:00:01  Perl SDK Integration Test (control_flow) 3EC0A31A-B821-11E5-BDCE-4DFAFCC41834
+           Task  succeeded  2016-01-11T05:07:43      00:00:01  A 
+            Job  succeeded  2016-01-11T05:07:43      00:00:01  . execute
+           Task  succeeded  2016-01-11T05:07:44      00:00:00  B 
+            Job  succeeded  2016-01-11T05:07:44      00:00:00  . execute

@@ -15,7 +15,7 @@ has url => (
 );
 
 has resource => (
-    is => 'ro',
+    is => 'rw',
     isa => 'HashRef',
     required => 1
 );
