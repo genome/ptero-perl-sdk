@@ -1,0 +1,169 @@
+#! /usr/bin/env perl
+
+use strict;
+use warnings FATAL => 'all';
+
+use Getopt::Long;
+use Ptero::Proxy::Workflow;
+use Ptero::Statuses qw(has_letter);
+
+use Log::Log4perl qw(:easy);
+
+my $INDENTATION_STR = '. ';
+my $FORMAT_LINE = "%35s %9s  %s%s\n";
+my $DISPLAY_NAMES = {
+    'workflow' => 'DAG',
+    'job' => 'Job',
+};
+
+exit main();
+
+sub main {
+    my $workflow_url = get_options();
+
+    my $wf_proxy = Ptero::Proxy::Workflow->new($workflow_url);
+
+    my $summary = $wf_proxy->workflow_summary();
+    display_workflow($summary);
+}
+
+sub get_options {
+    my $usage = <<'EOS';
+Usage: ptero-glance <workflow_url>
+
+Prints a summary view of the workflow to the screen.
+
+If there are multiple executions of a Task or Method, a one-line summary is
+shown.  The following single-letter abbreviations of statuses are used:
+EOS
+
+    for my $status qw(canceled scheduled errored failed running succeeded) {
+        $usage .= sprintf("  %s = %s\n", has_letter($status), $status);
+    }
+    $usage .= sprintf("The letter %s is used for status values not listed above.\n",
+        has_letter("some unknown status"));
+
+    my $help;
+    unless (GetOptions('help|h!'    => \$help)) {
+        print STDERR $usage;
+        exit 1;
+    }
+
+    if (defined($help)) {
+        print STDERR $usage;
+        exit 0;
+    }
+
+    if (scalar @ARGV != 1) {
+        print STDERR "Wrong number of positional arguments!\n";
+        print STDERR $usage;
+        exit 1;
+    }
+
+    return shift @ARGV;
+}
+
+sub display_workflow {
+    my $summary = shift;
+
+    write_header();
+    write_workflow_info($summary->{name}, $summary->{status});
+    for my $task_summary (@{$summary->{tasks}}) {
+        display_task($task_summary, 1);
+    }
+}
+
+sub write_header {
+    my $self = shift;
+
+    printf($FORMAT_LINE,
+        'STATUS SUMMARY',
+        'TYPE',
+        '',
+        'NAME');
+
+    return
+}
+
+sub write_workflow_info {
+    my ($name, $status) = @_;
+    printf($FORMAT_LINE,
+        $status,
+        'Workflow',
+        '',
+        $name);
+}
+
+sub display_task {
+    my ($task_summary, $indent) = @_;
+
+    write_task($task_summary, $indent);
+
+    for my $method_summary (@{$task_summary->{methods}}) {
+        display_method($method_summary, $indent + 1);
+    }
+}
+
+sub write_task {
+    my ($task_summary, $indent) = @_;
+
+    my $display_name = $task_summary->{name};
+    if (exists $task_summary->{parallelBy}) {
+        $display_name .= sprintf(" [parallel-by: %s]",
+            $task_summary->{parallelBy});
+    }
+    my $status_summary = format_execution_summary(
+        $task_summary->{executionSummary});
+
+    printf($FORMAT_LINE,
+        $status_summary,
+        'Task',
+        $INDENTATION_STR x $indent,
+        $display_name);
+}
+
+sub display_method {
+    my ($method_summary, $indent) = @_;
+
+    write_method($method_summary, $indent);
+
+    if ($method_summary->{service} eq 'workflow') {
+        for my $task_summary (@{$method_summary->{parameters}->{tasks}}) {
+            display_task($task_summary, $indent + 1);
+        }
+    }
+}
+
+sub write_method {
+    my ($method_summary, $indent) = @_;
+
+    my $name = $method_summary->{name};
+    my $status_summary = format_execution_summary(
+        $method_summary->{executionSummary});
+    my $type = $DISPLAY_NAMES->{$method_summary->{service}};
+
+    printf($FORMAT_LINE,
+        $status_summary,
+        $type,
+        $INDENTATION_STR x $indent,
+        $name);
+}
+
+sub format_execution_summary {
+    my $summary = shift;
+
+    # if only one status in the summary
+    if (scalar(keys %$summary) == 1) {
+        my @summary_array = %$summary;
+        if ($summary_array[-1] == 1) {
+            return $summary_array[0];
+        }
+    }
+
+    my @parts;
+    while (my ($status, $num) = each %$summary) {
+        push @parts, sprintf("%s:%s", has_letter($status), $num);
+    }
+    return join(' ', sort(@parts));
+}
+

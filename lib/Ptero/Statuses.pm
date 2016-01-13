@@ -9,6 +9,7 @@ our @EXPORT_OK = qw(
     is_success
     is_abnormal
     is_running
+    has_letter
 );
 
 my $TERMINAL_STATUSES = Set::Scalar->new(qw(errored failed succeeded canceled));
@@ -31,6 +32,22 @@ sub is_abnormal {
 sub is_running {
     my $status = shift;
     return $status eq 'running';
+}
+
+
+my %STATUS_LETTERS = (
+    'new' => 'N',
+    'scheduled' => 'D',
+    'running' => 'R',
+    'succeeded' => 'S',
+    'failed' => 'F',
+    'errored' => 'E',
+    'canceled' => 'C',
+);
+
+sub has_letter {
+    my $status = shift;
+    return $STATUS_LETTERS{$status} || "U";
 }
 
 
