@@ -5,7 +5,7 @@ use warnings FATAL => 'all';
 
 use Getopt::Long;
 use Ptero::Proxy::Workflow;
-use Ptero::Statuses qw(has_letter);
+use Ptero::Statuses qw(get_abbreviation);
 
 use Log::Log4perl qw(:easy);
 
@@ -38,10 +38,10 @@ shown.  The following single-letter abbreviations of statuses are used:
 EOS
 
     for my $status qw(canceled scheduled errored failed running succeeded) {
-        $usage .= sprintf("  %s = %s\n", has_letter($status), $status);
+        $usage .= sprintf("  %s = %s\n", get_abbreviation($status), $status);
     }
     $usage .= sprintf("The letter %s is used for status values not listed above.\n",
-        has_letter("some unknown status"));
+        get_abbreviation("some unknown status"));
 
     my $help;
     unless (GetOptions('help|h!'    => \$help)) {
@@ -162,7 +162,7 @@ sub format_execution_summary {
 
     my @parts;
     while (my ($status, $num) = each %$summary) {
-        push @parts, sprintf("%s:%s", has_letter($status), $num);
+        push @parts, sprintf("%s:%s", get_abbreviation($status), $num);
     }
     return join(' ', sort(@parts));
 }

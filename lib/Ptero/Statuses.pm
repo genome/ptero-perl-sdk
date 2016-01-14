@@ -9,7 +9,7 @@ our @EXPORT_OK = qw(
     is_success
     is_abnormal
     is_running
-    has_letter
+    get_abbreviation
 );
 
 my $TERMINAL_STATUSES = Set::Scalar->new(qw(errored failed succeeded canceled));
@@ -45,7 +45,7 @@ my %STATUS_LETTERS = (
     'canceled' => 'C',
 );
 
-sub has_letter {
+sub get_abbreviation {
     my $status = shift;
     return $STATUS_LETTERS{$status} || "U";
 }
