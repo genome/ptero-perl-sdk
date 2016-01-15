@@ -74,6 +74,12 @@ sub workflow_executions {
         url => $self->report_url('workflow-executions'));
 }
 
+sub workflow_summary {
+    my $self = shift;
+    return make_request_and_decode_response(method => 'GET',
+        url => $self->report_url('workflow-summary'));
+}
+
 sub cancel {
     my $self = shift;
     make_request_and_decode_response(method => 'PATCH', url => $self->url,
