@@ -114,7 +114,10 @@ sub run_test {
     $wf_proxy->wait(polling_interval => 1);
 
     my $result_file = File::Spec->join($dir, 'result.json');
-    is_deeply($wf_proxy->outputs, get_expected_outputs($result_file), 'Got expected outputs');
+
+    my $results = get_expected_results($result_file);
+    is($wf_proxy->status, $results->{status}, 'Got expected status') or die;
+    is_deeply($wf_proxy->outputs, $results->{outputs}, 'Got expected outputs') or die;
 
     my $cache_file = File::Spec->join($dir, 'http-response-cache.json');
 
@@ -181,13 +184,13 @@ sub get_workflow_inputs {
     return $hashref->{inputs} || die "Couldn't find inputs in file '$workflow_json'";
 }
 
-sub get_expected_outputs {
+sub get_expected_results {
     my $filename = shift;
 
     my $json_text = read_file($filename);
     my $hashref = from_json($json_text);
-    note "No outputs found in file '$filename'" unless ($hashref);
-    return $hashref->{outputs};
+    note "No results found in file '$filename'" unless ($hashref);
+    return $hashref;
 }
 
 sub get_workflow_json {
