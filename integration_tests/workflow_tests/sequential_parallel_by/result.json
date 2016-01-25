@@ -6,5 +6,6 @@
             ["kittens", "kittens", "kittens"]
         ],
         "out_parallel": ["Simba", "Tabby", "Emilio"]
-    }
+    },
+    "status": "succeeded"
 }
