@@ -1,5 +1,6 @@
 {
     "outputs": {
         "out_a": "kittens"
-    }
+    },
+    "status": "succeeded"
 }

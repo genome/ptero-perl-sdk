@@ -4,5 +4,6 @@
             ["Simba", "Tabby", "Emilio"],
             ["Pluto", "Snoopy"]
         ]
-    }
+    },
+    "status": "succeeded"
 }
