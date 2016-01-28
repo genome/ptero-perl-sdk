@@ -57,7 +57,6 @@ sub create_outer_workflow {
         destination_property => "workflow_out",
     );
     return $workflow;
-    return $workflow;
 }
 
 
