@@ -1,0 +1,37 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings FATAL => 'all';
+
+use Ptero::Proxy::LSF qw();
+
+main();
+
+sub main {
+    validate_execution_environment();
+
+    # LSF service doesn't support gzipped requests
+    local $ENV{PTERO_PERL_SDK_PLAINTEXT_REQUESTS} = 1;
+
+    my $lsf_proxy = Ptero::Proxy::LSF->new(url => $ENV{PTERO_LSF_JOB_URL});
+    $lsf_proxy->update({status => 'running'});
+
+    return;
+}
+
+
+sub validate_execution_environment {
+    my @EXPECTED_ENV_VARIABLES = qw(
+        PTERO_LSF_JOB_URL
+    );
+    my $validated = 1;
+    for my $env_var (@EXPECTED_ENV_VARIABLES) {
+        unless (defined $ENV{$env_var}) {
+            printf STDERR "ptero-lsf-pre-exec: Environment Variable %s must be set\n", $env_var;
+            $validated = 0;
+        }
+    }
+
+    exit 1 unless $validated;
+    return;
+}
