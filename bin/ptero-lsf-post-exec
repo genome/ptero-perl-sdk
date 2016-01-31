@@ -46,9 +46,11 @@ sub determine_update_values {
 
     if (defined($stderr) && -e $stderr) {
         $values->{stderr} = fetch_contents($stderr, $character_limit);
+        unlink $stderr;
     }
     if (defined($stdout) && -e $stdout) {
         $values->{stdout} = fetch_contents($stdout, $character_limit);
+        unlink $stdout;
     }
 
     $values->{status} = determine_status();
