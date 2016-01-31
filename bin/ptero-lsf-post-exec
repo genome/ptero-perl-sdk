@@ -82,6 +82,7 @@ sub determine_status {
     if ($exit_code == 0) {
         return 'succeeded';
     } else {
-        return 'failed';
+        my $info = $ENV{LSB_JOBEXIT_INFO} || "LSF gave no exit info";
+        return ['failed', $info];
     }
 }
