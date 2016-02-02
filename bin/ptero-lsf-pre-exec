@@ -4,11 +4,20 @@ use strict;
 use warnings FATAL => 'all';
 
 use Ptero::Proxy::LSF qw();
+use Try::Tiny;
 
-main();
+try {
+    main();
+} catch {
+    printf STDERR "ptero-lsf-pre-exec: $_\n", $env_var;
+};
+exit 0;
 
 sub main {
-    validate_execution_environment();
+    unless (validate_execution_environment()) {
+        printf STDERR "ptero-lsf-pre-exec: Validation failed. Not updating job status.\n";
+        return;
+    }
 
     # LSF service doesn't support gzipped requests
     local $ENV{PTERO_PERL_SDK_PLAINTEXT_REQUESTS} = 1;
@@ -32,6 +41,5 @@ sub validate_execution_environment {
         }
     }
 
-    exit 1 unless $validated;
-    return;
+    return $validated;
 }
