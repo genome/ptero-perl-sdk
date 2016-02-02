@@ -1,5 +1,5 @@
            TYPE     STATUS              STARTED      DURATION  NAME
-       Workflow  succeeded  2015-08-28T15:50:28      00:00:01  Perl SDK Integration Test (shortcut_success) 69F22556-4DC6-11E5-A57A-B66A00DAD14B
-           Task  succeeded  2015-08-28T15:50:28      00:00:01  A 
-            Job  succeeded  2015-08-28T15:50:29      00:00:00  . shortcut
+       Workflow  succeeded  2016-01-11T05:33:49      00:00:01  Perl SDK Integration Test (shortcut_success) E416637E-B824-11E5-BBA0-330AFDC41834
+           Task  succeeded  2016-01-11T05:33:49      00:00:01  A 
+            Job  succeeded  2016-01-11T05:33:49      00:00:00  . shortcut
             Job                                                . execute

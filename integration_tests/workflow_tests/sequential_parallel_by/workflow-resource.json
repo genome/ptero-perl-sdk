@@ -1,0 +1,15 @@
+{
+   "name" : "Perl SDK Integration Test (sequential_parallel_by) DA7E987C-B824-11E5-8641-130AFDC41834",
+   "reports" : {
+      "limited-workflow-executions" : "http://localhost:7000/v1/reports/limited-workflow-executions?workflow_id=15",
+      "limited-workflow-status-updates" : "http://localhost:7000/v1/reports/limited-workflow-status-updates?workflow_id=15",
+      "spawned-workflows" : "http://localhost:7000/v1/reports/spawned-workflows?workflow_id=15",
+      "workflow-details" : "http://localhost:7000/v1/reports/workflow-details?workflow_id=15",
+      "workflow-executions" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=15",
+      "workflow-outputs" : "http://localhost:7000/v1/reports/workflow-outputs?workflow_id=15",
+      "workflow-skeleton" : "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=15",
+      "workflow-status" : "http://localhost:7000/v1/reports/workflow-status?workflow_id=15",
+      "workflow-submission-data" : "http://localhost:7000/v1/reports/workflow-submission-data?workflow_id=15"
+   },
+   "status" : "new"
+}

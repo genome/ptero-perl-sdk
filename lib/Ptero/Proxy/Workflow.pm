@@ -15,7 +15,7 @@ has url => (
 );
 
 has resource => (
-    is => 'ro',
+    is => 'rw',
     isa => 'HashRef',
     required => 1
 );
@@ -53,11 +53,11 @@ sub concrete_workflow {
 }
 
 sub _concrete_workflow {
-    my ($self, $skeleton_hashref, $executions_hashref) = @_;
+    my ($self, $skeleton_hashref, $executions) = @_;
 
     my $concrete_workflow = Ptero::Concrete::Workflow->new($skeleton_hashref);
 
-    $concrete_workflow->create_executions($executions_hashref->{executions});
+    $concrete_workflow->add_executions($executions);
 
     return $concrete_workflow;
 }
@@ -70,8 +70,74 @@ sub workflow_skeleton {
 
 sub workflow_executions {
     my $self = shift;
-    return make_request_and_decode_response(method => 'GET',
-        url => $self->report_url('workflow-executions'));
+
+    my $executions = $self->get_all_executions();
+    my %executions_hash = map {$_->{id}, $_} @{$executions};
+
+    # attach status updates
+    my $status_updates = $self->get_all_status_updates();
+    for my $status_update (@{$status_updates}) {
+        my $execution_id = $status_update->{executionId};
+        my $execution = $executions_hash{$execution_id};
+        $execution->add_status_history(
+            $status_update->{status},
+            $status_update->{timestamp}
+        );
+    }
+
+    # attach spawned workflows
+    my $spawned_workflows = $self->get_spawned_workflows();
+    for my $spawned_workflow (@{$spawned_workflows}) {
+        my $execution_id = $spawned_workflow->{executionId};
+        my $execution = $executions_hash{$execution_id};
+        $execution->add_child_workflow_urls(
+            @{$spawned_workflow->{spawnedWorkflowUrls}}
+        );
+    }
+
+    return $executions;
+}
+
+sub get_all_executions {
+    my $self = shift;
+
+    my @executions;
+    my $hashrefs = $self->get_all_hashrefs('executions',
+        $self->report_url('limited-workflow-executions'));
+    for my $hashref (@{$hashrefs}) {
+        push @executions, Ptero::Concrete::Workflow::Execution->new($hashref);
+    }
+    return \@executions;
+}
+
+sub get_all_status_updates {
+    my $self = shift;
+
+    return $self->get_all_hashrefs('statusUpdates',
+        $self->report_url('limited-workflow-status-updates'));
+}
+
+sub get_all_hashrefs {
+    my ($self, $name, $url) = @_;
+
+    my $remaining = 1;
+    my @objects;
+    while ($remaining > 0) {
+        my $page = make_request_and_decode_response(method => 'GET',
+            url => $url);
+        $remaining = $page->{numRemaining};
+        push @objects, @{$page->{$name}};
+        $url = $page->{updateUrl};
+    }
+    return \@objects;
+}
+
+sub get_spawned_workflows {
+    my $self = shift;
+
+    my $result = make_request_and_decode_response(method => 'GET',
+        url => $self->report_url('spawned-workflows'));
+    return $result->{spawnedWorkflows};
 }
 
 sub workflow_summary {

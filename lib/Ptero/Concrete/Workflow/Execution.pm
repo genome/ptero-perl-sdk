@@ -21,7 +21,6 @@ sub new {
     $self->{id} = $hashref->{id};
     $self->{parent_color} = $hashref->{parentColor};
     $self->{status} = $hashref->{status};
-    $self->{status_history} = $hashref->{statusHistory};
     $self->{details_url} = $hashref->{detailsUrl};
 
     if (exists $hashref->{methodId}) {
@@ -32,25 +31,38 @@ sub new {
         $self->{parent_id} = $hashref->{taskId};
     }
 
-    if (exists $hashref->{childWorkflowUrls}) {
-        $self->{child_workflow_urls} = $hashref->{childWorkflowUrls};
-    } else {
-        $self->{child_workflow_urls} = [];
-    }
-
     # only detailed executions have these
     $self->{data} = $hashref->{data};
     $self->{name} = $hashref->{name};
     $self->{inputs} = $hashref->{inputs};
 
+    $self->{status_history} = $hashref->{status_history} || [];
+
+    $self->{child_workflow_urls} = Set::Scalar->new();
+    if (exists $hashref->{childWorkflowUrls}) {
+        $self->{child_workflow_urls}->insert(
+            @{$hashref->{childWorkflowUrls}}
+        );
+    }
+
     return bless $self, $class;
+}
+
+sub add_status_history {
+    my ($self, $status, $timestamp) = @_;
+    push @{$self->{status_history}}, {status => $status, timestamp => $timestamp};
+}
+
+sub add_child_workflow_urls {
+    my $self = shift;
+    $self->{child_workflow_urls}->insert(@_);
 }
 
 sub child_workflow_proxies {
     my $self = shift;
     my $result = [];
 
-    for my $workflow_url (@{$self->{child_workflow_urls}}) {
+    for my $workflow_url ($self->{child_workflow_urls}->members()) {
         push @$result, Ptero::Proxy::Workflow->new($workflow_url);
     }
     return $result;
