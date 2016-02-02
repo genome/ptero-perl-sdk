@@ -1,0 +1,15 @@
+{
+   "name" : "Perl SDK Integration Test (parallel_by_nested_dag) D339210E-B824-11E5-BDB8-FA09FDC41834",
+   "reports" : {
+      "limited-workflow-executions" : "http://localhost:7000/v1/reports/limited-workflow-executions?workflow_id=13",
+      "limited-workflow-status-updates" : "http://localhost:7000/v1/reports/limited-workflow-status-updates?workflow_id=13",
+      "spawned-workflows" : "http://localhost:7000/v1/reports/spawned-workflows?workflow_id=13",
+      "workflow-details" : "http://localhost:7000/v1/reports/workflow-details?workflow_id=13",
+      "workflow-executions" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=13",
+      "workflow-outputs" : "http://localhost:7000/v1/reports/workflow-outputs?workflow_id=13",
+      "workflow-skeleton" : "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=13",
+      "workflow-status" : "http://localhost:7000/v1/reports/workflow-status?workflow_id=13",
+      "workflow-submission-data" : "http://localhost:7000/v1/reports/workflow-submission-data?workflow_id=13"
+   },
+   "status" : "new"
+}

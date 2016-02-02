@@ -1,0 +1,15 @@
+{
+   "name" : "Perl SDK Integration Test (single_operation) E5E1E2B4-B824-11E5-886D-3B0AFDC41834",
+   "reports" : {
+      "limited-workflow-executions" : "http://localhost:7000/v1/reports/limited-workflow-executions?workflow_id=19",
+      "limited-workflow-status-updates" : "http://localhost:7000/v1/reports/limited-workflow-status-updates?workflow_id=19",
+      "spawned-workflows" : "http://localhost:7000/v1/reports/spawned-workflows?workflow_id=19",
+      "workflow-details" : "http://localhost:7000/v1/reports/workflow-details?workflow_id=19",
+      "workflow-executions" : "http://localhost:7000/v1/reports/workflow-executions?workflow_id=19",
+      "workflow-outputs" : "http://localhost:7000/v1/reports/workflow-outputs?workflow_id=19",
+      "workflow-skeleton" : "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=19",
+      "workflow-status" : "http://localhost:7000/v1/reports/workflow-status?workflow_id=19",
+      "workflow-submission-data" : "http://localhost:7000/v1/reports/workflow-submission-data?workflow_id=19"
+   },
+   "status" : "new"
+}

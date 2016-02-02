@@ -122,19 +122,36 @@ sub run_test {
     my $cache_file = File::Spec->join($dir, 'http-response-cache.json');
 
     setup_http_response_mocks($cache_file);
+    setup_proxy_for_view_tests($dir, $wf_proxy);
     compare_workflow_view($dir, $wf_proxy);
 
     $wf_proxy->delete();
     done_testing();
 }
 
+sub setup_proxy_for_view_tests {
+    my ($dir, $wf_proxy) = @_;
+
+    my $resource_file = File::Spec->join($dir, 'workflow-resource.json');
+    if ($ENV{PTERO_REGENERATE_TEST_DATA_OUTPUTS}) {
+        my $resource = {
+            'reports' => $wf_proxy->resource->{reports},
+            'name' => $wf_proxy->resource->{name},
+            'status' => $wf_proxy->resource->{status},
+        };
+        my $json = to_json($resource, {pretty=>1, canonical=>1});
+        write_file($resource_file, $json);
+    } else {
+        my $json_text = read_file($resource_file);
+        my $hashref = from_json($json_text);
+        $wf_proxy->resource($hashref);
+    }
+}
+
 sub compare_workflow_view {
     my ($dir, $wf_proxy) = @_;
 
-    my $concrete_workflow = $wf_proxy->_concrete_workflow(
-        get_workflow_skeleton($dir, $wf_proxy),
-        get_workflow_executions($dir, $wf_proxy),
-    );
+    my $concrete_workflow = $wf_proxy->concrete_workflow();
 
     my $expected_file = File::Spec->join($dir, 'workflow-view.txt');
     my $view = $concrete_workflow->view_as_string;
@@ -145,36 +162,6 @@ sub compare_workflow_view {
 
     my $diff = diff($expected_file, \$view, { STYLE => "Context" });
     ok(!$diff, 'View looks as expected') || printf "Found differences:\n%s", $diff;
-}
-
-sub get_workflow_skeleton {
-    my ($dir, $wf_proxy) = @_;
-
-    my $expected_file = File::Spec->join($dir, 'workflow-skeleton.json');
-
-    if ($ENV{PTERO_REGENERATE_TEST_DATA_INPUTS}) {
-        my $hashref = $wf_proxy->workflow_skeleton;
-        my $json = to_json($hashref, {pretty=>1, canonical=>1});
-        write_file($expected_file, $json);
-    }
-
-    my $json_text = read_file($expected_file);
-    return from_json($json_text);
-}
-
-sub get_workflow_executions {
-    my ($dir, $wf_proxy) = @_;
-
-    my $expected_file = File::Spec->join($dir, 'workflow-executions.json');
-
-    if ($ENV{PTERO_REGENERATE_TEST_DATA_INPUTS}) {
-        my $hashref = $wf_proxy->workflow_executions;
-        my $json = to_json($hashref, {pretty=>1, canonical=>1});
-        write_file($expected_file, $json);
-    }
-
-    my $json_text = read_file($expected_file);
-    return from_json($json_text);
 }
 
 sub get_workflow_inputs {
