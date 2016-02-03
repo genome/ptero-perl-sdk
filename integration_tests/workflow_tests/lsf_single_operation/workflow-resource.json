@@ -1,0 +1,16 @@
+{
+   "name" : "Perl SDK Integration Test (lsf_single_operation) a31eb1fb-5ba2-4b04-b243-8afa3f96bd20",
+   "reports" : {
+      "limited-workflow-executions" : "http://workflow-staging.apipe-deis.gsc.wustl.edu:80/v1/reports/limited-workflow-executions?workflow_id=272797",
+      "limited-workflow-status-updates" : "http://workflow-staging.apipe-deis.gsc.wustl.edu:80/v1/reports/limited-workflow-status-updates?workflow_id=272797",
+      "spawned-workflows" : "http://workflow-staging.apipe-deis.gsc.wustl.edu:80/v1/reports/spawned-workflows?workflow_id=272797",
+      "workflow-details" : "http://workflow-staging.apipe-deis.gsc.wustl.edu:80/v1/reports/workflow-details?workflow_id=272797",
+      "workflow-executions" : "http://workflow-staging.apipe-deis.gsc.wustl.edu:80/v1/reports/workflow-executions?workflow_id=272797",
+      "workflow-outputs" : "http://workflow-staging.apipe-deis.gsc.wustl.edu:80/v1/reports/workflow-outputs?workflow_id=272797",
+      "workflow-skeleton" : "http://workflow-staging.apipe-deis.gsc.wustl.edu:80/v1/reports/workflow-skeleton?workflow_id=272797",
+      "workflow-status" : "http://workflow-staging.apipe-deis.gsc.wustl.edu:80/v1/reports/workflow-status?workflow_id=272797",
+      "workflow-submission-data" : "http://workflow-staging.apipe-deis.gsc.wustl.edu:80/v1/reports/workflow-submission-data?workflow_id=272797",
+      "workflow-summary" : "http://workflow-staging.apipe-deis.gsc.wustl.edu:80/v1/reports/workflow-summary?workflow_id=272797"
+   },
+   "status" : "new"
+}

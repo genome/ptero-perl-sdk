@@ -1,4 +1,4 @@
            TYPE     STATUS              STARTED      DURATION  NAME
-       Workflow  succeeded  2015-09-29T18:05:42      00:00:13  Perl SDK Integration Test (lsf_single_operation) B29B2272-66D4-11E5-90B4-39538E3D0834
-           Task  succeeded  2015-09-29T18:05:42      00:00:12  A 
-            Job  succeeded  2015-09-29T18:05:42      00:00:12  . execute
+       Workflow  succeeded  2016-02-03T00:16:21      00:00:08  Perl SDK Integration Test (lsf_single_operation) a31eb1fb-5ba2-4b04-b243-8afa3f96bd20
+           Task  succeeded  2016-02-03T00:16:21      00:00:07  A 
+            Job  succeeded  2016-02-03T00:16:21      00:00:07  . execute
