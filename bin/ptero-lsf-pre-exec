@@ -8,8 +8,6 @@ use Try::Tiny;
 
 try {
     main();
-} catch {
-    printf STDERR "ptero-lsf-pre-exec: $_\n", $env_var;
 };
 exit 0;
 
