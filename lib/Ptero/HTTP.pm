@@ -31,6 +31,7 @@ for (1..20) {
 my @RETRY_DELAYS = map {$_ + _random_int(4)} @RAW_DELAYS;
 
 my @CODES_TO_RETRY = (
+    404,  # Not Found
     408,  # Request Timeout
     500,  # Internal Server Error
     502,  # Bad Gateway
