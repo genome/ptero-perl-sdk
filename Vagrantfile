@@ -8,7 +8,6 @@ DEBEMAIL    = ENV["MAINTAINER_EMAIL"]
 DISTRO_NAME = ENV["DISTRO_NAME"] || "lucid-genome-development"
 
 Vagrant::configure("2") do |config|
-  config.vm.host_name = "ptero-perl-sdk"
   config.vm.box = "lucid64"
   config.vm.box_url = "http://files.vagrantup.com/lucid64.box"
 
@@ -20,6 +19,7 @@ Vagrant::configure("2") do |config|
   PTERO_SDK_DIR = "/home/vagrant/ptero-perl-sdk"
   config.vm.synced_folder ".", PTERO_SDK_DIR
 
+  config.vm.provision 'hostname ptero-perl-sdk',    type: "shell", inline: "hostname ptero-perl-sdk"
   config.vm.provision 'apt-get update',             type: "shell", inline: "apt-get update"
   config.vm.provision 'install packaging deps',     type: "shell", inline: "DEBIAN_FRONTEND=noninteractive apt-get -qq -y install libdist-zilla-perl build-essential fakeroot devscripts debhelper"
   config.vm.provision 'install build deps',         type: "shell", inline: "DEBIAN_FRONTEND=noninteractive apt-get -qq -y install libdevel-cover-perl libtest-exception-perl libdata-dump-perl libdate-calc-perl libdatetime-format-strptime-perl libfile-slurp-perl libgraph-perl libjson-perl liblog-log4perl-perl liblwp-useragent-determined-perl libmoose-perl libmoosex-aliases-perl libparams-validate-perl libset-scalar-perl libtemplate-perl libwww-perl libio-string-perl libtext-diff-perl libdata-uuid-perl"
