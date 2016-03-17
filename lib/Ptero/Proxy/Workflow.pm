@@ -71,11 +71,15 @@ sub workflow_skeleton {
 sub workflow_executions {
     my $self = shift;
 
+    # Fetch status updates before executions because you don't
+    # want to find out you fetched a status update for an execution
+    # that didn't exist when you fetched them.
+    my $status_updates = $self->get_all_status_updates();
+
     my $executions = $self->get_all_executions();
     my %executions_hash = map {$_->{id}, $_} @{$executions};
 
     # attach status updates
-    my $status_updates = $self->get_all_status_updates();
     for my $status_update (@{$status_updates}) {
         my $execution_id = $status_update->{executionId};
         my $execution = $executions_hash{$execution_id};
