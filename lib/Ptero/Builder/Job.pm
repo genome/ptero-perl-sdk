@@ -22,6 +22,14 @@ has service_url => (
     alias => 'serviceUrl',
 );
 
+has service_data_to_save => (
+    is => 'rw',
+    isa => 'ArrayRef[Str]',
+    required => 0,
+    alias => 'serviceDataToSave',
+    predicate => 'has_service_data_to_save',
+);
+
 around 'to_hashref' => sub {
     my $orig = shift;
     my $self = shift;
@@ -29,6 +37,11 @@ around 'to_hashref' => sub {
     my $hashref = $self->$orig(@_);
 
     $hashref->{serviceUrl} = $self->service_url;
+
+    if ($self->has_service_data_to_save) {
+        $hashref->{serviceDataToSave} = $self->service_data_to_save;
+    }
+
     return $hashref;
 };
 
