@@ -24,6 +24,14 @@ my $wf_proxy = $workflow->submit(
 $wf_proxy->wait(polling_interval => 1);
 is_deeply($wf_proxy->outputs, { 'A_out' => $test_input }, 'Got expected outputs');
 
+my $exit_codes_found = 0;
+foreach my $execution (@{$wf_proxy->workflow_executions}) {
+    $exit_codes_found +=1 if exists $execution->{data}{exitCode};
+    note(sprintf "exitCode ==> \%s; execution id ==> %s\n", $execution->{data}{exitCode}, $execution->{id})
+        if exists $execution->{data}{exitCode};
+}
+is($exit_codes_found, 1, 'Found expected number of exit codes');
+
 $wf_proxy->delete();
 done_testing();
 
@@ -41,6 +49,7 @@ sub create_echo_workflow {
                 user => $ENV{USER},
                 workingDirectory => '/tmp'
             },
+            serviceDataToSave => [qw(exitCode)],
     );
     my $task = $workflow->create_task(
         name => 'A',
