@@ -51,6 +51,10 @@
                                  "workingDirectory" : "/test/working/directory"
                               },
                               "service" : "job",
+                              "serviceDataToSave" : [
+                                 "exitCode",
+                                 "user"
+                              ],
                               "serviceUrl" : "http://example.com/v1",
                               "webhooks" : {
                                  "failed" : "http://localhost:8080/example/shellcmd/failed",

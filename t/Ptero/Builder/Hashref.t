@@ -48,6 +48,7 @@ use Ptero::Test::Builder qw(
                                 failed => 'http://localhost:8080/example/shellcmd/failed',
                                 succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
                             },
+                            serviceDataToSave => ['exitCode', 'user'],
                         },
                     ],
                     webhooks => {
@@ -109,6 +110,7 @@ use Ptero::Test::Builder qw(
                                 failed => 'http://localhost:8080/example/shellcmd/failed',
                                 succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
                             },
+                            serviceDataToSave => ['exitCode', 'user'],
                         },
                     ],
                     parallelBy => "A_in",
@@ -195,6 +197,7 @@ use Ptero::Test::Builder qw(
                                                     failed => 'http://localhost:8080/example/shellcmd/failed',
                                                     succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
                                                 },
+                                                serviceDataToSave => ['exitCode', 'user'],
                                             },
                                         ],
                                         webhooks => {
