@@ -15,6 +15,10 @@ sub new {
     # only Job Methods have serviceUrl
     if (exists $hashref->{serviceUrl}) {
         $self->{serviceUrl} = $hashref->{serviceUrl};
+
+        if (exists $hashref->{serviceDataToSave}) {
+            $self->{serviceDataToSave} = $hashref->{serviceDataToSave};
+        }
     }
 
     return bless $self, $class;
