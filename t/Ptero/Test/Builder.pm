@@ -101,6 +101,7 @@ sub build_basic_workflow {
                     failed => 'http://localhost:8080/example/shellcmd/failed',
                     succeeded => ['http://localhost:8080/example/shellcmd/succeeded', 'http://localhost:8080/yay']
                 },
+                service_data_to_save => ['exitCode', 'user'],
             ),
         ],
         webhooks => {
