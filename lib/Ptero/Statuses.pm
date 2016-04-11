@@ -12,6 +12,7 @@ our @EXPORT_OK = qw(
     get_abbreviation
 );
 
+use Set::Scalar;
 my $TERMINAL_STATUSES = Set::Scalar->new(qw(errored failed succeeded canceled));
 
 sub is_terminal {
