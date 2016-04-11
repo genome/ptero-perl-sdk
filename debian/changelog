@@ -1,3 +1,9 @@
+libptero-perl (0.4.6-1) lucid-genome-development; urgency=low
+
+  * PTero client
+
+ -- Thomas B. Mooney <tmooney@genome.wustl.edu>  Mon, 11 Apr 2016 21:44:06 +0200
+
 libptero-perl (0.4.5-1) lucid-genome-development; urgency=low
 
   * PTero client
