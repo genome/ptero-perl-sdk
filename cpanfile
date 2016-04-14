@@ -12,7 +12,6 @@ requires "MooseX::Aliases";
 requires "Params::Validate";
 requires "Set::Scalar";
 requires "Template";
-requires "DateTime", ">= 1.26";
 requires "DateTime::Format::Strptime";
 requires "Date::Calc";
 requires "IO::String";
