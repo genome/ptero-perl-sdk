@@ -16,7 +16,7 @@ sub main {
     local $ENV{PTERO_PERL_SDK_PLAINTEXT_REQUESTS} = 1;
 
     my $lsf_proxy = Ptero::Proxy::LSF->new(url => $ENV{PTERO_LSF_JOB_URL});
-    my $values = determine_update_values();
+    my $values = determine_update_values($lsf_proxy);
     $lsf_proxy->update($values);
 
     return;
@@ -40,9 +40,16 @@ sub validate_execution_environment {
 }
 
 sub determine_update_values {
+    my $lsf_proxy = shift;
+
     my $values = {};
 
-    my ($stderr, $stdout, $character_limit) = get_options();
+    my ($character_limit) = get_options();
+
+    my $lsf_data = $lsf_proxy->job_data();
+
+    my $stderr = $lsf_data->{options}{errFile};
+    my $stdout = $lsf_data->{options}{outFile};
 
     if (defined($stderr) && -e $stderr) {
         $values->{stderr} = fetch_contents($stderr, $character_limit);
@@ -58,14 +65,14 @@ sub determine_update_values {
 }
 
 sub get_options {
-    my ($stderr, $stdout, $character_limit);
+    my $character_limit;
 
     GetOptions(
-        "stderr=s" => \$stderr,
-        "stdout=s" => \$stdout,
+        "stderr=s" => \$stderr, #deprecated
+        "stdout=s" => \$stdout, #deprecated
         "character-limit=s" => \$character_limit,
     );
-    return ($stderr, $stdout, $character_limit);
+    return $character_limit;
 }
 
 sub fetch_contents {
