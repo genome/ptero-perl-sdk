@@ -65,7 +65,7 @@ sub determine_update_values {
 }
 
 sub get_options {
-    my $character_limit;
+    my ($stderr, $stdout, $character_limit);
 
     GetOptions(
         "stderr=s" => \$stderr, #deprecated
