@@ -3,7 +3,7 @@ package Ptero;
 use strict;
 use warnings FATAL => 'all';
 
-our $VERSION = "0.4.6";
+our $VERSION = "0.4.7";
 
 use Log::Log4perl qw(:easy);
 
