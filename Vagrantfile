@@ -20,6 +20,16 @@ Vagrant::configure("2") do |config|
   config.vm.synced_folder ".", PTERO_SDK_DIR
 
   config.vm.provision 'hostname ptero-perl-sdk',    type: "shell", inline: "hostname ptero-perl-sdk"
+  config.vm.provision 'update apt sources',         type: "shell", inline: "echo '#sources for ancient lucid
+deb http://old-releases.ubuntu.com/ubuntu lucid-backports main restricted universe multiverse
+deb-src http://old-releases.ubuntu.com/ubuntu lucid-backports main restricted universe multiverse
+deb http://old-releases.ubuntu.com/ubuntu lucid-security main restricted universe multiverse
+deb-src http://old-releases.ubuntu.com/ubuntu lucid-security main restricted universe multiverse
+deb http://old-releases.ubuntu.com/ubuntu lucid-updates main restricted universe multiverse
+deb-src http://old-releases.ubuntu.com/ubuntu lucid-updates main restricted universe multiverse
+deb http://old-releases.ubuntu.com/ubuntu lucid main restricted universe multiverse
+deb-src http://old-releases.ubuntu.com/ubuntu lucid main restricted universe multiverse' > /etc/apt/sources.list"
+
   config.vm.provision 'apt-get update',             type: "shell", inline: "apt-get update"
   config.vm.provision 'install packaging deps',     type: "shell", inline: "DEBIAN_FRONTEND=noninteractive apt-get -qq -y install libdist-zilla-perl build-essential fakeroot devscripts debhelper"
   config.vm.provision 'install build deps',         type: "shell", inline: "DEBIAN_FRONTEND=noninteractive apt-get -qq -y install libdevel-cover-perl libtest-exception-perl libdata-dump-perl libdate-calc-perl libdatetime-format-strptime-perl libfile-slurp-perl libgraph-perl libjson-perl liblog-log4perl-perl liblwp-useragent-determined-perl libmoose-perl libmoosex-aliases-perl libparams-validate-perl libset-scalar-perl libtemplate-perl libwww-perl libio-string-perl libtext-diff-perl libdata-uuid-perl"
