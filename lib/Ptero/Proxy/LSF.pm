@@ -34,4 +34,10 @@ sub update {
     return;
 }
 
+sub job_data {
+    my $self = shift;
+
+    return make_request_and_decode_response(method => 'GET', url => $self->url);
+}
+
 __PACKAGE__->meta->make_immutable;
