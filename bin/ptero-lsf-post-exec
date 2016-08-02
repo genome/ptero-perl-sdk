@@ -51,6 +51,11 @@ sub determine_update_values {
     my $stderr = $lsf_data->{options}{errFile};
     my $stdout = $lsf_data->{options}{outFile};
 
+    my $lsf_job_id = $lsf_data->{lsfJobId};
+
+    $stderr =~ s/\Q%J\E/$lsf_job_id/;
+    $stdout =~ s/\Q%J\E/$lsf_job_id/;
+
     if (defined($stderr) && -e $stderr) {
         $values->{stderr} = fetch_contents($stderr, $character_limit);
         unlink $stderr;
